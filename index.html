@@ -2153,4 +2153,163 @@
                 { id: Date.now() + 11, customer: 'Carlos Rodríguez', seller: sellers[1], channel: 'instagram', productId: sampleProducts[1].id, productName: sampleProducts[1].name, quantity: 2, total: 110000, cost: 50000, status: 'shipped', date: new Date(Date.now() - 86400000 * 1).toISOString() },
                 { id: Date.now() + 12, customer: 'Ana López', seller: sellers[2], channel: 'whatsapp', productId: sampleProducts[2].id, productName: sampleProducts[2].name, quantity: 1, total: 75000, cost: 35000, status: 'confirmed', date: new Date().toISOString() },
                 { id: Date.now() + 13, customer: 'Pedro Martínez', seller: sellers[3], channel: 'marketplace', productId: sampleProducts[3].id, productName: sampleProducts[3].name, quantity: 1, total: 120000, cost: 55000, status: 'pending', date: new Date().toISOString() },
-                { id: Date.now() + 14, customer: 'Lucía Fernández', seller: sellers[4], channel: 'web', productId: sampleProducts[4].id, productName: sampleProducts[4].name, quantity: 1, total: 85000, cost: 30000, status: 'delivered', date: new Date(Date.now() - 86400000 * 3).toISOString() }ISOString() }
+            ];
+
+            orders.push(...sampleOrders);
+            updateAllData();
+            populateOrderProductSelect();
+            showToast('Datos de ejemplo cargados correctamente', 'success');
+        }
+
+        function generateExpenseSampleData() {
+            console.log('Generando gastos de ejemplo...');
+            
+            const sampleExpenses = [
+                { id: Date.now() + 20, description: 'Publicidad Facebook Ads', category: 'marketing', type: 'variable', amount: 150000, date: new Date(Date.now() - 86400000 * 1).toISOString().split('T')[0] },
+                { id: Date.now() + 21, description: 'Suscripción plataforma e-commerce', category: 'plataforma', type: 'fijo', amount: 85000, date: new Date().toISOString().split('T')[0] },
+                { id: Date.now() + 22, description: 'Costos de envío', category: 'envios', type: 'variable', amount: 45000, date: new Date(Date.now() - 86400000 * 2).toISOString().split('T')[0] },
+                { id: Date.now() + 23, description: 'Herramientas de análisis', category: 'herramientas', type: 'fijo', amount: 35000, date: new Date().toISOString().split('T')[0] },
+                { id: Date.now() + 24, description: 'Material de empaque', category: 'oficina', type: 'variable', amount: 25000, date: new Date(Date.now() - 86400000 * 1).toISOString().split('T')[0] }
+            ];
+
+            expenses.push(...sampleExpenses);
+            updateAllData();
+            showToast('Gastos de ejemplo cargados', 'success');
+        }
+
+        // SISTEMA DE NOTIFICACIONES TOAST
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            
+            container.appendChild(toast);
+            
+            // Mostrar toast
+            setTimeout(() => toast.classList.add('show'), 100);
+            
+            // Ocultar y remover toast
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    if (container.contains(toast)) {
+                        container.removeChild(toast);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // FUNCIONES DE EXPORTACIÓN
+        function exportProducts() {
+            if (products.length === 0) {
+                showToast('No hay productos para exportar', 'warning');
+                return;
+            }
+
+            const csvContent = "data:text/csv;charset=utf-8," 
+                + "Nombre,Proveedor,Categoría,Stock,Stock Mínimo,Costo,Precio,Margen\n"
+                + products.map(p => {
+                    const margin = p.cost > 0 ? (((p.price - p.cost) / p.cost) * 100).toFixed(2) : '0';
+                    return `"${p.name}","${p.supplier}","${p.category}",${p.stock || 0},${p.minStock || 5},${p.cost},${p.price},${margin}%`;
+                }).join('\n');
+
+            downloadCSV(csvContent, `productos_${new Date().toISOString().split('T')[0]}.csv`);
+            showToast('Productos exportados correctamente', 'success');
+        }
+
+        function exportOrders() {
+            if (orders.length === 0) {
+                showToast('No hay pedidos para exportar', 'warning');
+                return;
+            }
+
+            const csvContent = "data:text/csv;charset=utf-8," 
+                + "ID,Cliente,Vendedor,Canal,Producto,Cantidad,Total,Costo,Ganancia,Estado,Fecha\n"
+                + orders.map(o => {
+                    const profit = o.total - o.cost;
+                    return `${o.id},"${o.customer}","${o.seller || 'N/A'}","${o.channel}","${o.productName}",${o.quantity},${o.total},${o.cost},${profit},"${getStatusLabel(o.status)}","${new Date(o.date).toLocaleDateString()}"`;
+                }).join('\n');
+
+            downloadCSV(csvContent, `pedidos_${new Date().toISOString().split('T')[0]}.csv`);
+            showToast('Pedidos exportados correctamente', 'success');
+        }
+
+        function exportExpenses() {
+            if (expenses.length === 0) {
+                showToast('No hay gastos para exportar', 'warning');
+                return;
+            }
+
+            const csvContent = "data:text/csv;charset=utf-8," 
+                + "Fecha,Descripción,Categoría,Tipo,Monto\n"
+                + expenses.map(e => {
+                    return `"${new Date(e.date).toLocaleDateString()}","${e.description}","${e.category}","${e.type}",${e.amount}`;
+                }).join('\n');
+
+            downloadCSV(csvContent, `gastos_${new Date().toISOString().split('T')[0]}.csv`);
+            showToast('Gastos exportados correctamente', 'success');
+        }
+
+        function downloadCSV(csvContent, filename) {
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", filename);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // EVENT LISTENERS
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey || e.metaKey) {
+                switch(e.key) {
+                    case '1': e.preventDefault(); showSection('dashboard'); break;
+                    case '2': e.preventDefault(); showSection('products'); break;
+                    case '3': e.preventDefault(); showSection('orders'); break;
+                    case '4': e.preventDefault(); showSection('expenses'); break;
+                    case '5': e.preventDefault(); showSection('calculator'); break;
+                    case '6': e.preventDefault(); showSection('reports'); break;
+                    case '7': e.preventDefault(); showSection('settings'); break;
+                }
+            }
+            
+            if (e.key === 'Escape') {
+                const modals = document.querySelectorAll('.modal');
+                modals.forEach(modal => {
+                    if (modal.style.display === 'block') {
+                        modal.style.display = 'none';
+                    }
+                });
+                currentEditingOrderId = null;
+            }
+        });
+
+        document.addEventListener('input', function(e) {
+            if (e.target.type === 'number' && e.target.value < 0) {
+                e.target.value = 0;
+            }
+        });
+
+        // Click outside modal to close
+        window.onclick = function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                    currentEditingOrderId = null;
+                }
+            });
+        }
+
+        // Prevenir errores de JavaScript
+        window.addEventListener('error', function(event) {
+            console.error('Error JavaScript:', event.error);
+            showToast('Error en la aplicación: ' + event.error.message, 'error');
+        });
+
+        console.log('Script cargado completamente');
+    </script>
+</body>
+</html>
