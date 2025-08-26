@@ -489,7 +489,6 @@
             font-size: 0.8rem;
         }
 
-        /* Sistema de notificaciones toast */
         .toast-container {
             position: fixed;
             top: 20px;
@@ -686,13 +685,13 @@
                                 <div class="stat-value" id="dashExpenses">₲0</div>
                                 <div class="stat-label">Gastos</div>
                             </div>
-                            <div class="stat-card" style="background: var(--gradient-success); color: #1a1a1a; text-shadow: 1px 1px 2px rgba(255,255,255,0.8);">
-                                <div class="stat-value" id="dashProfit" style="color: #1a1a1a; text-shadow: 1px 1px 2px rgba(255,255,255,0.8);">₲0</div>
-                                <div class="stat-label" style="color: #2c2c2c; text-shadow: 1px 1px 2px rgba(255,255,255,0.8);">Ganancia Neta</div>
+                            <div class="stat-card" style="background: var(--gradient-success); color: #1a1a1a;">
+                                <div class="stat-value" id="dashProfit" style="color: #1a1a1a;">₲0</div>
+                                <div class="stat-label" style="color: #2c2c2c;">Ganancia Neta</div>
                             </div>
-                            <div class="stat-card" style="background: var(--gradient-primary); color: #1a1a1a; text-shadow: 1px 1px 2px rgba(255,255,255,0.8);">
-                                <div class="stat-value" id="dashMargin" style="color: #1a1a1a; text-shadow: 1px 1px 2px rgba(255,255,255,0.8);">0%</div>
-                                <div class="stat-label" style="color: #2c2c2c; text-shadow: 1px 1px 2px rgba(255,255,255,0.8);">Margen Promedio</div>
+                            <div class="stat-card" style="background: var(--gradient-primary); color: #1a1a1a;">
+                                <div class="stat-value" id="dashMargin" style="color: #1a1a1a;">0%</div>
+                                <div class="stat-label" style="color: #2c2c2c;">Margen Promedio</div>
                             </div>
                         </div>
 
@@ -865,17 +864,17 @@
                             </div>
 
                             <div class="stats-grid">
-                                <div class="stat-card" style="background: var(--gradient-primary); color: #1a1a1a; text-shadow: 1px 1px 2px rgba(255,255,255,0.8);">
-                                    <div class="stat-value" id="suggestedPrice" style="color: #1a1a1a; text-shadow: 1px 1px 2px rgba(255,255,255,0.8);">₲0</div>
-                                    <div class="stat-label" style="color: #2c2c2c; text-shadow: 1px 1px 2px rgba(255,255,255,0.8);">Precio Sugerido</div>
+                                <div class="stat-card" style="background: var(--gradient-primary); color: white;">
+                                    <div class="stat-value" id="suggestedPrice" style="color: white;">₲0</div>
+                                    <div class="stat-label" style="color: #f0f0f0;">Precio Sugerido</div>
                                 </div>
-                                <div class="stat-card" style="background: var(--gradient-success); color: #1a1a1a; text-shadow: 1px 1px 2px rgba(255,255,255,0.8);">
-                                    <div class="stat-value" id="expectedProfit" style="color: #1a1a1a; text-shadow: 1px 1px 2px rgba(255,255,255,0.8);">₲0</div>
-                                    <div class="stat-label" style="color: #2c2c2c; text-shadow: 1px 1px 2px rgba(255,255,255,0.8);">Ganancia Esperada</div>
+                                <div class="stat-card" style="background: var(--gradient-success); color: white;">
+                                    <div class="stat-value" id="expectedProfit" style="color: white;">₲0</div>
+                                    <div class="stat-label" style="color: #f0f0f0;">Ganancia Esperada</div>
                                 </div>
-                                <div class="stat-card" style="background: var(--gradient-warning); color: #1a1a1a; text-shadow: 1px 1px 2px rgba(255,255,255,0.8);">
-                                    <div class="stat-value" id="totalCosts" style="color: #1a1a1a; text-shadow: 1px 1px 2px rgba(255,255,255,0.8);">₲0</div>
-                                    <div class="stat-label" style="color: #2c2c2c; text-shadow: 1px 1px 2px rgba(255,255,255,0.8);">Costos Totales</div>
+                                <div class="stat-card" style="background: var(--gradient-warning); color: white;">
+                                    <div class="stat-value" id="totalCosts" style="color: white;">₲0</div>
+                                    <div class="stat-label" style="color: #f0f0f0;">Costos Totales</div>
                                 </div>
                             </div>
 
@@ -903,9 +902,9 @@
                                 <div class="stat-value" id="reportExpenses">₲0</div>
                                 <div class="stat-label">Gastos Totales</div>
                             </div>
-                            <div class="stat-card" style="background: var(--gradient-success); color: #1a1a1a; text-shadow: 1px 1px 2px rgba(255,255,255,0.8);">
-                                <div class="stat-value" id="reportProfit" style="color: #1a1a1a; text-shadow: 1px 1px 2px rgba(255,255,255,0.8);">₲0</div>
-                                <div class="stat-label" style="color: #2c2c2c; text-shadow: 1px 1px 2px rgba(255,255,255,0.8);">Ganancia Neta</div>
+                            <div class="stat-card" style="background: var(--gradient-success); color: white;">
+                                <div class="stat-value" id="reportProfit" style="color: white;">₲0</div>
+                                <div class="stat-label" style="color: #f0f0f0;">Ganancia Neta</div>
                             </div>
                             <div class="stat-card">
                                 <div class="stat-value" id="reportMargin">0%</div>
@@ -960,7 +959,7 @@
 
     <!-- Indicador de estado de Supabase -->
     <div id="supabaseStatus" class="supabase-status supabase-disconnected">
-        📡 Supabase: Desconectado
+        📡 Supabase: Desconectado (Modo Local)
     </div>
 
     <!-- Contenedor de notificaciones -->
@@ -1148,44 +1147,96 @@
         let expenses = [];
         let calculatorItems = [];
         let currentEditingOrderId = null;
-        let supabase = null; // Declarar la variable global
+        let supabaseClient = null; // Variable corregida
 
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM cargado, inicializando...');
+            
             setupMenuNavigation();
             initializeCalculator();
-            loadSupabaseConfig(); // Cargar configuración guardada
+            loadSupabaseConfig();
+            loadLocalData();
             populateOrderProductSelect();
-            document.getElementById('expenseDate').value = new Date().toISOString().split('T')[0];
-            loadLocalData(); // Cargar datos desde localStorage como fallback
+            updateAllData();
+            
+            // Configurar fecha por defecto
+            const dateInput = document.getElementById('expenseDate');
+            if (dateInput) {
+                dateInput.value = new Date().toISOString().split('T')[0];
+            }
+            
+            console.log('Inicialización completa');
         });
 
-        // Función para inicializar Supabase
-        async function initializeSupabase(url, key) {
-            try {
-                if (!url || !key) {
-                    updateSupabaseStatus(false);
-                    return false;
-                }
+        // FUNCIONES DE SUPABASE
+        function loadSupabaseConfig() {
+            console.log('Cargando configuración de Supabase...');
+            updateSupabaseStatus(false); // Por defecto desconectado
+        }
 
-                const { createClient } = supabase;
-                supabase = createClient(url, key);
+        async function connectSupabase() {
+            const url = document.getElementById('supabaseUrl').value.trim();
+            const key = document.getElementById('supabaseKey').value.trim();
+            
+            if (!url || !key) {
+                showToast('Por favor completa la URL y Key de Supabase', 'warning');
+                return;
+            }
+            
+            try {
+                console.log('Intentando conectar con Supabase...');
+                supabaseClient = window.supabase.createClient(url, key);
                 
-                // Verificar la conexión
-                const { data, error } = await supabase.auth.getUser();
-                if (error && error.message !== 'Auth session missing!') {
-                    throw error;
-                }
+                // Verificar conexión
+                const { data, error } = await supabaseClient.auth.getUser();
                 
                 updateSupabaseStatus(true);
-                await loadDataFromSupabase();
                 showToast('Conectado a Supabase correctamente', 'success');
-                return true;
+                
+                // Intentar cargar datos desde Supabase
+                await loadDataFromSupabase();
+                
             } catch (error) {
-                console.error('Error inicializando Supabase:', error);
-                supabase = null;
+                console.error('Error conectando con Supabase:', error);
+                supabaseClient = null;
                 updateSupabaseStatus(false);
                 showToast('Error conectando con Supabase: ' + error.message, 'error');
-                return false;
+            }
+        }
+
+        async function loadDataFromSupabase() {
+            if (!supabaseClient) return;
+            
+            try {
+                console.log('Cargando datos desde Supabase...');
+                
+                // Cargar productos
+                const { data: productsData, error: productsError } = await supabaseClient.from('products').select('*');
+                if (!productsError && productsData) {
+                    products = productsData;
+                    console.log('Productos cargados:', products.length);
+                }
+                
+                // Cargar pedidos
+                const { data: ordersData, error: ordersError } = await supabaseClient.from('orders').select('*');
+                if (!ordersError && ordersData) {
+                    orders = ordersData;
+                    console.log('Pedidos cargados:', orders.length);
+                }
+                
+                // Cargar gastos
+                const { data: expensesData, error: expensesError } = await supabaseClient.from('expenses').select('*');
+                if (!expensesError && expensesData) {
+                    expenses = expensesData;
+                    console.log('Gastos cargados:', expenses.length);
+                }
+                
+                updateAllData();
+                populateOrderProductSelect();
+                
+            } catch (error) {
+                console.error('Error cargando datos desde Supabase:', error);
+                showToast('Error cargando datos desde Supabase', 'error');
             }
         }
 
@@ -1200,101 +1251,9 @@
             }
         }
 
-        // Cargar configuración de Supabase desde localStorage
-        function loadSupabaseConfig() {
-            const savedUrl = localStorage.getItem('supabaseUrl');
-            const savedKey = localStorage.getItem('supabaseKey');
-            
-            if (savedUrl && savedKey) {
-                document.getElementById('supabaseUrl').value = savedUrl;
-                document.getElementById('supabaseKey').value = savedKey;
-                initializeSupabase(savedUrl, savedKey);
-            } else {
-                updateSupabaseStatus(false);
-            }
-        }
-
-        // Conectar a Supabase desde la configuración
-        async function connectSupabase() {
-            const url = document.getElementById('supabaseUrl').value.trim();
-            const key = document.getElementById('supabaseKey').value.trim();
-            
-            if (!url || !key) {
-                showToast('Por favor completa la URL y Key de Supabase', 'warning');
-                return;
-            }
-            
-            const success = await initializeSupabase(url, key);
-            
-            if (success) {
-                // Guardar configuración en localStorage
-                localStorage.setItem('supabaseUrl', url);
-                localStorage.setItem('supabaseKey', key);
-            }
-        }
-
-        // Cargar datos desde Supabase
-        async function loadDataFromSupabase() {
-            if (!supabase) return;
-            
-            try {
-                // Cargar productos
-                const { data: productsData, error: productsError } = await supabase.from('products').select('*');
-                if (!productsError && productsData) {
-                    products = productsData;
-                }
-                
-                // Cargar pedidos
-                const { data: ordersData, error: ordersError } = await supabase.from('orders').select('*');
-                if (!ordersError && ordersData) {
-                    orders = ordersData;
-                }
-                
-                // Cargar gastos
-                const { data: expensesData, error: expensesError } = await supabase.from('expenses').select('*');
-                if (!expensesError && expensesData) {
-                    expenses = expensesData;
-                }
-                
-                updateAllData();
-                populateOrderProductSelect();
-                
-            } catch (error) {
-                console.error('Error cargando datos desde Supabase:', error);
-                showToast('Error cargando datos desde Supabase', 'error');
-            }
-        }
-
-        // Guardar datos en localStorage como fallback
-        function saveLocalData() {
-            try {
-                localStorage.setItem('products', JSON.stringify(products));
-                localStorage.setItem('orders', JSON.stringify(orders));
-                localStorage.setItem('expenses', JSON.stringify(expenses));
-            } catch (error) {
-                console.error('Error guardando en localStorage:', error);
-            }
-        }
-
-        // Cargar datos desde localStorage
-        function loadLocalData() {
-            try {
-                const savedProducts = localStorage.getItem('products');
-                const savedOrders = localStorage.getItem('orders');
-                const savedExpenses = localStorage.getItem('expenses');
-                
-                if (savedProducts) products = JSON.parse(savedProducts);
-                if (savedOrders) orders = JSON.parse(savedOrders);
-                if (savedExpenses) expenses = JSON.parse(savedExpenses);
-                
-                updateAllData();
-                populateOrderProductSelect();
-            } catch (error) {
-                console.error('Error cargando desde localStorage:', error);
-            }
-        }
-
+        // FUNCIONES DE NAVEGACIÓN
         function setupMenuNavigation() {
+            console.log('Configurando navegación...');
             const menuItems = document.querySelectorAll('.menu-item');
             menuItems.forEach(item => {
                 item.addEventListener('click', function(e) {
@@ -1308,6 +1267,7 @@
         }
 
         function showSection(sectionName) {
+            console.log('Mostrando sección:', sectionName);
             const sections = document.querySelectorAll('.section');
             sections.forEach(section => section.classList.remove('active'));
             const targetSection = document.getElementById(sectionName);
@@ -1333,9 +1293,44 @@
             updateOrdersTable();
             updateExpensesTable();
             updateReports();
-            saveLocalData(); // Guardar en localStorage siempre
+            saveLocalData();
         }
 
+        // FUNCIONES DE DATOS LOCALES
+        function saveLocalData() {
+            try {
+                const data = {
+                    products: products,
+                    orders: orders,
+                    expenses: expenses
+                };
+                localStorage.setItem('erpData', JSON.stringify(data));
+                console.log('Datos guardados en localStorage');
+            } catch (error) {
+                console.error('Error guardando en localStorage:', error);
+            }
+        }
+
+        function loadLocalData() {
+            try {
+                const savedData = localStorage.getItem('erpData');
+                if (savedData) {
+                    const data = JSON.parse(savedData);
+                    products = data.products || [];
+                    orders = data.orders || [];
+                    expenses = data.expenses || [];
+                    console.log('Datos cargados desde localStorage');
+                }
+            } catch (error) {
+                console.error('Error cargando desde localStorage:', error);
+                // Inicializar arrays vacíos si hay error
+                products = [];
+                orders = [];
+                expenses = [];
+            }
+        }
+
+        // FUNCIONES DE UTILIDAD
         function formatCurrency(amount) {
             return new Intl.NumberFormat('es-PY', {
                 style: 'currency',
@@ -1344,6 +1339,7 @@
             }).format(amount || 0).replace('PYG', '₲');
         }
 
+        // FUNCIONES DE DASHBOARD
         function updateDashboardPeriod() {
             const period = document.getElementById('dashboardPeriod').value;
             const customDateRange = document.getElementById('customDateRange');
@@ -1435,10 +1431,12 @@
             const netProfit = totalRevenue - totalCosts - totalExpenses;
             const avgMargin = totalRevenue > 0 ? ((netProfit / totalRevenue) * 100) : 0;
 
+            // Navbar stats (todos los datos)
             document.getElementById('totalOrders').textContent = orders.length;
             document.getElementById('totalProducts').textContent = totalProducts;
             document.getElementById('totalRevenue').textContent = formatCurrency(orders.reduce((sum, order) => sum + (order.total || 0), 0));
 
+            // Dashboard stats (datos filtrados)
             document.getElementById('dashProducts').textContent = totalProducts;
             document.getElementById('dashOrders').textContent = totalOrders;
             document.getElementById('dashRevenue').textContent = formatCurrency(totalRevenue);
@@ -1447,11 +1445,14 @@
             document.getElementById('dashMargin').textContent = avgMargin.toFixed(1) + '%';
         }
 
+        // FUNCIONES DE PRODUCTOS
         function openProductModal(productId = null) {
+            console.log('Abriendo modal de producto:', productId);
             const modal = document.getElementById('productModal');
             const title = document.getElementById('productModalTitle');
             const submitBtn = document.getElementById('productSubmitBtn');
             
+            // Limpiar formulario
             document.getElementById('productId').value = '';
             document.getElementById('productName').value = '';
             document.getElementById('productSupplier').value = '';
@@ -1462,10 +1463,10 @@
             document.getElementById('productPrice').value = '';
             
             if (productId) {
-                const product = products.find(p => p.id == productId); // Cambio: usar == en lugar de ===
+                const product = products.find(p => p.id == productId);
                 if (product) {
                     title.textContent = 'Editar Producto';
-                    submitBtn.textContent = 'Actualizar Producto';
+                    submitBtn.textContent = '💾 Actualizar Producto';
                     document.getElementById('productId').value = product.id;
                     document.getElementById('productName').value = product.name;
                     document.getElementById('productSupplier').value = product.supplier;
@@ -1477,13 +1478,15 @@
                 }
             } else {
                 title.textContent = 'Nuevo Producto';
-                submitBtn.textContent = 'Guardar Producto';
+                submitBtn.textContent = '💾 Guardar Producto';
             }
             modal.style.display = 'block';
         }
 
         async function saveProduct(event) {
             event.preventDefault();
+            console.log('Guardando producto...');
+            
             const productId = document.getElementById('productId').value;
             const isEditing = productId !== '';
             
@@ -1499,8 +1502,8 @@
 
             try {
                 if (isEditing) {
-                    if (supabase) {
-                        const { error } = await supabase.from('products').update(productData).eq('id', productId);
+                    if (supabaseClient) {
+                        const { error } = await supabaseClient.from('products').update(productData).eq('id', productId);
                         if (error) throw error;
                     }
                     const index = products.findIndex(p => p.id == productId);
@@ -1511,8 +1514,8 @@
                 } else {
                     const product = { ...productData, sales: 0 };
                     
-                    if (supabase) {
-                        const { data, error } = await supabase.from('products').insert([product]).select();
+                    if (supabaseClient) {
+                        const { data, error } = await supabaseClient.from('products').insert([product]).select();
                         if (error) throw error;
                         products.push(data[0]);
                     } else {
@@ -1522,6 +1525,7 @@
                     showToast('Producto agregado correctamente', 'success');
                 }
             } catch (error) {
+                console.error('Error guardando producto:', error);
                 showToast('Error guardando producto: ' + error.message, 'error');
             }
 
@@ -1531,21 +1535,40 @@
         }
 
         async function editStock(productId) {
-            const product = products.find(p => p.id == productId); // Cambio: usar == en lugar de ===
+            const product = products.find(p => p.id == productId);
             if (product) {
                 const newStock = prompt('Nuevo stock:', product.stock || 0);
                 if (newStock !== null && !isNaN(newStock)) {
                     try {
-                        if (supabase) {
-                            const { error } = await supabase.from('products').update({ stock: parseInt(newStock) }).eq('id', productId);
+                        if (supabaseClient) {
+                            const { error } = await supabaseClient.from('products').update({ stock: parseInt(newStock) }).eq('id', productId);
                             if (error) throw error;
                         }
                         product.stock = parseInt(newStock);
                         updateAllData();
                         showToast('Stock actualizado correctamente', 'success');
                     } catch (error) {
+                        console.error('Error actualizando stock:', error);
                         showToast('Error actualizando stock: ' + error.message, 'error');
                     }
+                }
+            }
+        }
+
+        async function deleteProduct(id) {
+            if (confirm('¿Estás seguro de eliminar este producto?')) {
+                try {
+                    if (supabaseClient) {
+                        const { error } = await supabaseClient.from('products').delete().eq('id', id);
+                        if (error) throw error;
+                    }
+                    products = products.filter(p => p.id != id);
+                    updateAllData();
+                    populateOrderProductSelect();
+                    showToast('Producto eliminado correctamente', 'success');
+                } catch (error) {
+                    console.error('Error eliminando producto:', error);
+                    showToast('Error eliminando producto: ' + error.message, 'error');
                 }
             }
         }
@@ -1560,7 +1583,7 @@
 
             tbody.innerHTML = products.map(product => {
                 const margin = product.cost > 0 ? (((product.price - product.cost) / product.cost) * 100) : 0;
-                const sales = orders.filter(order => order.productId == product.id).length; // Cambio: usar == en lugar de ===
+                const sales = orders.filter(order => order.productId == product.id).length;
                 const stock = product.stock || 0;
                 const minStock = product.minStock || 5;
                 const stockStatus = stock <= minStock ? 'style="color: #e74c3c; font-weight: bold;"' : '';
@@ -1583,24 +1606,10 @@
             }).join('');
         }
 
-        async function deleteProduct(id) {
-            if (confirm('¿Estás seguro de eliminar este producto?')) {
-                try {
-                    if (supabase) {
-                        const { error } = await supabase.from('products').delete().eq('id', id);
-                        if (error) throw error;
-                    }
-                    products = products.filter(p => p.id != id); // Cambio: usar != en lugar de !==
-                    updateAllData();
-                    populateOrderProductSelect();
-                    showToast('Producto eliminado correctamente', 'success');
-                } catch (error) {
-                    showToast('Error eliminando producto: ' + error.message, 'error');
-                }
-            }
-        }
-
+        // FUNCIONES DE PEDIDOS
         function openOrderModal(orderId = null) {
+            console.log('Abriendo modal de pedido:', orderId);
+            
             if (products.length === 0 && !orderId) {
                 showToast('Primero debes agregar productos antes de crear pedidos', 'warning');
                 return;
@@ -1610,6 +1619,7 @@
             const title = document.getElementById('orderModalTitle');
             const submitBtn = document.getElementById('orderSubmitBtn');
             
+            // Limpiar formulario
             document.getElementById('orderId').value = '';
             document.getElementById('orderCustomer').value = '';
             document.getElementById('orderSeller').value = '';
@@ -1620,10 +1630,10 @@
             document.getElementById('orderStatus').value = 'pending';
             
             if (orderId) {
-                const order = orders.find(o => o.id == orderId); // Cambio: usar == en lugar de ===
+                const order = orders.find(o => o.id == orderId);
                 if (order) {
                     title.textContent = 'Editar Pedido';
-                    submitBtn.textContent = 'Actualizar Pedido';
+                    submitBtn.textContent = '💾 Actualizar Pedido';
                     document.getElementById('orderId').value = order.id;
                     document.getElementById('orderCustomer').value = order.customer;
                     document.getElementById('orderSeller').value = order.seller || '';
@@ -1635,7 +1645,7 @@
                 }
             } else {
                 title.textContent = 'Nuevo Pedido';
-                submitBtn.textContent = 'Crear Pedido';
+                submitBtn.textContent = '💾 Crear Pedido';
             }
             modal.style.display = 'block';
         }
@@ -1663,11 +1673,13 @@
 
         async function saveOrder(event) {
             event.preventDefault();
+            console.log('Guardando pedido...');
+            
             const orderId = document.getElementById('orderId').value;
             const isEditing = orderId !== '';
             
             const productId = parseInt(document.getElementById('orderProduct').value);
-            const product = products.find(p => p.id == productId); // Cambio: usar == en lugar de ===
+            const product = products.find(p => p.id == productId);
             const quantity = parseInt(document.getElementById('orderQuantity').value) || 1;
             const total = parseFloat(document.getElementById('orderTotal').value) || 0;
             
@@ -1685,8 +1697,8 @@
 
             try {
                 if (isEditing) {
-                    if (supabase) {
-                        const { error } = await supabase.from('orders').update(orderData).eq('id', orderId);
+                    if (supabaseClient) {
+                        const { error } = await supabaseClient.from('orders').update(orderData).eq('id', orderId);
                         if (error) throw error;
                     }
                     const index = orders.findIndex(o => o.id == orderId);
@@ -1697,8 +1709,8 @@
                 } else {
                     const order = { ...orderData, date: new Date().toISOString() };
                     
-                    if (supabase) {
-                        const { data, error } = await supabase.from('orders').insert([order]).select();
+                    if (supabaseClient) {
+                        const { data, error } = await supabaseClient.from('orders').insert([order]).select();
                         if (error) throw error;
                         orders.push(data[0]);
                     } else {
@@ -1708,6 +1720,7 @@
                     showToast('Pedido creado correctamente', 'success');
                 }
             } catch (error) {
+                console.error('Error guardando pedido:', error);
                 showToast('Error guardando pedido: ' + error.message, 'error');
             }
 
@@ -1715,9 +1728,26 @@
             updateAllData();
         }
 
+        async function deleteOrder(id) {
+            if (confirm('¿Estás seguro de eliminar este pedido?')) {
+                try {
+                    if (supabaseClient) {
+                        const { error } = await supabaseClient.from('orders').delete().eq('id', id);
+                        if (error) throw error;
+                    }
+                    orders = orders.filter(o => o.id != id);
+                    updateAllData();
+                    showToast('Pedido eliminado correctamente', 'success');
+                } catch (error) {
+                    console.error('Error eliminando pedido:', error);
+                    showToast('Error eliminando pedido: ' + error.message, 'error');
+                }
+            }
+        }
+
         function openStatusModal(orderId) {
             currentEditingOrderId = orderId;
-            const order = orders.find(o => o.id == orderId); // Cambio: usar == en lugar de ===
+            const order = orders.find(o => o.id == orderId);
             if (order) {
                 document.getElementById('newOrderStatus').value = order.status;
                 document.getElementById('statusModal').style.display = 'block';
@@ -1727,11 +1757,11 @@
         async function updateOrderStatus() {
             if (currentEditingOrderId) {
                 const newStatus = document.getElementById('newOrderStatus').value;
-                const order = orders.find(o => o.id == currentEditingOrderId); // Cambio: usar == en lugar de ===
+                const order = orders.find(o => o.id == currentEditingOrderId);
                 if (order) {
                     try {
-                        if (supabase) {
-                            const { error } = await supabase.from('orders').update({ status: newStatus }).eq('id', currentEditingOrderId);
+                        if (supabaseClient) {
+                            const { error } = await supabaseClient.from('orders').update({ status: newStatus }).eq('id', currentEditingOrderId);
                             if (error) throw error;
                         }
                         order.status = newStatus;
@@ -1739,7 +1769,29 @@
                         closeModal('statusModal');
                         showToast('Estado actualizado correctamente', 'success');
                     } catch (error) {
+                        console.error('Error actualizando estado:', error);
                         showToast('Error actualizando estado: ' + error.message, 'error');
+                    }
+                }
+            }
+        }
+
+        async function editSeller(orderId) {
+            const order = orders.find(o => o.id == orderId);
+            if (order) {
+                const newSeller = prompt('Nuevo vendedor:', order.seller || '');
+                if (newSeller !== null) {
+                    try {
+                        if (supabaseClient) {
+                            const { error } = await supabaseClient.from('orders').update({ seller: newSeller.trim() }).eq('id', orderId);
+                            if (error) throw error;
+                        }
+                        order.seller = newSeller.trim();
+                        updateAllData();
+                        showToast('Vendedor actualizado correctamente', 'success');
+                    } catch (error) {
+                        console.error('Error actualizando vendedor:', error);
+                        showToast('Error actualizando vendedor: ' + error.message, 'error');
                     }
                 }
             }
@@ -1799,47 +1851,14 @@
             return labels[status] || status;
         }
 
-        async function deleteOrder(id) {
-            if (confirm('¿Estás seguro de eliminar este pedido?')) {
-                try {
-                    if (supabase) {
-                        const { error } = await supabase.from('orders').delete().eq('id', id);
-                        if (error) throw error;
-                    }
-                    orders = orders.filter(o => o.id != id); // Cambio: usar != en lugar de !==
-                    updateAllData();
-                    showToast('Pedido eliminado correctamente', 'success');
-                } catch (error) {
-                    showToast('Error eliminando pedido: ' + error.message, 'error');
-                }
-            }
-        }
-
-        async function editSeller(orderId) {
-            const order = orders.find(o => o.id == orderId); // Cambio: usar == en lugar de ===
-            if (order) {
-                const newSeller = prompt('Nuevo vendedor:', order.seller || '');
-                if (newSeller !== null) {
-                    try {
-                        if (supabase) {
-                            const { error } = await supabase.from('orders').update({ seller: newSeller.trim() }).eq('id', orderId);
-                            if (error) throw error;
-                        }
-                        order.seller = newSeller.trim();
-                        updateAllData();
-                        showToast('Vendedor actualizado correctamente', 'success');
-                    } catch (error) {
-                        showToast('Error actualizando vendedor: ' + error.message, 'error');
-                    }
-                }
-            }
-        }
-
+        // FUNCIONES DE GASTOS
         function openExpenseModal(expenseId = null) {
+            console.log('Abriendo modal de gasto:', expenseId);
             const modal = document.getElementById('expenseModal');
             const title = document.getElementById('expenseModalTitle');
             const submitBtn = document.getElementById('expenseSubmitBtn');
             
+            // Limpiar formulario
             document.getElementById('expenseId').value = '';
             document.getElementById('expenseDescription').value = '';
             document.getElementById('expenseCategory').value = 'marketing';
@@ -1848,10 +1867,10 @@
             document.getElementById('expenseDate').value = new Date().toISOString().split('T')[0];
             
             if (expenseId) {
-                const expense = expenses.find(e => e.id == expenseId); // Cambio: usar == en lugar de ===
+                const expense = expenses.find(e => e.id == expenseId);
                 if (expense) {
                     title.textContent = 'Editar Gasto';
-                    submitBtn.textContent = 'Actualizar Gasto';
+                    submitBtn.textContent = '💸 Actualizar Gasto';
                     document.getElementById('expenseId').value = expense.id;
                     document.getElementById('expenseDescription').value = expense.description;
                     document.getElementById('expenseCategory').value = expense.category;
@@ -1861,13 +1880,15 @@
                 }
             } else {
                 title.textContent = 'Nuevo Gasto';
-                submitBtn.textContent = 'Registrar Gasto';
+                submitBtn.textContent = '💸 Registrar Gasto';
             }
             modal.style.display = 'block';
         }
 
         async function saveExpense(event) {
             event.preventDefault();
+            console.log('Guardando gasto...');
+            
             const expenseId = document.getElementById('expenseId').value;
             const isEditing = expenseId !== '';
             
@@ -1881,8 +1902,8 @@
 
             try {
                 if (isEditing) {
-                    if (supabase) {
-                        const { error } = await supabase.from('expenses').update(expenseData).eq('id', expenseId);
+                    if (supabaseClient) {
+                        const { error } = await supabaseClient.from('expenses').update(expenseData).eq('id', expenseId);
                         if (error) throw error;
                     }
                     const index = expenses.findIndex(e => e.id == expenseId);
@@ -1893,8 +1914,8 @@
                 } else {
                     const expense = expenseData;
                     
-                    if (supabase) {
-                        const { data, error } = await supabase.from('expenses').insert([expense]).select();
+                    if (supabaseClient) {
+                        const { data, error } = await supabaseClient.from('expenses').insert([expense]).select();
                         if (error) throw error;
                         expenses.push(data[0]);
                     } else {
@@ -1904,6 +1925,7 @@
                     showToast('Gasto registrado correctamente', 'success');
                 }
             } catch (error) {
+                console.error('Error guardando gasto:', error);
                 showToast('Error guardando gasto: ' + error.message, 'error');
             }
 
@@ -1911,16 +1933,37 @@
             updateAllData();
         }
 
+        async function deleteExpense(id) {
+            if (confirm('¿Estás seguro de eliminar este gasto?')) {
+                try {
+                    if (supabaseClient) {
+                        const { error } = await supabaseClient.from('expenses').delete().eq('id', id);
+                        if (error) throw error;
+                    }
+                    expenses = expenses.filter(e => e.id != id);
+                    updateAllData();
+                    showToast('Gasto eliminado correctamente', 'success');
+                } catch (error) {
+                    console.error('Error eliminando gasto:', error);
+                    showToast('Error eliminando gasto: ' + error.message, 'error');
+                }
+            }
+        }
+
         function updateExpensesTable() {
             const tbody = document.getElementById('expensesTable');
             
-            const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
-            const fixedExpenses = expenses.filter(e => e.type === 'fijo').reduce((sum, e) => sum + e.amount, 0);
-            const variableExpenses = expenses.filter(e => e.type === 'variable').reduce((sum, e) => sum + e.amount, 0);
+            const totalExpenses = expenses.reduce((sum, expense) => sum + (expense.amount || 0), 0);
+            const fixedExpenses = expenses.filter(e => e.type === 'fijo').reduce((sum, e) => sum + (e.amount || 0), 0);
+            const variableExpenses = expenses.filter(e => e.type === 'variable').reduce((sum, e) => sum + (e.amount || 0), 0);
             
-            document.getElementById('monthlyExpenses').textContent = formatCurrency(totalExpenses);
-            document.getElementById('fixedExpenses').textContent = formatCurrency(fixedExpenses);
-            document.getElementById('variableExpenses').textContent = formatCurrency(variableExpenses);
+            const monthlyExpensesEl = document.getElementById('monthlyExpenses');
+            const fixedExpensesEl = document.getElementById('fixedExpenses');
+            const variableExpensesEl = document.getElementById('variableExpenses');
+            
+            if (monthlyExpensesEl) monthlyExpensesEl.textContent = formatCurrency(totalExpenses);
+            if (fixedExpensesEl) fixedExpensesEl.textContent = formatCurrency(fixedExpenses);
+            if (variableExpensesEl) variableExpensesEl.textContent = formatCurrency(variableExpenses);
             
             if (expenses.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 2rem; color: #657786;">No hay gastos registrados. Registra tu primer gasto.</td></tr>';
@@ -1934,31 +1977,17 @@
                     <td>${expense.category}</td>
                     <td><span class="status-badge ${expense.type === 'fijo' ? 'status-pending' : 'status-completed'}">${expense.type}</span></td>
                     <td>${formatCurrency(expense.amount)}</td>
-                    <td>
-                        <button class="btn btn-primary btn-sm" onclick="openExpenseModal(${expense.id})">Editar</button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteExpense(${expense.id})">Eliminar</button>
+                    <td class="actions">
+                        <button class="btn btn-primary btn-sm" onclick="openExpenseModal(${expense.id})">✏️</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteExpense(${expense.id})">🗑️</button>
                     </td>
                 </tr>
             `).join('');
         }
 
-        async function deleteExpense(id) {
-            if (confirm('¿Estás seguro de eliminar este gasto?')) {
-                try {
-                    if (supabase) {
-                        const { error } = await supabase.from('expenses').delete().eq('id', id);
-                        if (error) throw error;
-                    }
-                    expenses = expenses.filter(e => e.id != id); // Cambio: usar != en lugar de !==
-                    updateAllData();
-                    showToast('Gasto eliminado correctamente', 'success');
-                } catch (error) {
-                    showToast('Error eliminando gasto: ' + error.message, 'error');
-                }
-            }
-        }
-
+        // FUNCIONES DE CALCULADORA
         function initializeCalculator() {
+            console.log('Inicializando calculadora...');
             calculatorItems = [
                 { id: 1, label: 'Costo del Producto', type: 'currency', value: 0 },
                 { id: 2, label: 'Margen Deseado', type: 'percentage', value: 30 },
@@ -2001,12 +2030,12 @@
         }
 
         function updateCalculatorLabel(id, newLabel) {
-            const item = calculatorItems.find(i => i.id == id); // Cambio: usar == en lugar de ===
+            const item = calculatorItems.find(i => i.id == id);
             if (item) item.label = newLabel;
         }
 
         function updateCalculatorType(id, newType) {
-            const item = calculatorItems.find(i => i.id == id); // Cambio: usar == en lugar de ===
+            const item = calculatorItems.find(i => i.id == id);
             if (item) {
                 item.type = newType;
                 calculatePrice();
@@ -2014,13 +2043,13 @@
         }
 
         function updateCalculatorValue(id, newValue) {
-            const item = calculatorItems.find(i => i.id == id); // Cambio: usar == en lugar de ===
+            const item = calculatorItems.find(i => i.id == id);
             if (item) item.value = parseFloat(newValue) || 0;
         }
 
         function removeCalculatorItem(id) {
             if (calculatorItems.length > 2) {
-                calculatorItems = calculatorItems.filter(i => i.id != id); // Cambio: usar != en lugar de !==
+                calculatorItems = calculatorItems.filter(i => i.id != id);
                 renderCalculatorItems();
             } else {
                 showToast('Debe haber al menos 2 campos en la calculadora', 'warning');
@@ -2075,6 +2104,7 @@
             showToast('Plantilla de calculadora guardada', 'success');
         }
 
+        // FUNCIONES DE REPORTES
         function updateReports() {
             const totalRevenue = orders.reduce((sum, order) => sum + (order.total || 0), 0);
             const totalExpenses = expenses.reduce((sum, expense) => sum + (expense.amount || 0), 0);
@@ -2092,21 +2122,16 @@
             showToast('Configuración guardada', 'success');
         }
 
+        // FUNCIONES DE MODAL
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
             currentEditingOrderId = null;
         }
 
-        window.onclick = function(event) {
-            const modals = document.querySelectorAll('.modal');
-            modals.forEach(modal => {
-                if (event.target === modal) {
-                    modal.style.display = 'none';
-                }
-            });
-        }
-
+        // DATOS DE EJEMPLO
         function generateSampleData() {
+            console.log('Generando datos de ejemplo...');
+            
             // Limpiar datos existentes
             products = [];
             orders = [];
@@ -2117,3 +2142,15 @@
                 { id: Date.now() + 3, name: 'Lámpara LED', supplier: 'HomeDecor', category: 'hogar', stock: 15, minStock: 5, cost: 35000, price: 75000, sales: 0 },
                 { id: Date.now() + 4, name: 'Mochila Táctica', supplier: 'OutdoorGear', category: 'deportes', stock: 8, minStock: 5, cost: 55000, price: 120000, sales: 0 },
                 { id: Date.now() + 5, name: 'Crema Facial Anti-edad', supplier: 'BeautyLab', category: 'belleza', stock: 3, minStock: 5, cost: 30000, price: 85000, sales: 0 }
+            ];
+
+            products.push(...sampleProducts);
+
+            const sellers = ['Juan Pérez', 'María García', 'Carlos López', 'Ana Rodríguez', 'Luis Martínez'];
+
+            const sampleOrders = [
+                { id: Date.now() + 10, customer: 'María González', seller: sellers[0], channel: 'facebook', productId: sampleProducts[0].id, productName: sampleProducts[0].name, quantity: 1, total: 89000, cost: 45000, status: 'delivered', date: new Date(Date.now() - 86400000 * 2).toISOString() },
+                { id: Date.now() + 11, customer: 'Carlos Rodríguez', seller: sellers[1], channel: 'instagram', productId: sampleProducts[1].id, productName: sampleProducts[1].name, quantity: 2, total: 110000, cost: 50000, status: 'shipped', date: new Date(Date.now() - 86400000 * 1).toISOString() },
+                { id: Date.now() + 12, customer: 'Ana López', seller: sellers[2], channel: 'whatsapp', productId: sampleProducts[2].id, productName: sampleProducts[2].name, quantity: 1, total: 75000, cost: 35000, status: 'confirmed', date: new Date().toISOString() },
+                { id: Date.now() + 13, customer: 'Pedro Martínez', seller: sellers[3], channel: 'marketplace', productId: sampleProducts[3].id, productName: sampleProducts[3].name, quantity: 1, total: 120000, cost: 55000, status: 'pending', date: new Date().toISOString() },
+                { id: Date.now() + 14, customer: 'Lucía Fernández', seller: sellers[4], channel: 'web', productId: sampleProducts[4].id, productName: sampleProducts[4].name, quantity: 1, total: 85000, cost: 30000, status: 'delivered', date: new Date(Date.now() - 86400000 * 3).toISOString() }ISOString() }
