@@ -698,6 +698,39 @@
                             </div>
                         </div>
 
+                        <div class="filter-section">
+                            <div class="filter-row">
+                                <div class="form-group">
+                                    <label>Buscar Producto</label>
+                                    <input type="text" class="form-control" id="productSearch" placeholder="Buscar por nombre..." oninput="filterProducts()">
+                                </div>
+                                <div class="form-group">
+                                    <label>Filtrar por Categoría</label>
+                                    <select class="form-control" id="categoryFilter" onchange="filterProducts()">
+                                        <option value="">Todas las categorías</option>
+                                        <option value="electronica">Electrónica</option>
+                                        <option value="ropa">Ropa</option>
+                                        <option value="hogar">Hogar</option>
+                                        <option value="deportes">Deportes</option>
+                                        <option value="belleza">Belleza</option>
+                                        <option value="otros">Otros</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Filtrar por Stock</label>
+                                    <select class="form-control" id="stockFilter" onchange="filterProducts()">
+                                        <option value="">Todos</option>
+                                        <option value="available">Con stock</option>
+                                        <option value="low">Stock bajo</option>
+                                        <option value="out">Sin stock</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-secondary" onclick="clearFilters()">🧹 Limpiar Filtros</button>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="table-container">
                             <table class="table">
                                 <thead>
@@ -1050,6 +1083,7 @@
         let expenses = [];
         let isFirebaseConnected = false;
         let currentEditingOrderId = null;
+        let filteredProducts = [];
 
         // =================== INICIALIZACIÓN ===================
         document.addEventListener('DOMContentLoaded', function() {
@@ -1338,7 +1372,6 @@
             
             const productData = {
                 name: document.getElementById('productName').value,
-                image: document.getElementById('productImage').value || '',
                 supplier: document.getElementById('productSupplier').value,
                 category: document.getElementById('productCategory').value,
                 stock: parseInt(document.getElementById('productStock').value) || 0,
@@ -1779,10 +1812,10 @@
         // =================== FUNCIONES DATOS EJEMPLO ===================
         async function generateSampleData() {
             const sampleProducts = [
-                { name: 'Auriculares Bluetooth', image: 'https://m.media-amazon.com/images/I/61CGHv6kmWL.jpg', supplier: 'TechSupplier', category: 'electronica', stock: 25, minStock: 5, cost: 45000, price: 89000 },
-                { name: 'Camiseta Deportiva', image: 'https://contents.mediadecathlon.com/p2081461/k$12b9b8eb1fd6afbe22e1d63ab82d2ad3/sq/camiseta-manga-corta-de-running-hombre-run-dry-azul.jpg', supplier: 'SportWear Co', category: 'ropa', stock: 50, minStock: 10, cost: 25000, price: 55000 },
-                { name: 'Lámpara LED', image: 'https://m.media-amazon.com/images/I/61Fn0voJKdL._AC_SL1001_.jpg', supplier: 'HomeDecor', category: 'hogar', stock: 15, minStock: 5, cost: 35000, price: 75000 },
-                { name: 'Mochila Táctica', image: 'https://m.media-amazon.com/images/I/81V2FvwLCvL._AC_SL1500_.jpg', supplier: 'OutdoorGear', category: 'deportes', stock: 8, minStock: 5, cost: 55000, price: 120000 }
+                { name: 'Auriculares Bluetooth', supplier: 'TechSupplier', category: 'electronica', stock: 25, minStock: 5, cost: 45000, price: 89000 },
+                { name: 'Camiseta Deportiva', supplier: 'SportWear Co', category: 'ropa', stock: 50, minStock: 10, cost: 25000, price: 55000 },
+                { name: 'Lámpara LED', supplier: 'HomeDecor', category: 'hogar', stock: 15, minStock: 5, cost: 35000, price: 75000 },
+                { name: 'Mochila Táctica', supplier: 'OutdoorGear', category: 'deportes', stock: 8, minStock: 5, cost: 55000, price: 120000 }
             ];
 
             const sampleOrders = [
@@ -1820,26 +1853,6 @@
             } catch (error) {
                 showToast('Error cargando datos de ejemplo', 'error');
             }
-        }
-
-        // =================== FUNCIONES DE IMAGEN ===================
-        function showImageModal(imageSrc, altText) {
-            const modal = document.getElementById('imageModal');
-            const img = document.getElementById('expandedImage');
-            img.src = imageSrc;
-            img.alt = altText;
-            modal.style.display = 'block';
-            
-            // Prevent scrolling
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeImageModal() {
-            const modal = document.getElementById('imageModal');
-            modal.style.display = 'none';
-            
-            // Restore scrolling
-            document.body.style.overflow = 'auto';
         }
 
         // =================== FUNCIONES UTILIDADES ===================
