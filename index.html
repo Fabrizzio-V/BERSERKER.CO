@@ -1549,23 +1549,44 @@
             
             const productId = document.getElementById('orderProduct').value;
             const product = products.find(p => p.id === productId);
-            const quantity = parseInt(document.getElementById('orderQuantity').value) || 1;
+            const newQuantity = parseInt(document.getElementById('orderQuantity').value) || 1;
             const total = parseFloat(document.getElementById('orderTotal').value) || 0;
+            
+            if (!product) {
+                showToast('Producto no encontrado', 'error');
+                return;
+            }
             
             const orderData = {
                 customer: document.getElementById('orderCustomer').value,
                 channel: document.getElementById('orderChannel').value,
                 productId: productId,
-                productName: product ? product.name : 'Producto eliminado',
-                quantity: quantity,
+                productName: product.name,
+                quantity: newQuantity,
                 total: total,
-                cost: product ? (product.cost * quantity) : 0,
+                cost: product.cost * newQuantity,
                 status: document.getElementById('orderStatus').value,
                 date: isEditing ? orders.find(o => o.id === orderId)?.date : new Date().toISOString()
             };
 
             try {
                 if (isEditing) {
+                    // Al editar, primero devolver el stock del pedido anterior
+                    const oldOrder = orders.find(o => o.id === orderId);
+                    if (oldOrder && oldOrder.productId === productId) {
+                        // Si es el mismo producto, calcular la diferencia
+                        const stockDifference = oldOrder.quantity - newQuantity;
+                        product.stock = (product.stock || 0) + stockDifference;
+                    } else if (oldOrder) {
+                        // Si cambió de producto, devolver stock completo al producto anterior
+                        const oldProduct = products.find(p => p.id === oldOrder.productId);
+                        if (oldProduct) {
+                            oldProduct.stock = (oldProduct.stock || 0) + oldOrder.quantity;
+                        }
+                        // Y reducir stock del nuevo producto
+                        product.stock = (product.stock || 0) - newQuantity;
+                    }
+                    
                     const index = orders.findIndex(o => o.id === orderId);
                     if (index !== -1) {
                         orders[index] = { ...orders[index], ...orderData };
@@ -1575,6 +1596,15 @@
                         showToast('Pedido actualizado correctamente', 'success');
                     }
                 } else {
+                    // Verificar stock disponible
+                    if (product.stock < newQuantity) {
+                        showToast(`Stock insuficiente. Disponible: ${product.stock}`, 'warning');
+                        return;
+                    }
+                    
+                    // Reducir stock
+                    product.stock = (product.stock || 0) - newQuantity;
+                    
                     let newId;
                     if (isFirebaseConnected) {
                         newId = await saveToFirebase('orders', orderData);
@@ -1585,6 +1615,15 @@
                     const newOrder = { id: newId, ...orderData };
                     orders.push(newOrder);
                     showToast('Pedido creado correctamente', 'success');
+                }
+                
+                // Actualizar producto en Firebase
+                if (isFirebaseConnected) {
+                    try {
+                        await saveToFirebase('products', product, product.id);
+                    } catch (error) {
+                        console.error('Error actualizando stock en Firebase:', error);
+                    }
                 }
                 
                 saveToLocalStorage();
@@ -1651,13 +1690,27 @@
         async function deleteOrder(id) {
             if (confirm('¿Estás seguro de eliminar este pedido?')) {
                 try {
+                    const orderToDelete = orders.find(o => o.id === id);
+                    if (orderToDelete) {
+                        // Devolver stock al producto
+                        const product = products.find(p => p.id === orderToDelete.productId);
+                        if (product) {
+                            product.stock = (product.stock || 0) + orderToDelete.quantity;
+                            
+                            // Actualizar producto en Firebase
+                            if (isFirebaseConnected) {
+                                await saveToFirebase('products', product, product.id);
+                            }
+                        }
+                    }
+                    
                     orders = orders.filter(o => o.id !== id);
                     if (isFirebaseConnected) {
                         await deleteFromFirebase('orders', id);
                     }
                     saveToLocalStorage();
                     updateAllDisplays();
-                    showToast('Pedido eliminado correctamente', 'success');
+                    showToast('Pedido eliminado y stock restaurado', 'success');
                 } catch (error) {
                     showToast('Error al eliminar pedido', 'error');
                 }
