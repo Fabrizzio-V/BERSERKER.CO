@@ -1004,6 +1004,25 @@
         </div>
     </div>
 
+    <!-- Modal Cambiar Estado -->
+    <div id="statusModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('statusModal')">&times;</span>
+            <h2>Cambiar Estado del Pedido</h2>
+            <div class="form-group">
+                <label>Nuevo Estado</label>
+                <select class="form-control" id="newOrderStatus">
+                    <option value="pending">Pendiente</option>
+                    <option value="confirmed">Confirmado</option>
+                    <option value="shipped">Enviado</option>
+                    <option value="delivered">Entregado</option>
+                    <option value="cancelled">Cancelado</option>
+                </select>
+            </div>
+            <button class="btn btn-primary" onclick="updateOrderStatus()">Actualizar Estado</button>
+        </div>
+    </div>
+
     <script>
         // =================== CONFIGURACIÓN FIREBASE ===================
         const firebaseConfig = {
@@ -1022,6 +1041,7 @@
         let orders = [];
         let expenses = [];
         let isFirebaseConnected = false;
+        let currentEditingOrderId = null;
 
         // =================== INICIALIZACIÓN ===================
         document.addEventListener('DOMContentLoaded', function() {
@@ -1397,6 +1417,7 @@
             }
             
             const modal = document.getElementById('orderModal');
+            const title = document.querySelector('#orderModal h2');
             
             // Limpiar formulario
             document.getElementById('orderId').value = '';
@@ -1407,7 +1428,56 @@
             document.getElementById('orderTotal').value = '';
             document.getElementById('orderStatus').value = 'pending';
             
+            if (orderId) {
+                const order = orders.find(o => o.id === orderId);
+                if (order) {
+                    title.textContent = 'Editar Pedido';
+                    document.getElementById('orderId').value = order.id;
+                    document.getElementById('orderCustomer').value = order.customer;
+                    document.getElementById('orderChannel').value = order.channel;
+                    document.getElementById('orderProduct').value = order.productId;
+                    document.getElementById('orderQuantity').value = order.quantity;
+                    document.getElementById('orderTotal').value = order.total;
+                    document.getElementById('orderStatus').value = order.status;
+                }
+            } else {
+                title.textContent = 'Nuevo Pedido';
+            }
+            
             modal.style.display = 'block';
+        }
+
+        function openStatusModal(orderId) {
+            currentEditingOrderId = orderId;
+            const order = orders.find(o => o.id === orderId);
+            if (order) {
+                document.getElementById('newOrderStatus').value = order.status;
+                document.getElementById('statusModal').style.display = 'block';
+            }
+        }
+
+        async function updateOrderStatus() {
+            if (currentEditingOrderId) {
+                const newStatus = document.getElementById('newOrderStatus').value;
+                const orderIndex = orders.findIndex(o => o.id === currentEditingOrderId);
+                if (orderIndex !== -1) {
+                    orders[orderIndex].status = newStatus;
+                    
+                    if (isFirebaseConnected) {
+                        try {
+                            await saveToFirebase('orders', orders[orderIndex], currentEditingOrderId);
+                        } catch (error) {
+                            console.error('Error actualizando estado:', error);
+                        }
+                    }
+                    
+                    saveToLocalStorage();
+                    updateAllDisplays();
+                    closeModal('statusModal');
+                    showToast('Estado actualizado correctamente', 'success');
+                }
+                currentEditingOrderId = null;
+            }
         }
 
         function updateOrderPrice() {
@@ -1424,6 +1494,8 @@
 
         async function saveOrder(event) {
             event.preventDefault();
+            const orderId = document.getElementById('orderId').value;
+            const isEditing = orderId !== '';
             
             const productId = document.getElementById('orderProduct').value;
             const product = products.find(p => p.id === productId);
@@ -1439,27 +1511,38 @@
                 total: total,
                 cost: product ? (product.cost * quantity) : 0,
                 status: document.getElementById('orderStatus').value,
-                date: new Date().toISOString()
+                date: isEditing ? orders.find(o => o.id === orderId)?.date : new Date().toISOString()
             };
 
             try {
-                let newId;
-                if (isFirebaseConnected) {
-                    newId = await saveToFirebase('orders', orderData);
+                if (isEditing) {
+                    const index = orders.findIndex(o => o.id === orderId);
+                    if (index !== -1) {
+                        orders[index] = { ...orders[index], ...orderData };
+                        if (isFirebaseConnected) {
+                            await saveToFirebase('orders', orders[index], orderId);
+                        }
+                        showToast('Pedido actualizado correctamente', 'success');
+                    }
                 } else {
-                    newId = Date.now().toString();
+                    let newId;
+                    if (isFirebaseConnected) {
+                        newId = await saveToFirebase('orders', orderData);
+                    } else {
+                        newId = Date.now().toString();
+                    }
+                    
+                    const newOrder = { id: newId, ...orderData };
+                    orders.push(newOrder);
+                    showToast('Pedido creado correctamente', 'success');
                 }
-                
-                const newOrder = { id: newId, ...orderData };
-                orders.push(newOrder);
                 
                 saveToLocalStorage();
                 closeModal('orderModal');
                 updateAllDisplays();
-                showToast('Pedido creado correctamente', 'success');
                 
             } catch (error) {
-                showToast('Error al crear pedido', 'error');
+                showToast('Error al guardar pedido', 'error');
             }
         }
 
@@ -1482,10 +1565,11 @@
                         <td>${order.channel}</td>
                         <td title="${order.productName}">${order.productName}</td>
                         <td>${formatCurrency(order.total)}</td>
-                        <td><span class="status-badge ${statusClass}">${getStatusLabel(order.status)}</span></td>
+                        <td><span class="status-badge ${statusClass}" onclick="openStatusModal('${order.id}')" title="Click para cambiar estado">${getStatusLabel(order.status)}</span></td>
                         <td>${new Date(order.date).toLocaleDateString()}</td>
                         <td class="actions">
-                            <button class="btn btn-danger btn-sm" onclick="deleteOrder('${order.id}')">🗑️</button>
+                            <button class="btn btn-primary btn-sm" onclick="openOrderModal('${order.id}')" title="Editar pedido">✏️</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteOrder('${order.id}')" title="Eliminar pedido">🗑️</button>
                         </td>
                     </tr>
                 `;
@@ -1533,6 +1617,7 @@
         // =================== FUNCIONES GASTOS ===================
         function openExpenseModal(expenseId = null) {
             const modal = document.getElementById('expenseModal');
+            const title = document.querySelector('#expenseModal h2');
             
             // Limpiar formulario
             document.getElementById('expenseId').value = '';
@@ -1541,11 +1626,27 @@
             document.getElementById('expenseAmount').value = '';
             document.getElementById('expenseDate').value = new Date().toISOString().split('T')[0];
             
+            if (expenseId) {
+                const expense = expenses.find(e => e.id === expenseId);
+                if (expense) {
+                    title.textContent = 'Editar Gasto';
+                    document.getElementById('expenseId').value = expense.id;
+                    document.getElementById('expenseDescription').value = expense.description;
+                    document.getElementById('expenseCategory').value = expense.category;
+                    document.getElementById('expenseAmount').value = expense.amount;
+                    document.getElementById('expenseDate').value = expense.date;
+                }
+            } else {
+                title.textContent = 'Nuevo Gasto';
+            }
+            
             modal.style.display = 'block';
         }
 
         async function saveExpense(event) {
             event.preventDefault();
+            const expenseId = document.getElementById('expenseId').value;
+            const isEditing = expenseId !== '';
             
             const expenseData = {
                 description: document.getElementById('expenseDescription').value,
@@ -1556,23 +1657,34 @@
             };
 
             try {
-                let newId;
-                if (isFirebaseConnected) {
-                    newId = await saveToFirebase('expenses', expenseData);
+                if (isEditing) {
+                    const index = expenses.findIndex(e => e.id === expenseId);
+                    if (index !== -1) {
+                        expenses[index] = { ...expenses[index], ...expenseData };
+                        if (isFirebaseConnected) {
+                            await saveToFirebase('expenses', expenses[index], expenseId);
+                        }
+                        showToast('Gasto actualizado correctamente', 'success');
+                    }
                 } else {
-                    newId = Date.now().toString();
+                    let newId;
+                    if (isFirebaseConnected) {
+                        newId = await saveToFirebase('expenses', expenseData);
+                    } else {
+                        newId = Date.now().toString();
+                    }
+                    
+                    const newExpense = { id: newId, ...expenseData };
+                    expenses.push(newExpense);
+                    showToast('Gasto registrado correctamente', 'success');
                 }
-                
-                const newExpense = { id: newId, ...expenseData };
-                expenses.push(newExpense);
                 
                 saveToLocalStorage();
                 closeModal('expenseModal');
                 updateAllDisplays();
-                showToast('Gasto registrado correctamente', 'success');
                 
             } catch (error) {
-                showToast('Error al registrar gasto', 'error');
+                showToast('Error al procesar gasto', 'error');
             }
         }
 
@@ -1590,8 +1702,9 @@
                     <td>${expense.description}</td>
                     <td>${expense.category}</td>
                     <td>${formatCurrency(expense.amount)}</td>
-                    <td>
-                        <button class="btn btn-danger btn-sm" onclick="deleteExpense('${expense.id}')">🗑️</button>
+                    <td class="actions">
+                        <button class="btn btn-primary btn-sm" onclick="openExpenseModal('${expense.id}')" title="Editar gasto">✏️</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteExpense('${expense.id}')" title="Eliminar gasto">🗑️</button>
                     </td>
                 </tr>
             `).join('');
