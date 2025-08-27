@@ -702,7 +702,6 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>Imagen</th>
                                         <th>Producto</th>
                                         <th>Proveedor</th>
                                         <th>Stock</th>
@@ -715,7 +714,7 @@
                                 </thead>
                                 <tbody id="productsTable">
                                     <tr>
-                                        <td colspan="9" style="text-align: center; padding: 2rem; color: #657786;">
+                                        <td colspan="8" style="text-align: center; padding: 2rem; color: #657786;">
                                             No hay productos registrados. Agrega tu primer producto.
                                         </td>
                                     </tr>
@@ -882,14 +881,6 @@
                     <label>Nombre del Producto</label>
                     <input type="text" class="form-control" id="productName" required>
                 </div>
-                <div class="form-group">
-                    <label>URL de la Imagen (opcional)</label>
-                    <input type="url" class="form-control" id="productImage" placeholder="https://ejemplo.com/imagen.jpg" oninput="previewProductImage()">
-                    <small style="color: #657786; font-size: 0.85rem;">Pega aquí la URL de la imagen del producto</small>
-                    <div id="imagePreview" style="margin-top: 10px; text-align: center; display: none;">
-                        <img id="previewImg" src="" alt="Vista previa" style="max-width: 200px; max-height: 200px; border-radius: 8px; border: 2px solid #e1e8ed;">
-                    </div>
-                </div>
                 <div class="form-row">
                     <div class="form-group">
                         <label>Proveedor</label>
@@ -1038,11 +1029,6 @@
             </div>
             <button class="btn btn-primary" onclick="updateOrderStatus()">Actualizar Estado</button>
         </div>
-    </div>
-
-    <!-- Modal de Imagen Ampliada -->
-    <div id="imageModal" class="image-modal" onclick="closeImageModal()">
-        <img id="expandedImage" src="" alt="Producto">
     </div>
 
     <script>
@@ -1319,7 +1305,6 @@
             // Limpiar formulario
             document.getElementById('productId').value = '';
             document.getElementById('productName').value = '';
-            document.getElementById('productImage').value = '';
             document.getElementById('productSupplier').value = '';
             document.getElementById('productCategory').value = 'electronica';
             document.getElementById('productStock').value = '0';
@@ -1327,60 +1312,23 @@
             document.getElementById('productCost').value = '';
             document.getElementById('productPrice').value = '';
             
-            // Ocultar preview
-            document.getElementById('imagePreview').style.display = 'none';
-            
             if (productId) {
                 const product = products.find(p => p.id === productId);
                 if (product) {
                     title.textContent = 'Editar Producto';
                     document.getElementById('productId').value = product.id;
                     document.getElementById('productName').value = product.name;
-                    document.getElementById('productImage').value = product.image || '';
                     document.getElementById('productSupplier').value = product.supplier;
                     document.getElementById('productCategory').value = product.category;
                     document.getElementById('productStock').value = product.stock || 0;
                     document.getElementById('productMinStock').value = product.minStock || 5;
                     document.getElementById('productCost').value = product.cost;
                     document.getElementById('productPrice').value = product.price;
-                    
-                    // Mostrar preview si hay imagen
-                    if (product.image) {
-                        previewProductImage();
-                    }
                 }
             } else {
                 title.textContent = 'Nuevo Producto';
             }
             modal.style.display = 'block';
-        }
-
-        function previewProductImage() {
-            const imageUrl = document.getElementById('productImage').value.trim();
-            const preview = document.getElementById('imagePreview');
-            const previewImg = document.getElementById('previewImg');
-            
-            if (imageUrl && isValidUrl(imageUrl)) {
-                previewImg.src = imageUrl;
-                previewImg.onload = function() {
-                    preview.style.display = 'block';
-                };
-                previewImg.onerror = function() {
-                    preview.style.display = 'none';
-                    showToast('URL de imagen no válida o no accesible', 'warning');
-                };
-            } else {
-                preview.style.display = 'none';
-            }
-        }
-
-        function isValidUrl(string) {
-            try {
-                const url = new URL(string);
-                return url.protocol === "http:" || url.protocol === "https:";
-            } catch (_) {
-                return false;
-            }
         }
 
         async function saveProduct(event) {
