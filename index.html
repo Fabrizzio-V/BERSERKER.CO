@@ -600,6 +600,10 @@
                     <div class="stat-value" id="totalRevenue">₲0</div>
                     <div class="stat-label">Ingresos</div>
                 </div>
+                <div class="stat-item" style="background: rgba(39, 174, 96, 0.2); border: 1px solid rgba(39, 174, 96, 0.3);">
+                    <div class="stat-value" id="navbarProfit" style="color: #27ae60;">₲0</div>
+                    <div class="stat-label" style="color: #27ae60;">Ganancia Neta</div>
+                </div>
             </div>
         </div>
     </nav>
@@ -694,6 +698,7 @@
                             <table class="table">
                                 <thead>
                                     <tr>
+                                        <th>Imagen</th>
                                         <th>Producto</th>
                                         <th>Proveedor</th>
                                         <th>Stock</th>
@@ -706,7 +711,7 @@
                                 </thead>
                                 <tbody id="productsTable">
                                     <tr>
-                                        <td colspan="8" style="text-align: center; padding: 2rem; color: #657786;">
+                                        <td colspan="9" style="text-align: center; padding: 2rem; color: #657786;">
                                             No hay productos registrados. Agrega tu primer producto.
                                         </td>
                                     </tr>
@@ -873,6 +878,11 @@
                     <label>Nombre del Producto</label>
                     <input type="text" class="form-control" id="productName" required>
                 </div>
+                <div class="form-group">
+                    <label>URL de la Imagen (opcional)</label>
+                    <input type="url" class="form-control" id="productImage" placeholder="https://ejemplo.com/imagen.jpg">
+                    <small style="color: #657786; font-size: 0.85rem;">Pega aquí la URL de la imagen del producto</small>
+                </div>
                 <div class="form-row">
                     <div class="form-group">
                         <label>Proveedor</label>
@@ -1021,6 +1031,11 @@
             </div>
             <button class="btn btn-primary" onclick="updateOrderStatus()">Actualizar Estado</button>
         </div>
+    </div>
+
+    <!-- Modal de Imagen Ampliada -->
+    <div id="imageModal" class="image-modal" onclick="closeImageModal()">
+        <img id="expandedImage" src="" alt="Producto">
     </div>
 
     <script>
@@ -1243,25 +1258,44 @@
         function updateAllDisplays() {
             const totalRevenue = orders.reduce((sum, order) => sum + (order.total || 0), 0);
             const totalExpenses = expenses.reduce((sum, expense) => sum + (expense.amount || 0), 0);
-            const totalProfit = totalRevenue - totalExpenses;
+            const totalCosts = orders.reduce((sum, order) => sum + (order.cost || 0), 0);
+            const netProfit = totalRevenue - totalCosts - totalExpenses;
 
             // Navbar
             document.getElementById('totalOrders').textContent = orders.length;
             document.getElementById('totalProducts').textContent = products.length;
             document.getElementById('totalRevenue').textContent = formatCurrency(totalRevenue);
+            document.getElementById('navbarProfit').textContent = formatCurrency(netProfit);
+            
+            // Cambiar color según ganancia/pérdida
+            const navbarProfitElement = document.getElementById('navbarProfit');
+            const navbarProfitParent = navbarProfitElement.parentElement.parentElement;
+            const navbarProfitLabel = navbarProfitParent.querySelector('.stat-label');
+            
+            if (netProfit >= 0) {
+                navbarProfitElement.style.color = '#27ae60';
+                navbarProfitLabel.style.color = '#27ae60';
+                navbarProfitParent.style.background = 'rgba(39, 174, 96, 0.2)';
+                navbarProfitParent.style.border = '1px solid rgba(39, 174, 96, 0.3)';
+            } else {
+                navbarProfitElement.style.color = '#e74c3c';
+                navbarProfitLabel.style.color = '#e74c3c';
+                navbarProfitParent.style.background = 'rgba(231, 76, 60, 0.2)';
+                navbarProfitParent.style.border = '1px solid rgba(231, 76, 60, 0.3)';
+            }
 
             // Dashboard
             document.getElementById('dashProducts').textContent = products.length;
             document.getElementById('dashOrders').textContent = orders.length;
             document.getElementById('dashRevenue').textContent = formatCurrency(totalRevenue);
             document.getElementById('dashExpenses').textContent = formatCurrency(totalExpenses);
-            document.getElementById('dashProfit').textContent = formatCurrency(totalProfit);
-            document.getElementById('dashMargin').textContent = totalRevenue > 0 ? ((totalProfit / totalRevenue) * 100).toFixed(1) + '%' : '0%';
+            document.getElementById('dashProfit').textContent = formatCurrency(netProfit);
+            document.getElementById('dashMargin').textContent = totalRevenue > 0 ? ((netProfit / totalRevenue) * 100).toFixed(1) + '%' : '0%';
 
             // Reports
             document.getElementById('reportRevenue').textContent = formatCurrency(totalRevenue);
             document.getElementById('reportExpenses').textContent = formatCurrency(totalExpenses);
-            document.getElementById('reportProfit').textContent = formatCurrency(totalProfit);
+            document.getElementById('reportProfit').textContent = formatCurrency(netProfit);
 
             populateOrderProductSelect();
             updateProductsTable();
@@ -1277,6 +1311,7 @@
             // Limpiar formulario
             document.getElementById('productId').value = '';
             document.getElementById('productName').value = '';
+            document.getElementById('productImage').value = '';
             document.getElementById('productSupplier').value = '';
             document.getElementById('productCategory').value = 'electronica';
             document.getElementById('productStock').value = '0';
@@ -1290,6 +1325,7 @@
                     title.textContent = 'Editar Producto';
                     document.getElementById('productId').value = product.id;
                     document.getElementById('productName').value = product.name;
+                    document.getElementById('productImage').value = product.image || '';
                     document.getElementById('productSupplier').value = product.supplier;
                     document.getElementById('productCategory').value = product.category;
                     document.getElementById('productStock').value = product.stock || 0;
@@ -1310,6 +1346,7 @@
             
             const productData = {
                 name: document.getElementById('productName').value,
+                image: document.getElementById('productImage').value || '',
                 supplier: document.getElementById('productSupplier').value,
                 category: document.getElementById('productCategory').value,
                 stock: parseInt(document.getElementById('productStock').value) || 0,
@@ -1750,10 +1787,10 @@
         // =================== FUNCIONES DATOS EJEMPLO ===================
         async function generateSampleData() {
             const sampleProducts = [
-                { name: 'Auriculares Bluetooth', supplier: 'TechSupplier', category: 'electronica', stock: 25, minStock: 5, cost: 45000, price: 89000 },
-                { name: 'Camiseta Deportiva', supplier: 'SportWear Co', category: 'ropa', stock: 50, minStock: 10, cost: 25000, price: 55000 },
-                { name: 'Lámpara LED', supplier: 'HomeDecor', category: 'hogar', stock: 15, minStock: 5, cost: 35000, price: 75000 },
-                { name: 'Mochila Táctica', supplier: 'OutdoorGear', category: 'deportes', stock: 8, minStock: 5, cost: 55000, price: 120000 }
+                { name: 'Auriculares Bluetooth', image: 'https://m.media-amazon.com/images/I/61CGHv6kmWL.jpg', supplier: 'TechSupplier', category: 'electronica', stock: 25, minStock: 5, cost: 45000, price: 89000 },
+                { name: 'Camiseta Deportiva', image: 'https://contents.mediadecathlon.com/p2081461/k$12b9b8eb1fd6afbe22e1d63ab82d2ad3/sq/camiseta-manga-corta-de-running-hombre-run-dry-azul.jpg', supplier: 'SportWear Co', category: 'ropa', stock: 50, minStock: 10, cost: 25000, price: 55000 },
+                { name: 'Lámpara LED', image: 'https://m.media-amazon.com/images/I/61Fn0voJKdL._AC_SL1001_.jpg', supplier: 'HomeDecor', category: 'hogar', stock: 15, minStock: 5, cost: 35000, price: 75000 },
+                { name: 'Mochila Táctica', image: 'https://m.media-amazon.com/images/I/81V2FvwLCvL._AC_SL1500_.jpg', supplier: 'OutdoorGear', category: 'deportes', stock: 8, minStock: 5, cost: 55000, price: 120000 }
             ];
 
             const sampleOrders = [
@@ -1791,6 +1828,26 @@
             } catch (error) {
                 showToast('Error cargando datos de ejemplo', 'error');
             }
+        }
+
+        // =================== FUNCIONES DE IMAGEN ===================
+        function showImageModal(imageSrc, altText) {
+            const modal = document.getElementById('imageModal');
+            const img = document.getElementById('expandedImage');
+            img.src = imageSrc;
+            img.alt = altText;
+            modal.style.display = 'block';
+            
+            // Prevent scrolling
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeImageModal() {
+            const modal = document.getElementById('imageModal');
+            modal.style.display = 'none';
+            
+            // Restore scrolling
+            document.body.style.overflow = 'auto';
         }
 
         // =================== FUNCIONES UTILIDADES ===================
