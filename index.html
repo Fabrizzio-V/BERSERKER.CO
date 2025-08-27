@@ -692,42 +692,29 @@
                     </div>
                     <div class="content-body">
                         <div class="action-buttons">
-                            <button class="btn btn-success" onclick="openProductModal()">➕ Nuevo Producto</button>
+                            <button class="btn btn-success" onclick="openProductModal()">+ Nuevo Producto</button>
                             <div class="toolbar">
-                                <button class="btn btn-secondary" onclick="syncData()">🔄 Sincronizar</button>
+                                <button class="btn btn-secondary" onclick="syncData()">Sincronizar</button>
                             </div>
                         </div>
 
-                        <div class="filter-section">
-                            <div class="filter-row">
-                                <div class="form-group">
-                                    <label>Buscar Producto</label>
-                                    <input type="text" class="form-control" id="productSearch" placeholder="Buscar por nombre..." oninput="filterProducts()">
-                                </div>
-                                <div class="form-group">
-                                    <label>Filtrar por Categoría</label>
-                                    <select class="form-control" id="categoryFilter" onchange="filterProducts()">
-                                        <option value="">Todas las categorías</option>
-                                        <option value="electronica">Electrónica</option>
-                                        <option value="ropa">Ropa</option>
-                                        <option value="hogar">Hogar</option>
-                                        <option value="deportes">Deportes</option>
-                                        <option value="belleza">Belleza</option>
-                                        <option value="otros">Otros</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>Filtrar por Stock</label>
-                                    <select class="form-control" id="stockFilter" onchange="filterProducts()">
-                                        <option value="">Todos</option>
-                                        <option value="available">Con stock</option>
-                                        <option value="low">Stock bajo</option>
-                                        <option value="out">Sin stock</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <button class="btn btn-secondary" onclick="clearFilters()">🧹 Limpiar Filtros</button>
-                                </div>
+                        <div class="compact-filters">
+                            <div class="filter-group">
+                                <span class="filter-label">Categoría:</span>
+                                <button class="filter-chip active" onclick="filterByCategory('')">Todas</button>
+                                <button class="filter-chip" onclick="filterByCategory('electronica')">Electrónica</button>
+                                <button class="filter-chip" onclick="filterByCategory('ropa')">Ropa</button>
+                                <button class="filter-chip" onclick="filterByCategory('hogar')">Hogar</button>
+                                <button class="filter-chip" onclick="filterByCategory('deportes')">Deportes</button>
+                                <button class="filter-chip" onclick="filterByCategory('belleza')">Belleza</button>
+                                <button class="filter-chip" onclick="filterByCategory('otros')">Otros</button>
+                            </div>
+                            <div class="filter-group">
+                                <span class="filter-label">Stock:</span>
+                                <button class="filter-chip active" onclick="filterByStock('')">Todos</button>
+                                <button class="filter-chip" onclick="filterByStock('available')">Con Stock</button>
+                                <button class="filter-chip" onclick="filterByStock('low')">Poco Stock</button>
+                                <button class="filter-chip" onclick="filterByStock('out')">Sin Stock</button>
                             </div>
                         </div>
 
@@ -1083,7 +1070,8 @@
         let expenses = [];
         let isFirebaseConnected = false;
         let currentEditingOrderId = null;
-        let filteredProducts = [];
+        let currentCategoryFilter = '';
+        let currentStockFilter = '';
 
         // =================== INICIALIZACIÓN ===================
         document.addEventListener('DOMContentLoaded', function() {
