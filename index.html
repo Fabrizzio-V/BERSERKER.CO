@@ -600,6 +600,10 @@
                     <div class="stat-value" id="totalRevenue">₲0</div>
                     <div class="stat-label">Ingresos</div>
                 </div>
+                <div class="stat-item" style="background: rgba(231, 76, 60, 0.2); border: 1px solid rgba(231, 76, 60, 0.3);">
+                    <div class="stat-value" id="totalExpenses" style="color: #e74c3c;">₲0</div>
+                    <div class="stat-label" style="color: #e74c3c;">Egresos</div>
+                </div>
                 <div class="stat-item" style="background: rgba(39, 174, 96, 0.2); border: 1px solid rgba(39, 174, 96, 0.3);">
                     <div class="stat-value" id="navbarProfit" style="color: #27ae60;">₲0</div>
                     <div class="stat-label" style="color: #27ae60;">Ganancia Neta</div>
@@ -880,8 +884,11 @@
                 </div>
                 <div class="form-group">
                     <label>URL de la Imagen (opcional)</label>
-                    <input type="url" class="form-control" id="productImage" placeholder="https://ejemplo.com/imagen.jpg">
+                    <input type="url" class="form-control" id="productImage" placeholder="https://ejemplo.com/imagen.jpg" oninput="previewProductImage()">
                     <small style="color: #657786; font-size: 0.85rem;">Pega aquí la URL de la imagen del producto</small>
+                    <div id="imagePreview" style="margin-top: 10px; text-align: center; display: none;">
+                        <img id="previewImg" src="" alt="Vista previa" style="max-width: 200px; max-height: 200px; border-radius: 8px; border: 2px solid #e1e8ed;">
+                    </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
@@ -1265,6 +1272,7 @@
             document.getElementById('totalOrders').textContent = orders.length;
             document.getElementById('totalProducts').textContent = products.length;
             document.getElementById('totalRevenue').textContent = formatCurrency(totalRevenue);
+            document.getElementById('totalExpenses').textContent = formatCurrency(totalExpenses);
             document.getElementById('navbarProfit').textContent = formatCurrency(netProfit);
             
             // Cambiar color según ganancia/pérdida
@@ -1319,6 +1327,9 @@
             document.getElementById('productCost').value = '';
             document.getElementById('productPrice').value = '';
             
+            // Ocultar preview
+            document.getElementById('imagePreview').style.display = 'none';
+            
             if (productId) {
                 const product = products.find(p => p.id === productId);
                 if (product) {
@@ -1332,11 +1343,44 @@
                     document.getElementById('productMinStock').value = product.minStock || 5;
                     document.getElementById('productCost').value = product.cost;
                     document.getElementById('productPrice').value = product.price;
+                    
+                    // Mostrar preview si hay imagen
+                    if (product.image) {
+                        previewProductImage();
+                    }
                 }
             } else {
                 title.textContent = 'Nuevo Producto';
             }
             modal.style.display = 'block';
+        }
+
+        function previewProductImage() {
+            const imageUrl = document.getElementById('productImage').value.trim();
+            const preview = document.getElementById('imagePreview');
+            const previewImg = document.getElementById('previewImg');
+            
+            if (imageUrl && isValidUrl(imageUrl)) {
+                previewImg.src = imageUrl;
+                previewImg.onload = function() {
+                    preview.style.display = 'block';
+                };
+                previewImg.onerror = function() {
+                    preview.style.display = 'none';
+                    showToast('URL de imagen no válida o no accesible', 'warning');
+                };
+            } else {
+                preview.style.display = 'none';
+            }
+        }
+
+        function isValidUrl(string) {
+            try {
+                const url = new URL(string);
+                return url.protocol === "http:" || url.protocol === "https:";
+            } catch (_) {
+                return false;
+            }
         }
 
         async function saveProduct(event) {
