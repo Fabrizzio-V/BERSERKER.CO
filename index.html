@@ -748,7 +748,6 @@
                 <div id="dashboard" class="section active">
                     <div class="content-header">
                         <h2>Dashboard</h2>
-                        <p>Resumen general de tu negocio de dropshipping</p>
                     </div>
                     <div class="content-body">
                         <div class="loading" id="loadingIndicator">
@@ -800,7 +799,6 @@
                 <div id="products" class="section">
                     <div class="content-header">
                         <h2>Gestión de Productos</h2>
-                        <p>Administra tu catálogo de productos para dropshipping</p>
                     </div>
                     <div class="content-body">
                         <div class="action-buttons">
@@ -862,7 +860,6 @@
                 <div id="orders" class="section">
                     <div class="content-header">
                         <h2>Gestión de Pedidos</h2>
-                        <p>Administra todos los pedidos de tus canales</p>
                     </div>
                     <div class="content-body">
                         <div class="action-buttons">
@@ -920,7 +917,6 @@
                 <div id="expenses" class="section">
                     <div class="content-header">
                         <h2>Gestión de Gastos</h2>
-                        <p>Controla todos los gastos de tu negocio</p>
                     </div>
                     <div class="content-body">
                         <div class="action-buttons">
@@ -954,7 +950,6 @@
                 <div id="calculator" class="section">
                     <div class="content-header">
                         <h2>Calculadora de Precios</h2>
-                        <p>Calcula precios óptimos para dropshipping</p>
                     </div>
                     <div class="content-body">
                         <div class="card">
@@ -1002,7 +997,6 @@
                 <div id="reports" class="section">
                     <div class="content-header">
                         <h2>Reportes</h2>
-                        <p>Análisis detallados de tu negocio</p>
                     </div>
                     <div class="content-body">
                         <div class="stats-grid">
@@ -1501,11 +1495,15 @@
         }
 
         function formatCurrency(amount) {
-            return new Intl.NumberFormat('es-PY', {
-                style: 'currency',
-                currency: 'PYG',
-                minimumFractionDigits: 0
-            }).format(amount || 0).replace('PYG', '₲');
+            const value = amount || 0;
+            // Para números grandes, usar formato abreviado
+            if (value >= 1000000) {
+                return `₲${(value / 1000000).toFixed(1)}M`;
+            } else if (value >= 1000) {
+                return `₲${(value / 1000).toFixed(0)}K`;
+            } else {
+                return `₲${value.toLocaleString('es-PY')}`;
+            }
         }
 
         function updateAllDisplays() {
