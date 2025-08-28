@@ -1495,15 +1495,11 @@
         }
 
         function formatCurrency(amount) {
-            const value = amount || 0;
-            // Para números grandes, usar formato abreviado
-            if (value >= 1000000) {
-                return `₲${(value / 1000000).toFixed(1)}M`;
-            } else if (value >= 1000) {
-                return `₲${(value / 1000).toFixed(0)}K`;
-            } else {
-                return `₲${value.toLocaleString('es-PY')}`;
-            }
+            return new Intl.NumberFormat('es-PY', {
+                style: 'currency',
+                currency: 'PYG',
+                minimumFractionDigits: 0
+            }).format(amount || 0).replace('PYG', '₲');
         }
 
         function updateAllDisplays() {
@@ -1516,7 +1512,7 @@
             const totalCosts = filteredOrders.reduce((sum, order) => sum + (order.cost || 0), 0);
             const netProfit = totalRevenue - totalCosts - totalExpenses;
 
-            // Navbar
+            // Navbar - usar números completos
             document.getElementById('totalOrders').textContent = filteredOrders.length;
             document.getElementById('totalProducts').textContent = products.length;
             document.getElementById('totalRevenue').textContent = formatCurrency(totalRevenue);
