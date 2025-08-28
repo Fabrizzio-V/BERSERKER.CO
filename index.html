@@ -752,7 +752,27 @@
                     </div>
                     <div class="content-body">
                         <div class="action-buttons">
-                            <button class="btn btn-success" onclick="openOrderModal()">➕ Nuevo Pedido</button>
+                            <button class="btn btn-success" onclick="openOrderModal()">+ Nuevo Pedido</button>
+                        </div>
+
+                        <div class="compact-filters">
+                            <div class="filter-group">
+                                <span class="filter-label">Estado:</span>
+                                <button class="filter-chip active" onclick="filterOrdersByStatus('')">Todos</button>
+                                <button class="filter-chip" onclick="filterOrdersByStatus('pending')">Pendiente</button>
+                                <button class="filter-chip" onclick="filterOrdersByStatus('confirmed')">Confirmado</button>
+                                <button class="filter-chip" onclick="filterOrdersByStatus('shipped')">Enviado</button>
+                                <button class="filter-chip" onclick="filterOrdersByStatus('delivered')">Entregado</button>
+                                <button class="filter-chip" onclick="filterOrdersByStatus('cancelled')">Cancelado</button>
+                            </div>
+                            <div class="filter-group">
+                                <span class="filter-label">Fecha:</span>
+                                <button class="filter-chip active" onclick="filterOrdersByDate('')">Todas</button>
+                                <button class="filter-chip" onclick="filterOrdersByDate('today')">Hoy</button>
+                                <button class="filter-chip" onclick="filterOrdersByDate('week')">Esta Semana</button>
+                                <button class="filter-chip" onclick="filterOrdersByDate('month')">Este Mes</button>
+                                <input type="date" class="form-control" id="customDateFilter" onchange="filterOrdersByDate('custom')" style="max-width: 150px; margin-left: 10px;">
+                            </div>
                         </div>
 
                         <div class="table-container">
@@ -765,13 +785,14 @@
                                         <th>Producto</th>
                                         <th>Total</th>
                                         <th>Estado</th>
+                                        <th>Comentarios</th>
                                         <th>Fecha</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody id="ordersTable">
                                     <tr>
-                                        <td colspan="8" style="text-align: center; padding: 2rem; color: #657786;">
+                                        <td colspan="9" style="text-align: center; padding: 2rem; color: #657786;">
                                             No hay pedidos registrados. Crea tu primer pedido.
                                         </td>
                                     </tr>
@@ -991,6 +1012,10 @@
                         <input type="number" class="form-control" id="orderTotal" required>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label>Comentarios (opcional)</label>
+                    <textarea class="form-control" id="orderComments" rows="3" placeholder="Notas sobre el pedido, instrucciones especiales, seguimiento..."></textarea>
+                </div>
                 <button type="submit" class="btn btn-success">💾 Crear Pedido</button>
             </form>
         </div>
@@ -1072,6 +1097,8 @@
         let currentEditingOrderId = null;
         let currentCategoryFilter = '';
         let currentStockFilter = '';
+        let currentOrderStatusFilter = '';
+        let currentOrderDateFilter = '';
 
         // =================== INICIALIZACIÓN ===================
         document.addEventListener('DOMContentLoaded', function() {
@@ -1256,9 +1283,22 @@
 
         function updateSectionData(sectionName) {
             switch(sectionName) {
-                case 'products': updateProductsTable(); break;
-                case 'orders': updateOrdersTable(); break;
-                case 'expenses': updateExpensesTable(); break;
+                case 'products': 
+                    // Resetear filtros al cambiar de sección
+                    currentCategoryFilter = '';
+                    currentStockFilter = '';
+                    updateProductsTable(); 
+                    break;
+                case 'orders': 
+                    // Resetear filtros al cambiar de sección
+                    currentOrderStatusFilter = '';
+                    currentOrderDateFilter = '';
+                    document.getElementById('customDateFilter').value = '';
+                    updateOrdersTable(); 
+                    break;
+                case 'expenses': 
+                    updateExpensesTable(); 
+                    break;
             }
         }
 
@@ -1477,6 +1517,7 @@
             document.getElementById('orderQuantity').value = '1';
             document.getElementById('orderTotal').value = '';
             document.getElementById('orderStatus').value = 'pending';
+            document.getElementById('orderComments').value = '';
             
             if (orderId) {
                 const order = orders.find(o => o.id === orderId);
@@ -1489,6 +1530,7 @@
                     document.getElementById('orderQuantity').value = order.quantity;
                     document.getElementById('orderTotal').value = order.total;
                     document.getElementById('orderStatus').value = order.status;
+                    document.getElementById('orderComments').value = order.comments || '';
                 }
             } else {
                 title.textContent = 'Nuevo Pedido';
@@ -1566,6 +1608,7 @@
                 total: total,
                 cost: product.cost * newQuantity,
                 status: document.getElementById('orderStatus').value,
+                comments: document.getElementById('orderComments').value || '',
                 date: isEditing ? orders.find(o => o.id === orderId)?.date : new Date().toISOString()
             };
 
@@ -1638,14 +1681,56 @@
         function updateOrdersTable() {
             const tbody = document.getElementById('ordersTable');
             
-            if (orders.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 2rem; color: #657786;">No hay pedidos registrados. Crea tu primer pedido.</td></tr>';
+            // Aplicar filtros
+            let ordersToShow = orders.filter(order => {
+                // Filtro por estado
+                const matchesStatus = currentOrderStatusFilter === '' || order.status === currentOrderStatusFilter;
+                
+                // Filtro por fecha
+                let matchesDate = true;
+                if (currentOrderDateFilter) {
+                    const orderDate = new Date(order.date);
+                    const now = new Date();
+                    
+                    switch(currentOrderDateFilter) {
+                        case 'today':
+                            matchesDate = orderDate.toDateString() === now.toDateString();
+                            break;
+                        case 'week':
+                            const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                            matchesDate = orderDate >= weekAgo;
+                            break;
+                        case 'month':
+                            const monthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+                            matchesDate = orderDate >= monthAgo;
+                            break;
+                        case 'custom':
+                            const customDate = document.getElementById('customDateFilter').value;
+                            if (customDate) {
+                                matchesDate = orderDate.toDateString() === new Date(customDate).toDateString();
+                            }
+                            break;
+                        default:
+                            matchesDate = true;
+                    }
+                }
+                
+                return matchesStatus && matchesDate;
+            });
+            
+            if (ordersToShow.length === 0) {
+                const message = (currentOrderStatusFilter || currentOrderDateFilter) ? 
+                    'No se encontraron pedidos con los filtros seleccionados.' : 
+                    'No hay pedidos registrados. Crea tu primer pedido.';
+                tbody.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 2rem; color: #657786;">${message}</td></tr>`;
                 return;
             }
 
-            tbody.innerHTML = orders.map(order => {
+            tbody.innerHTML = ordersToShow.map(order => {
                 const profit = order.total - order.cost;
                 const statusClass = getStatusClass(order.status);
+                const comments = order.comments || '';
+                const commentDisplay = comments.length > 30 ? comments.substring(0, 30) + '...' : comments;
                 
                 return `
                     <tr>
@@ -1655,6 +1740,9 @@
                         <td title="${order.productName}">${order.productName}</td>
                         <td>${formatCurrency(order.total)}</td>
                         <td><span class="status-badge ${statusClass}" onclick="openStatusModal('${order.id}')" title="Click para cambiar estado">${getStatusLabel(order.status)}</span></td>
+                        <td title="${comments}" style="max-width: 150px; cursor: pointer;" onclick="showFullComment('${comments.replace(/'/g, "\\'")}')">
+                            ${commentDisplay || '<i style="color: #ccc;">Sin comentarios</i>'}
+                        </td>
                         <td>${new Date(order.date).toLocaleDateString()}</td>
                         <td class="actions">
                             <button class="btn btn-primary btn-sm" onclick="openOrderModal('${order.id}')" title="Editar pedido">✏️</button>
@@ -1663,6 +1751,45 @@
                     </tr>
                 `;
             }).join('');
+        }
+
+        function showFullComment(comment) {
+            if (comment && comment.trim() !== '') {
+                alert(`Comentario completo:\n\n${comment}`);
+            }
+        }
+
+        function filterOrdersByStatus(status) {
+            currentOrderStatusFilter = status;
+            
+            // Actualizar botones activos de estado
+            document.querySelectorAll('.compact-filters .filter-group:first-child .filter-chip').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            updateOrdersTable();
+        }
+
+        function filterOrdersByDate(dateType) {
+            currentOrderDateFilter = dateType;
+            
+            // Actualizar botones activos de fecha
+            document.querySelectorAll('.compact-filters .filter-group:last-child .filter-chip').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            if (dateType !== 'custom') {
+                event.target.classList.add('active');
+            } else {
+                // Para fecha personalizada, activar cuando se seleccione una fecha
+                const customDateInput = document.getElementById('customDateFilter');
+                if (customDateInput.value) {
+                    document.querySelector('.filter-chip[onclick="filterOrdersByDate(\'custom\')"]').classList.add('active');
+                }
+            }
+            
+            updateOrdersTable();
         }
 
         function getStatusClass(status) {
@@ -1860,8 +1987,10 @@
             ];
 
             const sampleOrders = [
-                { customer: 'María González', channel: 'facebook', productId: '', productName: 'Auriculares Bluetooth', quantity: 1, total: 89000, cost: 45000, status: 'delivered', date: new Date(Date.now() - 86400000 * 2).toISOString() },
-                { customer: 'Carlos Rodríguez', channel: 'instagram', productId: '', productName: 'Camiseta Deportiva', quantity: 2, total: 110000, cost: 50000, status: 'shipped', date: new Date(Date.now() - 86400000 * 1).toISOString() }
+                { customer: 'María González', channel: 'facebook', productId: '', productName: 'Auriculares Bluetooth', quantity: 1, total: 89000, cost: 45000, status: 'delivered', comments: 'Cliente pidió entrega urgente. Completado exitosamente.', date: new Date(Date.now() - 86400000 * 2).toISOString() },
+                { customer: 'Carlos Rodríguez', channel: 'instagram', productId: '', productName: 'Camiseta Deportiva', quantity: 2, total: 110000, cost: 50000, status: 'shipped', comments: 'Envío a sucursal. Número de seguimiento: ABC123', date: new Date(Date.now() - 86400000 * 1).toISOString() },
+                { customer: 'Ana López', channel: 'whatsapp', productId: '', productName: 'Lámpara LED', quantity: 1, total: 75000, cost: 35000, status: 'confirmed', comments: 'Verificar color antes de enviar', date: new Date().toISOString() },
+                { customer: 'Pedro Martínez', channel: 'marketplace', productId: '', productName: 'Mochila Táctica', quantity: 1, total: 120000, cost: 55000, status: 'pending', comments: '', date: new Date().toISOString() }
             ];
 
             try {
