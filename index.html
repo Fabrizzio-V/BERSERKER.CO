@@ -722,7 +722,7 @@
                     </div>
                     <div class="stat-item" style="background: rgba(23, 162, 184, 0.2); border: 1px solid rgba(23, 162, 184, 0.3);">
                         <div class="stat-value" id="totalPurchases" style="color: #17a2b8;">₲0</div>
-                        <div class="stat-label" style="color: #17a2b8;">Inv. Stock</div>
+                        <div class="stat-label" style="color: #17a2b8;">Inventario</div>
                     </div>
                     <div class="stat-item" style="background: rgba(231, 76, 60, 0.2); border: 1px solid rgba(231, 76, 60, 0.3);">
                         <div class="stat-value" id="totalExpenses" style="color: #e74c3c;">₲0</div>
@@ -1699,12 +1699,25 @@
             const totalExpenses = filteredExpenses.reduce((sum, expense) => sum + (expense.amount || 0), 0);
             const totalCosts = filteredOrders.reduce((sum, order) => sum + (order.cost || 0), 0);
             
-            // Ganancia neta SIN incluir compras (solo ingresos - costos de ventas - gastos)
+            // ========== FÓRMULA DE GANANCIA NETA ==========
+            // SOLO: Ingresos - Costos de productos vendidos - Gastos operativos
+            // NO SE INCLUYEN LAS COMPRAS/INVENTARIO EN ESTE CÁLCULO
             const netProfit = totalRevenue - totalCosts - totalExpenses;
+            // ============================================
+            
+            // Debug para verificar la fórmula
+            console.log('=== CÁLCULO GANANCIA NETA ===');
+            console.log('Ingresos:', formatCurrency(totalRevenue));
+            console.log('Costos de ventas:', formatCurrency(totalCosts));
+            console.log('Gastos:', formatCurrency(totalExpenses));
+            console.log('Inventario (NO se resta):', formatCurrency(totalPurchases));
+            console.log('GANANCIA NETA:', formatCurrency(netProfit));
 
             document.getElementById('totalOrders').textContent = filteredOrders.length;
             document.getElementById('totalProducts').textContent = products.length;
             document.getElementById('totalRevenue').textContent = formatCurrency(totalRevenue);
+            
+            // Mostrar inversión en stock pero SIN afectar ganancia
             document.getElementById('totalPurchases').textContent = formatCurrency(totalPurchases);
             document.getElementById('totalExpenses').textContent = formatCurrency(totalExpenses);
             document.getElementById('navbarProfit').textContent = formatCurrency(netProfit);
@@ -1725,6 +1738,7 @@
                 navbarProfitParent.style.border = '1px solid rgba(231, 76, 60, 0.3)';
             }
 
+            // Dashboard - mismo cálculo limpio
             document.getElementById('dashProducts').textContent = products.length;
             document.getElementById('dashOrders').textContent = filteredOrders.length;
             document.getElementById('dashRevenue').textContent = formatCurrency(totalRevenue);
@@ -1733,6 +1747,7 @@
             document.getElementById('dashProfit').textContent = formatCurrency(netProfit);
             document.getElementById('dashMargin').textContent = totalRevenue > 0 ? ((netProfit / totalRevenue) * 100).toFixed(1) + '%' : '0%';
 
+            // Reports - mismo cálculo limpio
             document.getElementById('reportRevenue').textContent = formatCurrency(totalRevenue);
             document.getElementById('reportPurchases').textContent = formatCurrency(totalPurchases);
             document.getElementById('reportExpenses').textContent = formatCurrency(totalExpenses);
