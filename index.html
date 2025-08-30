@@ -747,10 +747,7 @@
         </div>
     </nav>
 
-    <!-- Contenedor de notificaciones -->
     <div class="toast-container" id="toastContainer"></div>
-    
-    <!-- Status de sincronización -->
     <div class="sync-status" id="syncStatus">Conectando...</div>
 
     <div class="container">
@@ -1240,7 +1237,6 @@
         </div>
     </div>
 
-    <!-- Modal Compras -->
     <div id="purchaseModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('purchaseModal')">&times;</span>
@@ -1322,7 +1318,6 @@
         </div>
     </div>
 
-    <!-- Modal Cambiar Estado -->
     <div id="statusModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal('statusModal')">&times;</span>
@@ -1342,7 +1337,6 @@
     </div>
 
     <script>
-        // =================== CONFIGURACIÓN FIREBASE ===================
         const firebaseConfig = {
             apiKey: "AIzaSyD3duRGD2A9csmCnLzSaLj0h2KcH7IiPqk",
             authDomain: "berserker-co.firebaseapp.com",
@@ -1353,7 +1347,6 @@
             measurementId: "G-GQ2PRPJKRN"
         };
 
-        // =================== VARIABLES GLOBALES ===================
         let app, db;
         let products = [];
         let orders = [];
@@ -1369,7 +1362,6 @@
         let currentPurchaseDateFilter = '';
         let currentDatePeriod = 'all';
 
-        // =================== INICIALIZACIÓN ===================
         document.addEventListener('DOMContentLoaded', function() {
             setupMenuNavigation();
             initializeFirebase();
@@ -1407,7 +1399,6 @@
             updateAllDisplays();
         }
 
-        // =================== FUNCIONES FIREBASE ===================
         async function saveToFirebase(collection, data, docId = null) {
             if (!isFirebaseConnected) {
                 return saveToLocalStorage();
@@ -1470,7 +1461,6 @@
             }
         }
 
-        // =================== FUNCIONES LOCALSTORAGE ===================
         function saveToLocalStorage() {
             localStorage.setItem('berserker_products', JSON.stringify(products));
             localStorage.setItem('berserker_orders', JSON.stringify(orders));
@@ -1489,7 +1479,6 @@
             saveToLocalStorage();
         }
 
-        // =================== FUNCIONES FILTROS DE FECHA ===================
         function filterByDatePeriod(period) {
             currentDatePeriod = period;
             
@@ -1606,7 +1595,6 @@
             });
         }
 
-        // =================== FUNCIONES UI ===================
         function showLoading(show) {
             const indicator = document.getElementById('loadingIndicator');
             if (indicator) {
@@ -1712,7 +1700,6 @@
             const totalCosts = filteredOrders.reduce((sum, order) => sum + (order.cost || 0), 0);
             const netProfit = totalRevenue - totalCosts - totalPurchases - totalExpenses;
 
-            // Navbar
             document.getElementById('totalOrders').textContent = filteredOrders.length;
             document.getElementById('totalProducts').textContent = products.length;
             document.getElementById('totalRevenue').textContent = formatCurrency(totalRevenue);
@@ -1720,7 +1707,6 @@
             document.getElementById('totalExpenses').textContent = formatCurrency(totalExpenses);
             document.getElementById('navbarProfit').textContent = formatCurrency(netProfit);
             
-            // Color de ganancia/pérdida
             const navbarProfitElement = document.getElementById('navbarProfit');
             const navbarProfitParent = navbarProfitElement.parentElement.parentElement;
             const navbarProfitLabel = navbarProfitParent.querySelector('.stat-label');
@@ -1737,7 +1723,6 @@
                 navbarProfitParent.style.border = '1px solid rgba(231, 76, 60, 0.3)';
             }
 
-            // Dashboard
             document.getElementById('dashProducts').textContent = products.length;
             document.getElementById('dashOrders').textContent = filteredOrders.length;
             document.getElementById('dashRevenue').textContent = formatCurrency(totalRevenue);
@@ -1746,7 +1731,6 @@
             document.getElementById('dashProfit').textContent = formatCurrency(netProfit);
             document.getElementById('dashMargin').textContent = totalRevenue > 0 ? ((netProfit / totalRevenue) * 100).toFixed(1) + '%' : '0%';
 
-            // Reports
             document.getElementById('reportRevenue').textContent = formatCurrency(totalRevenue);
             document.getElementById('reportPurchases').textContent = formatCurrency(totalPurchases);
             document.getElementById('reportExpenses').textContent = formatCurrency(totalExpenses);
@@ -1761,7 +1745,6 @@
             updatePurchasesSummary();
         }
 
-        // =================== FUNCIONES PRODUCTOS ===================
         function openProductModal(productId = null) {
             const modal = document.getElementById('productModal');
             const title = document.getElementById('productModalTitle');
@@ -1939,6 +1922,257 @@
                         <td style="text-align: center;"><span style="background: #3498db; color: white; padding: 0.2rem 0.5rem; border-radius: 12px; font-size: 0.8rem;">${sales}</span></td>
                         <td><span style="color: ${stockStatusColor}; font-weight: bold; font-size: 0.8rem;">${stockStatus}</span></td>
                         <td class="actions">
+                            <button class="btn btn-primary btn-sm" onclick="openProductModal('${product.id}')" title="Editar producto">✏️</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteProduct('${product.id}')" title="Eliminar producto">🗑️</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function populateOrderProductSelect() {
+            const select = document.getElementById('orderProduct');
+            if (!select) return;
+            select.innerHTML = '<option value="">Seleccionar producto...</option>';
+            products.forEach(product => {
+                select.innerHTML += `<option value="${product.id}">${product.name} - ${formatCurrency(product.price)}</option>`;
+            });
+        }
+
+        function openOrderModal(orderId = null) {
+            if (products.length === 0 && !orderId) {
+                showToast('Primero debes agregar productos antes de crear pedidos', 'warning');
+                return;
+            }
+            
+            const modal = document.getElementById('orderModal');
+            const title = document.querySelector('#orderModal h2');
+            
+            document.getElementById('orderId').value = '';
+            document.getElementById('orderCustomer').value = '';
+            document.getElementById('orderChannel').value = 'facebook';
+            document.getElementById('orderProduct').value = '';
+            document.getElementById('orderQuantity').value = '1';
+            document.getElementById('orderTotal').value = '';
+            document.getElementById('orderStatus').value = 'pending';
+            document.getElementById('orderComments').value = '';
+            
+            if (orderId) {
+                const order = orders.find(o => o.id === orderId);
+                if (order) {
+                    title.textContent = 'Editar Pedido';
+                    document.getElementById('orderId').value = order.id;
+                    document.getElementById('orderCustomer').value = order.customer;
+                    document.getElementById('orderChannel').value = order.channel;
+                    document.getElementById('orderProduct').value = order.productId;
+                    document.getElementById('orderQuantity').value = order.quantity;
+                    document.getElementById('orderTotal').value = order.total;
+                    document.getElementById('orderStatus').value = order.status;
+                    document.getElementById('orderComments').value = order.comments || '';
+                }
+            } else {
+                title.textContent = 'Nuevo Pedido';
+            }
+            
+            modal.style.display = 'block';
+        }
+
+        function openStatusModal(orderId) {
+            currentEditingOrderId = orderId;
+            const order = orders.find(o => o.id === orderId);
+            if (order) {
+                document.getElementById('newOrderStatus').value = order.status;
+                document.getElementById('statusModal').style.display = 'block';
+            }
+        }
+
+        async function updateOrderStatus() {
+            if (currentEditingOrderId) {
+                const newStatus = document.getElementById('newOrderStatus').value;
+                const orderIndex = orders.findIndex(o => o.id === currentEditingOrderId);
+                if (orderIndex !== -1) {
+                    orders[orderIndex].status = newStatus;
+                    
+                    if (isFirebaseConnected) {
+                        try {
+                            await saveToFirebase('orders', orders[orderIndex], currentEditingOrderId);
+                        } catch (error) {
+                            console.error('Error actualizando estado:', error);
+                        }
+                    }
+                    
+                    saveToLocalStorage();
+                    updateAllDisplays();
+                    closeModal('statusModal');
+                    showToast('Estado actualizado correctamente', 'success');
+                }
+                currentEditingOrderId = null;
+            }
+        }
+
+        function updateOrderPrice() {
+            const productId = document.getElementById('orderProduct').value;
+            const quantity = parseInt(document.getElementById('orderQuantity').value) || 1;
+            
+            if (productId) {
+                const product = products.find(p => p.id === productId);
+                if (product) {
+                    document.getElementById('orderTotal').value = product.price * quantity;
+                }
+            }
+        }
+
+        async function saveOrder(event) {
+            event.preventDefault();
+            const orderId = document.getElementById('orderId').value;
+            const isEditing = orderId !== '';
+            
+            const productId = document.getElementById('orderProduct').value;
+            const product = products.find(p => p.id === productId);
+            const newQuantity = parseInt(document.getElementById('orderQuantity').value) || 1;
+            const total = parseFloat(document.getElementById('orderTotal').value) || 0;
+            
+            if (!product) {
+                showToast('Producto no encontrado', 'error');
+                return;
+            }
+            
+            const orderData = {
+                customer: document.getElementById('orderCustomer').value,
+                channel: document.getElementById('orderChannel').value,
+                productId: productId,
+                productName: product.name,
+                quantity: newQuantity,
+                total: total,
+                cost: product.cost * newQuantity,
+                status: document.getElementById('orderStatus').value,
+                comments: document.getElementById('orderComments').value || '',
+                date: isEditing ? orders.find(o => o.id === orderId)?.date : new Date().toISOString()
+            };
+
+            try {
+                if (isEditing) {
+                    const oldOrder = orders.find(o => o.id === orderId);
+                    if (oldOrder && oldOrder.productId === productId) {
+                        const stockDifference = oldOrder.quantity - newQuantity;
+                        product.stock = (product.stock || 0) + stockDifference;
+                    } else if (oldOrder) {
+                        const oldProduct = products.find(p => p.id === oldOrder.productId);
+                        if (oldProduct) {
+                            oldProduct.stock = (oldProduct.stock || 0) + oldOrder.quantity;
+                        }
+                        product.stock = (product.stock || 0) - newQuantity;
+                    }
+                    
+                    const index = orders.findIndex(o => o.id === orderId);
+                    if (index !== -1) {
+                        orders[index] = { ...orders[index], ...orderData };
+                        if (isFirebaseConnected) {
+                            await saveToFirebase('orders', orders[index], orderId);
+                        }
+                        showToast('Pedido actualizado correctamente', 'success');
+                    }
+                } else {
+                    if (product.stock < newQuantity) {
+                        showToast(`Stock insuficiente. Disponible: ${product.stock}`, 'warning');
+                        return;
+                    }
+                    
+                    product.stock = (product.stock || 0) - newQuantity;
+                    
+                    let newId;
+                    if (isFirebaseConnected) {
+                        newId = await saveToFirebase('orders', orderData);
+                    } else {
+                        newId = Date.now().toString();
+                    }
+                    
+                    const newOrder = { id: newId, ...orderData };
+                    orders.push(newOrder);
+                    showToast('Pedido creado correctamente', 'success');
+                }
+                
+                if (isFirebaseConnected) {
+                    try {
+                        await saveToFirebase('products', product, product.id);
+                    } catch (error) {
+                        console.error('Error actualizando stock en Firebase:', error);
+                    }
+                }
+                
+                saveToLocalStorage();
+                closeModal('orderModal');
+                updateAllDisplays();
+                
+            } catch (error) {
+                showToast('Error al guardar pedido', 'error');
+            }
+        }
+
+        function updateOrdersTable() {
+            const tbody = document.getElementById('ordersTable');
+            
+            let ordersToShow = orders.filter(order => {
+                const matchesStatus = currentOrderStatusFilter === '' || order.status === currentOrderStatusFilter;
+                
+                let matchesDate = true;
+                if (currentOrderDateFilter) {
+                    const orderDate = new Date(order.date);
+                    const now = new Date();
+                    
+                    switch(currentOrderDateFilter) {
+                        case 'today':
+                            matchesDate = orderDate.toDateString() === now.toDateString();
+                            break;
+                        case 'week':
+                            const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                            matchesDate = orderDate >= weekAgo;
+                            break;
+                        case 'month':
+                            const monthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+                            matchesDate = orderDate >= monthAgo;
+                            break;
+                        case 'custom':
+                            const customDate = document.getElementById('customDateFilter').value;
+                            if (customDate) {
+                                matchesDate = orderDate.toDateString() === new Date(customDate).toDateString();
+                            }
+                            break;
+                        default:
+                            matchesDate = true;
+                    }
+                }
+                
+                return matchesStatus && matchesDate;
+            });
+            
+            if (ordersToShow.length === 0) {
+                const message = (currentOrderStatusFilter || currentOrderDateFilter) ? 
+                    'No se encontraron pedidos con los filtros seleccionados.' : 
+                    'No hay pedidos registrados. Crea tu primer pedido.';
+                tbody.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 2rem; color: #657786;">${message}</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = ordersToShow.map(order => {
+                const profit = order.total - order.cost;
+                const statusClass = getStatusClass(order.status);
+                const comments = order.comments || '';
+                const commentDisplay = comments.length > 30 ? comments.substring(0, 30) + '...' : comments;
+                
+                return `
+                    <tr>
+                        <td>#${order.id.toString().slice(-4)}</td>
+                        <td title="${order.customer}">${order.customer}</td>
+                        <td>${order.channel}</td>
+                        <td title="${order.productName}">${order.productName}</td>
+                        <td>${formatCurrency(order.total)}</td>
+                        <td><span class="status-badge ${statusClass}" onclick="openStatusModal('${order.id}')" title="Click para cambiar estado">${getStatusLabel(order.status)}</span></td>
+                        <td title="${comments}" style="max-width: 150px; cursor: pointer;" onclick="showFullComment('${comments.replace(/'/g, "\\'")}')">
+                            ${commentDisplay || '<i style="color: #ccc;">Sin comentarios</i>'}
+                        </td>
+                        <td>${new Date(order.date).toLocaleDateString()}</td>
+                        <td class="actions">
                             <button class="btn btn-primary btn-sm" onclick="openOrderModal('${order.id}')" title="Editar pedido">✏️</button>
                             <button class="btn btn-danger btn-sm" onclick="deleteOrder('${order.id}')" title="Eliminar pedido">🗑️</button>
                         </td>
@@ -2033,7 +2267,7 @@
             }
         }
 
-        // =================== FUNCIONES COMPRAS ===================
+        // FUNCIONES COMPRAS
         function populatePurchaseProductSelect() {
             const select = document.getElementById('purchaseProduct');
             if (!select) return;
@@ -2331,7 +2565,7 @@
             }
         }
 
-        // =================== FUNCIONES GASTOS ===================
+        // FUNCIONES GASTOS
         function openExpenseModal(expenseId = null) {
             const modal = document.getElementById('expenseModal');
             const title = document.querySelector('#expenseModal h2');
@@ -2442,7 +2676,7 @@
             }
         }
 
-        // =================== FUNCIONES CALCULADORA ===================
+        // FUNCIONES CALCULADORA
         function calculatePrice() {
             const cost = parseFloat(document.getElementById('calcCost').value) || 0;
             const margin = parseFloat(document.getElementById('calcMargin').value) || 30;
@@ -2463,7 +2697,7 @@
             }
         }
 
-        // =================== FUNCIONES DATOS EJEMPLO ===================
+        // FUNCIONES DATOS EJEMPLO
         async function generateSampleData() {
             const sampleProducts = [
                 { name: 'Auriculares Bluetooth', supplier: 'TechSupplier', category: 'electronica', stock: 25, minStock: 5, cost: 45000, price: 89000 },
@@ -2506,7 +2740,7 @@
                     { customer: 'Pedro Martínez', channel: 'marketplace', productId: products[3]?.id, productName: 'Mochila Táctica', quantity: 1, total: 120000, cost: 55000, status: 'pending', comments: '', date: new Date().toISOString() }
                 ];
 
-                // Agregar compras
+                // Guardar compras
                 for (const purchaseData of samplePurchases) {
                     let newId;
                     if (isFirebaseConnected) {
@@ -2517,7 +2751,7 @@
                     purchases.push({ id: newId, ...purchaseData });
                 }
 
-                // Agregar pedidos
+                // Guardar pedidos
                 for (const orderData of sampleOrders) {
                     let newId;
                     if (isFirebaseConnected) {
@@ -2528,7 +2762,7 @@
                     orders.push({ id: newId, ...orderData });
                 }
 
-                // Agregar gastos
+                // Guardar gastos
                 for (const expenseData of sampleExpenses) {
                     let newId;
                     if (isFirebaseConnected) {
@@ -2548,7 +2782,7 @@
             }
         }
 
-        // =================== FUNCIONES UTILIDADES ===================
+        // FUNCIONES UTILIDADES
         async function syncData() {
             if (!isFirebaseConnected) {
                 showToast('No hay conexión con Firebase', 'warning');
@@ -2581,7 +2815,7 @@
             });
         }
 
-        // =================== ATAJOS DE TECLADO ===================
+        // ATAJOS DE TECLADO
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 const modals = document.querySelectorAll('.modal');
@@ -2594,256 +2828,4 @@
         });
     </script>
 </body>
-</html> btn-sm" onclick="openProductModal('${product.id}')" title="Editar producto">✏️</button>
-                            <button class="btn btn-danger btn-sm" onclick="deleteProduct('${product.id}')" title="Eliminar producto">🗑️</button>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        // =================== FUNCIONES PEDIDOS ===================
-        function populateOrderProductSelect() {
-            const select = document.getElementById('orderProduct');
-            if (!select) return;
-            select.innerHTML = '<option value="">Seleccionar producto...</option>';
-            products.forEach(product => {
-                select.innerHTML += `<option value="${product.id}">${product.name} - ${formatCurrency(product.price)}</option>`;
-            });
-        }
-
-        function openOrderModal(orderId = null) {
-            if (products.length === 0 && !orderId) {
-                showToast('Primero debes agregar productos antes de crear pedidos', 'warning');
-                return;
-            }
-            
-            const modal = document.getElementById('orderModal');
-            const title = document.querySelector('#orderModal h2');
-            
-            document.getElementById('orderId').value = '';
-            document.getElementById('orderCustomer').value = '';
-            document.getElementById('orderChannel').value = 'facebook';
-            document.getElementById('orderProduct').value = '';
-            document.getElementById('orderQuantity').value = '1';
-            document.getElementById('orderTotal').value = '';
-            document.getElementById('orderStatus').value = 'pending';
-            document.getElementById('orderComments').value = '';
-            
-            if (orderId) {
-                const order = orders.find(o => o.id === orderId);
-                if (order) {
-                    title.textContent = 'Editar Pedido';
-                    document.getElementById('orderId').value = order.id;
-                    document.getElementById('orderCustomer').value = order.customer;
-                    document.getElementById('orderChannel').value = order.channel;
-                    document.getElementById('orderProduct').value = order.productId;
-                    document.getElementById('orderQuantity').value = order.quantity;
-                    document.getElementById('orderTotal').value = order.total;
-                    document.getElementById('orderStatus').value = order.status;
-                    document.getElementById('orderComments').value = order.comments || '';
-                }
-            } else {
-                title.textContent = 'Nuevo Pedido';
-            }
-            
-            modal.style.display = 'block';
-        }
-
-        function openStatusModal(orderId) {
-            currentEditingOrderId = orderId;
-            const order = orders.find(o => o.id === orderId);
-            if (order) {
-                document.getElementById('newOrderStatus').value = order.status;
-                document.getElementById('statusModal').style.display = 'block';
-            }
-        }
-
-        async function updateOrderStatus() {
-            if (currentEditingOrderId) {
-                const newStatus = document.getElementById('newOrderStatus').value;
-                const orderIndex = orders.findIndex(o => o.id === currentEditingOrderId);
-                if (orderIndex !== -1) {
-                    orders[orderIndex].status = newStatus;
-                    
-                    if (isFirebaseConnected) {
-                        try {
-                            await saveToFirebase('orders', orders[orderIndex], currentEditingOrderId);
-                        } catch (error) {
-                            console.error('Error actualizando estado:', error);
-                        }
-                    }
-                    
-                    saveToLocalStorage();
-                    updateAllDisplays();
-                    closeModal('statusModal');
-                    showToast('Estado actualizado correctamente', 'success');
-                }
-                currentEditingOrderId = null;
-            }
-        }
-
-        function updateOrderPrice() {
-            const productId = document.getElementById('orderProduct').value;
-            const quantity = parseInt(document.getElementById('orderQuantity').value) || 1;
-            
-            if (productId) {
-                const product = products.find(p => p.id === productId);
-                if (product) {
-                    document.getElementById('orderTotal').value = product.price * quantity;
-                }
-            }
-        }
-
-        async function saveOrder(event) {
-            event.preventDefault();
-            const orderId = document.getElementById('orderId').value;
-            const isEditing = orderId !== '';
-            
-            const productId = document.getElementById('orderProduct').value;
-            const product = products.find(p => p.id === productId);
-            const newQuantity = parseInt(document.getElementById('orderQuantity').value) || 1;
-            const total = parseFloat(document.getElementById('orderTotal').value) || 0;
-            
-            if (!product) {
-                showToast('Producto no encontrado', 'error');
-                return;
-            }
-            
-            const orderData = {
-                customer: document.getElementById('orderCustomer').value,
-                channel: document.getElementById('orderChannel').value,
-                productId: productId,
-                productName: product.name,
-                quantity: newQuantity,
-                total: total,
-                cost: product.cost * newQuantity,
-                status: document.getElementById('orderStatus').value,
-                comments: document.getElementById('orderComments').value || '',
-                date: isEditing ? orders.find(o => o.id === orderId)?.date : new Date().toISOString()
-            };
-
-            try {
-                if (isEditing) {
-                    const oldOrder = orders.find(o => o.id === orderId);
-                    if (oldOrder && oldOrder.productId === productId) {
-                        const stockDifference = oldOrder.quantity - newQuantity;
-                        product.stock = (product.stock || 0) + stockDifference;
-                    } else if (oldOrder) {
-                        const oldProduct = products.find(p => p.id === oldOrder.productId);
-                        if (oldProduct) {
-                            oldProduct.stock = (oldProduct.stock || 0) + oldOrder.quantity;
-                        }
-                        product.stock = (product.stock || 0) - newQuantity;
-                    }
-                    
-                    const index = orders.findIndex(o => o.id === orderId);
-                    if (index !== -1) {
-                        orders[index] = { ...orders[index], ...orderData };
-                        if (isFirebaseConnected) {
-                            await saveToFirebase('orders', orders[index], orderId);
-                        }
-                        showToast('Pedido actualizado correctamente', 'success');
-                    }
-                } else {
-                    if (product.stock < newQuantity) {
-                        showToast(`Stock insuficiente. Disponible: ${product.stock}`, 'warning');
-                        return;
-                    }
-                    
-                    product.stock = (product.stock || 0) - newQuantity;
-                    
-                    let newId;
-                    if (isFirebaseConnected) {
-                        newId = await saveToFirebase('orders', orderData);
-                    } else {
-                        newId = Date.now().toString();
-                    }
-                    
-                    const newOrder = { id: newId, ...orderData };
-                    orders.push(newOrder);
-                    showToast('Pedido creado correctamente', 'success');
-                }
-                
-                if (isFirebaseConnected) {
-                    try {
-                        await saveToFirebase('products', product, product.id);
-                    } catch (error) {
-                        console.error('Error actualizando stock en Firebase:', error);
-                    }
-                }
-                
-                saveToLocalStorage();
-                closeModal('orderModal');
-                updateAllDisplays();
-                
-            } catch (error) {
-                showToast('Error al guardar pedido', 'error');
-            }
-        }
-
-        function updateOrdersTable() {
-            const tbody = document.getElementById('ordersTable');
-            
-            let ordersToShow = orders.filter(order => {
-                const matchesStatus = currentOrderStatusFilter === '' || order.status === currentOrderStatusFilter;
-                
-                let matchesDate = true;
-                if (currentOrderDateFilter) {
-                    const orderDate = new Date(order.date);
-                    const now = new Date();
-                    
-                    switch(currentOrderDateFilter) {
-                        case 'today':
-                            matchesDate = orderDate.toDateString() === now.toDateString();
-                            break;
-                        case 'week':
-                            const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-                            matchesDate = orderDate >= weekAgo;
-                            break;
-                        case 'month':
-                            const monthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
-                            matchesDate = orderDate >= monthAgo;
-                            break;
-                        case 'custom':
-                            const customDate = document.getElementById('customDateFilter').value;
-                            if (customDate) {
-                                matchesDate = orderDate.toDateString() === new Date(customDate).toDateString();
-                            }
-                            break;
-                        default:
-                            matchesDate = true;
-                    }
-                }
-                
-                return matchesStatus && matchesDate;
-            });
-            
-            if (ordersToShow.length === 0) {
-                const message = (currentOrderStatusFilter || currentOrderDateFilter) ? 
-                    'No se encontraron pedidos con los filtros seleccionados.' : 
-                    'No hay pedidos registrados. Crea tu primer pedido.';
-                tbody.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 2rem; color: #657786;">${message}</td></tr>`;
-                return;
-            }
-
-            tbody.innerHTML = ordersToShow.map(order => {
-                const profit = order.total - order.cost;
-                const statusClass = getStatusClass(order.status);
-                const comments = order.comments || '';
-                const commentDisplay = comments.length > 30 ? comments.substring(0, 30) + '...' : comments;
-                
-                return `
-                    <tr>
-                        <td>#${order.id.toString().slice(-4)}</td>
-                        <td title="${order.customer}">${order.customer}</td>
-                        <td>${order.channel}</td>
-                        <td title="${order.productName}">${order.productName}</td>
-                        <td>${formatCurrency(order.total)}</td>
-                        <td><span class="status-badge ${statusClass}" onclick="openStatusModal('${order.id}')" title="Click para cambiar estado">${getStatusLabel(order.status)}</span></td>
-                        <td title="${comments}" style="max-width: 150px; cursor: pointer;" onclick="showFullComment('${comments.replace(/'/g, "\\'")}')">
-                            ${commentDisplay || '<i style="color: #ccc;">Sin comentarios</i>'}
-                        </td>
-                        <td>${new Date(order.date).toLocaleDateString()}</td>
-                        <td class="actions">
-                            <button class="btn btn-primary
+</html>
