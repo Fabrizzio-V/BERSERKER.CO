@@ -722,7 +722,7 @@
                     </div>
                     <div class="stat-item" style="background: rgba(23, 162, 184, 0.2); border: 1px solid rgba(23, 162, 184, 0.3);">
                         <div class="stat-value" id="totalPurchases" style="color: #17a2b8;">₲0</div>
-                        <div class="stat-label" style="color: #17a2b8;">Compras</div>
+                        <div class="stat-label" style="color: #17a2b8;">Inv. Stock</div>
                     </div>
                     <div class="stat-item" style="background: rgba(231, 76, 60, 0.2); border: 1px solid rgba(231, 76, 60, 0.3);">
                         <div class="stat-value" id="totalExpenses" style="color: #e74c3c;">₲0</div>
@@ -1001,14 +1001,13 @@
                                         <th>Cantidad</th>
                                         <th>Precio Unitario</th>
                                         <th>Total</th>
-                                        <th>Tipo</th>
                                         <th>Notas</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody id="purchasesTable">
                                     <tr>
-                                        <td colspan="10" style="text-align: center; padding: 2rem; color: #657786;">
+                                        <td colspan="9" style="text-align: center; padding: 2rem; color: #657786;">
                                             No hay compras registradas. Registra tu primera compra.
                                         </td>
                                     </tr>
@@ -1273,14 +1272,6 @@
                 <div class="form-group">
                     <label>Total (₲)</label>
                     <input type="number" class="form-control" id="purchaseTotal" readonly>
-                </div>
-                <div class="form-group">
-                    <label>Tipo de Compra</label>
-                    <select class="form-control" id="purchaseType">
-                        <option value="operational">Compra Operacional (afecta ganancia)</option>
-                        <option value="historical">Inventario Inicial (no afecta ganancia)</option>
-                    </select>
-                    <small class="text-muted">Use "Inventario Inicial" para mercadería comprada antes de usar el sistema</small>
                 </div>
                 <div class="form-group">
                     <label>Notas (opcional)</label>
@@ -1703,17 +1694,13 @@
             const filteredPurchases = getPurchasesByPeriod(currentDatePeriod);
             const filteredExpenses = getExpensesByPeriod(currentDatePeriod);
             
-            // Solo incluir compras operacionales en el cálculo de ganancia neta
-            const operationalPurchases = filteredPurchases.filter(purchase => purchase.type !== 'historical');
-            
             const totalRevenue = filteredOrders.reduce((sum, order) => sum + (order.total || 0), 0);
             const totalPurchases = filteredPurchases.reduce((sum, purchase) => sum + (purchase.total || 0), 0);
-            const operationalPurchasesTotal = operationalPurchases.reduce((sum, purchase) => sum + (purchase.total || 0), 0);
             const totalExpenses = filteredExpenses.reduce((sum, expense) => sum + (expense.amount || 0), 0);
             const totalCosts = filteredOrders.reduce((sum, order) => sum + (order.cost || 0), 0);
             
-            // Ganancia neta SOLO con compras operacionales (excluye inventario inicial)
-            const netProfit = totalRevenue - totalCosts - operationalPurchasesTotal - totalExpenses;
+            // Ganancia neta SIN incluir compras (solo ingresos - costos de ventas - gastos)
+            const netProfit = totalRevenue - totalCosts - totalExpenses;
 
             document.getElementById('totalOrders').textContent = filteredOrders.length;
             document.getElementById('totalProducts').textContent = products.length;
@@ -2307,7 +2294,6 @@
             document.getElementById('purchaseQuantity').value = '1';
             document.getElementById('purchaseUnitPrice').value = '';
             document.getElementById('purchaseTotal').value = '';
-            document.getElementById('purchaseType').value = 'operational';
             document.getElementById('purchaseNotes').value = '';
             document.getElementById('purchaseDate').value = new Date().toISOString().split('T')[0];
             
@@ -2321,7 +2307,6 @@
                     document.getElementById('purchaseQuantity').value = purchase.quantity;
                     document.getElementById('purchaseUnitPrice').value = purchase.unitPrice;
                     document.getElementById('purchaseTotal').value = purchase.total;
-                    document.getElementById('purchaseType').value = purchase.type || 'operational';
                     document.getElementById('purchaseNotes').value = purchase.notes || '';
                     document.getElementById('purchaseDate').value = purchase.date;
                 }
@@ -2381,7 +2366,6 @@
                 quantity: quantity,
                 unitPrice: unitPrice,
                 total: total,
-                type: document.getElementById('purchaseType').value,
                 notes: document.getElementById('purchaseNotes').value || '',
                 date: document.getElementById('purchaseDate').value,
                 timestamp: new Date().toISOString()
@@ -2512,16 +2496,13 @@
                 const message = (currentPurchaseSupplierFilter || currentPurchaseDateFilter) ? 
                     'No se encontraron compras con los filtros seleccionados.' : 
                     'No hay compras registradas. Registra tu primera compra.';
-                tbody.innerHTML = `<tr><td colspan="10" style="text-align: center; padding: 2rem; color: #657786;">${message}</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 2rem; color: #657786;">${message}</td></tr>`;
                 return;
             }
 
             tbody.innerHTML = purchasesToShow.map(purchase => {
                 const notes = purchase.notes || '';
                 const noteDisplay = notes.length > 30 ? notes.substring(0, 30) + '...' : notes;
-                const purchaseType = purchase.type || 'operational';
-                const typeLabel = purchaseType === 'historical' ? 'Inventario Inicial' : 'Operacional';
-                const typeColor = purchaseType === 'historical' ? '#6c757d' : '#17a2b8';
                 
                 return `
                     <tr>
@@ -2532,7 +2513,6 @@
                         <td style="text-align: center;"><strong>${purchase.quantity}</strong></td>
                         <td>${formatCurrency(purchase.unitPrice)}</td>
                         <td><strong>${formatCurrency(purchase.total)}</strong></td>
-                        <td><span style="background: ${typeColor}; color: white; padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.8rem;">${typeLabel}</span></td>
                         <td title="${notes}" style="max-width: 150px; cursor: pointer;" onclick="showFullComment('${notes.replace(/'/g, "\\'")}')">
                             ${noteDisplay || '<i style="color: #ccc;">Sin notas</i>'}
                         </td>
