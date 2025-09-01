@@ -1844,10 +1844,33 @@
         function filterByDatePeriod(period) {
             currentDatePeriod = period;
             
+            // IMPORTANTE: Resetear filtros locales de pedidos cuando se cambia filtro global
+            currentOrderDateFilter = '';
+            currentOrderStatusFilter = '';
+            
+            // Actualizar botones del navbar
             document.querySelectorAll('.date-filter-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
             event.target.classList.add('active');
+            
+            // Resetear también los botones del panel de pedidos si está visible
+            const ordersSection = document.getElementById('orders');
+            if (ordersSection && ordersSection.classList.contains('active')) {
+                // Resetear botones de filtros locales
+                document.querySelectorAll('#orders .filter-chip').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                // Activar botones "Todos"
+                const allStatusBtn = document.querySelector('#orders .compact-filters .filter-group:first-child .filter-chip:first-child');
+                const allDateBtn = document.querySelector('#orders .compact-filters .filter-group:last-child .filter-chip:first-child');
+                if (allStatusBtn) allStatusBtn.classList.add('active');
+                if (allDateBtn) allDateBtn.classList.add('active');
+                
+                // Limpiar input de fecha personalizada
+                const customDateInput = document.getElementById('customDateFilter');
+                if (customDateInput) customDateInput.value = '';
+            }
             
             updateAllDisplays();
         }
@@ -2026,9 +2049,7 @@
                     updateProductsTable(); 
                     break;
                 case 'orders': 
-                    currentOrderStatusFilter = '';
-                    currentOrderDateFilter = '';
-                    document.getElementById('customDateFilter').value = '';
+                    // NO resetear filtros - mantener estado actual
                     updateOrdersTable(); 
                     break;
                 case 'purchases':
@@ -2765,16 +2786,18 @@
         function updateOrdersTable() {
             const tbody = document.getElementById('ordersTable');
             
-            // USAR EL FILTRO PRINCIPAL DEL NAVBAR, NO EL LOCAL
-            let ordersToShow = getOrdersByPeriod(currentDatePeriod);
+            // SISTEMA SIMPLIFICADO - Una sola fuente de verdad
+            let ordersToShow = orders;
             
-            // Aplicar filtro de estado
-            ordersToShow = ordersToShow.filter(order => {
-                return currentOrderStatusFilter === '' || order.status === currentOrderStatusFilter;
-            });
+            // 1. APLICAR FILTRO DE ESTADO (siempre)
+            if (currentOrderStatusFilter !== '') {
+                ordersToShow = ordersToShow.filter(order => order.status === currentOrderStatusFilter);
+            }
             
-            // Solo aplicar filtro de fecha local si NO es el filtro por defecto
+            // 2. APLICAR FILTRO DE FECHA
+            // Si hay filtro local específico, usar ese. Si no, usar el filtro global del navbar
             if (currentOrderDateFilter && currentOrderDateFilter !== '') {
+                // Usar filtro local del panel de pedidos
                 ordersToShow = ordersToShow.filter(order => {
                     const orderDate = new Date(order.date);
                     const now = new Date();
@@ -2798,6 +2821,13 @@
                             return true;
                     }
                 });
+            } else {
+                // Usar filtro global del navbar solo si no hay filtro local activo
+                ordersToShow = getOrdersByPeriod(currentDatePeriod);
+                // Aplicar nuevamente filtro de estado porque getOrdersByPeriod puede haber cambiado el array
+                if (currentOrderStatusFilter !== '') {
+                    ordersToShow = ordersToShow.filter(order => order.status === currentOrderStatusFilter);
+                }
             }
             
             if (ordersToShow.length === 0) {
