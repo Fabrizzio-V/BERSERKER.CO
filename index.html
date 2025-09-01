@@ -1728,19 +1728,34 @@
         // Función para obtener la fecha de hoy en formato correcto
         function getTodayDateString() {
             const today = new Date();
+            // Asegurar que usamos la fecha local sin problemas de zona horaria
             const year = today.getFullYear();
             const month = String(today.getMonth() + 1).padStart(2, '0');
             const day = String(today.getDate()).padStart(2, '0');
+            console.log('Fecha calculada para hoy:', `${year}-${month}-${day}`);
             return `${year}-${month}-${day}`;
         }
 
         // Función para obtener timestamp actual en formato ISO correcto para la zona horaria local
         function getCurrentTimestamp() {
+            // Usar la fecha local directamente sin conversiones complicadas
             const now = new Date();
-            // Ajustar por zona horaria para evitar problemas
-            const offset = now.getTimezoneOffset() * 60000;
-            const localTime = new Date(now.getTime() - offset);
-            return localTime.toISOString();
+            return now.toISOString();
+        }
+
+        // Función para comparar fechas sin problemas de zona horaria
+        function isSameDate(date1, date2) {
+            const d1 = new Date(date1);
+            const d2 = new Date(date2);
+            return d1.getFullYear() === d2.getFullYear() &&
+                   d1.getMonth() === d2.getMonth() &&
+                   d1.getDate() === d2.getDate();
+        }
+
+        // Función para obtener solo la fecha sin hora
+        function getDateOnly(dateString) {
+            const date = new Date(dateString);
+            return date.toISOString().split('T')[0];
         }
 
         async function initializeFirebase() {
@@ -3012,7 +3027,11 @@
             document.getElementById('purchaseUnitPrice').value = '';
             document.getElementById('purchaseTotal').value = '';
             document.getElementById('purchaseNotes').value = '';
-            document.getElementById('purchaseDate').value = getTodayDateString();
+            
+            // FORZAR fecha de hoy correcta
+            const todayString = getTodayDateString();
+            console.log('Asignando fecha de hoy:', todayString);
+            document.getElementById('purchaseDate').value = todayString;
             
             if (purchaseId) {
                 const purchase = purchases.find(p => p.id === purchaseId);
@@ -3034,6 +3053,11 @@
                 }
             } else {
                 title.textContent = 'Nueva Compra';
+                // DOBLE VERIFICACIÓN - asegurar que el input tiene la fecha correcta
+                setTimeout(() => {
+                    document.getElementById('purchaseDate').value = getTodayDateString();
+                    console.log('Fecha verificada después de timeout:', document.getElementById('purchaseDate').value);
+                }, 100);
             }
             
             modal.style.display = 'block';
@@ -3077,6 +3101,13 @@
             const unitPrice = parseFloat(document.getElementById('purchaseUnitPrice').value) || 0;
             const total = parseFloat(document.getElementById('purchaseTotal').value) || 0;
             
+            // DEBUG ESPECÍFICO PARA FECHAS
+            const dateFromInput = document.getElementById('purchaseDate').value;
+            console.log('=== DEBUG FECHA AL GUARDAR ===');
+            console.log('Fecha del input:', dateFromInput);
+            console.log('Fecha actual calculada:', getTodayDateString());
+            console.log('Timestamp actual:', getCurrentTimestamp());
+            
             if (!productName || !supplier) {
                 showToast('Debes completar el nombre del producto y proveedor', 'error');
                 return;
@@ -3090,9 +3121,12 @@
                 unitPrice: unitPrice,
                 total: total,
                 notes: document.getElementById('purchaseNotes').value || '',
-                date: document.getElementById('purchaseDate').value,
+                date: dateFromInput, // Usar exactamente lo que está en el input
                 timestamp: getCurrentTimestamp()
             };
+            
+            console.log('Datos que se van a guardar:', purchaseData);
+            console.log('================================');
 
             try {
                 // Solo actualizar stock si es un producto existente
@@ -3140,6 +3174,7 @@
                     
                     const newPurchase = { id: newId, ...purchaseData };
                     purchases.push(newPurchase);
+                    console.log('Nueva compra agregada al array:', newPurchase);
                     showToast('Compra registrada correctamente', 'success');
                 }
                 
