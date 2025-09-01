@@ -579,6 +579,164 @@
             border-left-color: #e74c3c;
         }
 
+        /* NUEVOS ESTILOS PARA PANEL DE ENTREGAS */
+        .delivery-status-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.2rem;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border-left: 4px solid #ddd;
+            cursor: pointer;
+        }
+
+        .delivery-status-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .delivery-status-card.pending {
+            border-left-color: #f39c12;
+            background: linear-gradient(135deg, #fef9e7 0%, #ffffff 100%);
+        }
+
+        .delivery-status-card.confirmed {
+            border-left-color: #3498db;
+            background: linear-gradient(135deg, #e3f2fd 0%, #ffffff 100%);
+        }
+
+        .delivery-status-card.shipped {
+            border-left-color: #9b59b6;
+            background: linear-gradient(135deg, #f3e5f5 0%, #ffffff 100%);
+        }
+
+        .delivery-status-card.urgent {
+            border-left-color: #e74c3c;
+            background: linear-gradient(135deg, #ffebee 0%, #ffffff 100%);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(231, 76, 60, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
+        }
+
+        .delivery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .delivery-item {
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+            border-left: 4px solid #ddd;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .delivery-item:hover {
+            background: #f8fafc;
+        }
+
+        .delivery-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .delivery-customer {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .delivery-date {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .delivery-product {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .delivery-total {
+            font-weight: 700;
+            color: var(--success);
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .quick-btn {
+            padding: 0.25rem 0.75rem;
+            border: none;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .quick-btn.confirm {
+            background: #3498db;
+            color: white;
+        }
+
+        .quick-btn.ship {
+            background: #9b59b6;
+            color: white;
+        }
+
+        .quick-btn.deliver {
+            background: #27ae60;
+            color: white;
+        }
+
+        .quick-btn.cancel {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .priority-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .priority-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .priority-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .priority-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
         /* Mobile responsiveness */
         @media (max-width: 768px) {
             .main-grid {
@@ -699,6 +857,14 @@
             .filter-group {
                 justify-content: center;
             }
+
+            .delivery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .priority-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -755,6 +921,7 @@
             <aside class="sidebar">
                 <ul class="sidebar-menu">
                     <li><a href="#" class="menu-item active" data-section="dashboard">📊 Dashboard</a></li>
+                    <li><a href="#" class="menu-item" data-section="delivery">🚚 Panel Entregas</a></li>
                     <li><a href="#" class="menu-item" data-section="products">🛍️ Productos</a></li>
                     <li><a href="#" class="menu-item" data-section="orders">🛒 Pedidos</a></li>
                     <li><a href="#" class="menu-item" data-section="purchases">📦 Compras</a></li>
@@ -816,6 +983,174 @@
                                 <button class="btn btn-info" onclick="openPurchaseModal()">📦 Nueva Compra</button>
                                 <button class="btn btn-danger" onclick="openExpenseModal()">💸 Registrar Gasto</button>
                                 <button class="btn btn-secondary" onclick="generateSampleData()">📊 Datos de Prueba</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Panel de Entregas -->
+                <div id="delivery" class="section">
+                    <div class="content-header">
+                        <h2>🚚 Panel de Control de Entregas</h2>
+                        <p>Controla en tiempo real el estado de todos tus pedidos y entregas</p>
+                    </div>
+                    <div class="content-body">
+                        <!-- Resumen de Estados -->
+                        <div class="stats-grid">
+                            <div class="stat-card" style="background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); color: white;">
+                                <div class="stat-value" id="deliveryPending">0</div>
+                                <div class="stat-label">Pendientes</div>
+                            </div>
+                            <div class="stat-card" style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); color: white;">
+                                <div class="stat-value" id="deliveryConfirmed">0</div>
+                                <div class="stat-label">Confirmados</div>
+                            </div>
+                            <div class="stat-card" style="background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%); color: white;">
+                                <div class="stat-value" id="deliveryShipped">0</div>
+                                <div class="stat-label">En Tránsito</div>
+                            </div>
+                            <div class="stat-card" style="background: linear-gradient(135deg, #27ae60 0%, #229954 100%); color: white;">
+                                <div class="stat-value" id="deliveryDelivered">0</div>
+                                <div class="stat-label">Entregados</div>
+                            </div>
+                        </div>
+
+                        <!-- Sección Prioritaria - Pedidos Urgentes -->
+                        <div class="priority-section" id="urgentDeliveries" style="display: none;">
+                            <div class="priority-title">
+                                🚨 ATENCIÓN - Pedidos que requieren acción inmediata
+                            </div>
+                            <div class="priority-grid" id="urgentDeliveriesGrid">
+                                <!-- Se llena dinámicamente -->
+                            </div>
+                        </div>
+
+                        <!-- Filtros -->
+                        <div class="compact-filters">
+                            <div class="filter-group">
+                                <span class="filter-label">Ver:</span>
+                                <button class="filter-chip active" onclick="filterDeliveryStatus('all')">Todos</button>
+                                <button class="filter-chip" onclick="filterDeliveryStatus('pending')">Pendientes</button>
+                                <button class="filter-chip" onclick="filterDeliveryStatus('confirmed')">Confirmados</button>
+                                <button class="filter-chip" onclick="filterDeliveryStatus('prepared')">Preparados</button>
+                                <button class="filter-chip" onclick="filterDeliveryStatus('shipped')">En Tránsito</button>
+                            </div>
+                            <div class="filter-group">
+                                <span class="filter-label">Método:</span>
+                                <button class="filter-chip active" onclick="filterDeliveryMethod('all')">Todos</button>
+                                <button class="filter-chip" onclick="filterDeliveryMethod('personal')">🚶‍♂️ Nosotros</button>
+                                <button class="filter-chip" onclick="filterDeliveryMethod('delivery')">🛵 Delivery</button>
+                                <button class="filter-chip" onclick="filterDeliveryMethod('pickup')">🏪 Recolección</button>
+                                <button class="filter-chip" onclick="filterDeliveryMethod('shipping')">📮 Envío</button>
+                            </div>
+                        </div>
+
+                        <!-- Panel Principal de Estados -->
+                        <div class="delivery-grid">
+                            <!-- PENDIENTES -->
+                            <div class="delivery-status-card pending" onclick="toggleDeliverySection('pending-section')">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <h3>⏳ PENDIENTES</h3>
+                                        <p>Esperando confirmación del cliente</p>
+                                    </div>
+                                    <div style="font-size: 2rem; font-weight: bold;" id="pendingCount">0</div>
+                                </div>
+                            </div>
+
+                            <!-- CONFIRMADOS -->
+                            <div class="delivery-status-card confirmed" onclick="toggleDeliverySection('confirmed-section')">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <h3>✅ CONFIRMADOS</h3>
+                                        <p>Listos para preparar</p>
+                                    </div>
+                                    <div style="font-size: 2rem; font-weight: bold;" id="confirmedCount">0</div>
+                                </div>
+                            </div>
+
+                            <!-- PREPARADOS -->
+                            <div class="delivery-status-card" style="border-left-color: #17a2b8; background: linear-gradient(135deg, #d1ecf1 0%, #ffffff 100%);" onclick="toggleDeliverySection('prepared-section')">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <h3>📦 PREPARADOS</h3>
+                                        <p>Listos para entregar/enviar</p>
+                                    </div>
+                                    <div style="font-size: 2rem; font-weight: bold;" id="preparedCount">0</div>
+                                </div>
+                            </div>
+
+                            <!-- EN TRÁNSITO -->
+                            <div class="delivery-status-card shipped" onclick="toggleDeliverySection('shipped-section')">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <h3>🚚 EN TRÁNSITO</h3>
+                                        <p>En camino al cliente</p>
+                                    </div>
+                                    <div style="font-size: 2rem; font-weight: bold;" id="shippedCount">0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Secciones Expandibles -->
+                        <div id="pending-section" class="card" style="display: none;">
+                            <div class="card-header">
+                                <h3>⏳ Pedidos Pendientes</h3>
+                                <button class="btn btn-secondary btn-sm" onclick="toggleDeliverySection('pending-section')">Cerrar</button>
+                            </div>
+                            <div id="pendingOrders">
+                                <!-- Se llena dinámicamente -->
+                            </div>
+                        </div>
+
+                        <div id="confirmed-section" class="card" style="display: none;">
+                            <div class="card-header">
+                                <h3>✅ Pedidos Confirmados - Por Preparar</h3>
+                                <button class="btn btn-secondary btn-sm" onclick="toggleDeliverySection('confirmed-section')">Cerrar</button>
+                            </div>
+                            <div id="confirmedOrders">
+                                <!-- Se llena dinámicamente -->
+                            </div>
+                        </div>
+
+                        <div id="prepared-section" class="card" style="display: none;">
+                            <div class="card-header">
+                                <h3>📦 Pedidos Preparados - Asignar Entrega</h3>
+                                <button class="btn btn-secondary btn-sm" onclick="toggleDeliverySection('prepared-section')">Cerrar</button>
+                            </div>
+                            <div id="preparedOrders">
+                                <!-- Se llena dinámicamente -->
+                            </div>
+                        </div>
+
+                        <div id="shipped-section" class="card" style="display: none;">
+                            <div class="card-header">
+                                <h3>🚚 Pedidos en Tránsito - Por Confirmar Entrega</h3>
+                                <button class="btn btn-secondary btn-sm" onclick="toggleDeliverySection('shipped-section')">Cerrar</button>
+                            </div>
+                            <div id="shippedOrders">
+                                <!-- Se llena dinámicamente -->
+                            </div>
+                        </div>
+
+                        <!-- Resumen de Hoy -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>📅 Resumen de Hoy</h3>
+                            </div>
+                            <div class="stats-grid">
+                                <div class="stat-card">
+                                    <div class="stat-value" id="todayNewOrders">0</div>
+                                    <div class="stat-label">Pedidos Nuevos</div>
+                                </div>
+                                <div class="stat-card" style="background: var(--gradient-success); color: white;">
+                                    <div class="stat-value" id="todayDelivered">0</div>
+                                    <div class="stat-label">Entregados Hoy</div>
+                                </div>
+                                <div class="stat-card" style="background: var(--gradient-info); color: white;">
+                                    <div class="stat-value" id="todayRevenue">₲0</div>
+                                    <div class="stat-label">Ingresos del Día</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1206,11 +1541,31 @@
                         <select class="form-control" id="orderStatus">
                             <option value="pending">Pendiente</option>
                             <option value="confirmed">Confirmado</option>
-                            <option value="shipped">Enviado</option>
+                            <option value="prepared">Preparado</option>
+                            <option value="shipped">En Tránsito</option>
                             <option value="delivered">Entregado</option>
                             <option value="cancelled">Cancelado</option>
                         </select>
                     </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Método de Entrega</label>
+                        <select class="form-control" id="orderDeliveryMethod">
+                            <option value="delivery">Delivery Tercerizado</option>
+                            <option value="personal">Entrega Personal (Nosotros)</option>
+                            <option value="pickup">Recolección en Punto</option>
+                            <option value="shipping">Envío Postal</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Responsable de Entrega</label>
+                        <input type="text" class="form-control" id="orderDeliveryPerson" placeholder="Ej: Juan, Delivery Express, Cliente">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Dirección de Entrega</label>
+                    <input type="text" class="form-control" id="orderDeliveryAddress" placeholder="Dirección completa para entrega">
                 </div>
                 <div class="form-group">
                     <label>Producto</label>
@@ -1364,6 +1719,8 @@
         let currentPurchaseSupplierFilter = '';
         let currentPurchaseDateFilter = '';
         let currentDatePeriod = 'all';
+        let currentDeliveryStatusFilter = 'all';
+        let currentDeliveryMethodFilter = 'all';
 
         document.addEventListener('DOMContentLoaded', function() {
             setupMenuNavigation();
@@ -1681,6 +2038,9 @@
                 case 'expenses': 
                     updateExpensesTable(); 
                     break;
+                case 'delivery':
+                    updateDeliveryPanel();
+                    break;
             }
         }
 
@@ -1763,7 +2123,269 @@
             updatePurchasesTable();
             updateExpensesTable();
             updatePurchasesSummary();
+            updateDeliveryPanel();
         }
+
+        // ============= NUEVAS FUNCIONES PARA PANEL DE ENTREGAS =============
+        function updateDeliveryPanel() {
+            updateDeliveryStats();
+            updateDeliverySections();
+            updateTodaySummary();
+            checkUrgentDeliveries();
+        }
+
+        function updateDeliveryStats() {
+            const pending = orders.filter(order => order.status === 'pending').length;
+            const confirmed = orders.filter(order => order.status === 'confirmed').length;
+            const prepared = orders.filter(order => order.status === 'prepared').length;
+            const shipped = orders.filter(order => order.status === 'shipped').length;
+            const delivered = orders.filter(order => order.status === 'delivered').length;
+
+            document.getElementById('deliveryPending').textContent = pending;
+            document.getElementById('deliveryConfirmed').textContent = confirmed;
+            document.getElementById('deliveryShipped').textContent = shipped;
+            document.getElementById('deliveryDelivered').textContent = delivered;
+
+            // Actualizar contadores en las tarjetas
+            document.getElementById('pendingCount').textContent = pending;
+            document.getElementById('confirmedCount').textContent = confirmed;
+            document.getElementById('preparedCount').textContent = prepared;
+            document.getElementById('shippedCount').textContent = shipped;
+        }
+
+        function updateDeliverySections() {
+            updateOrdersInSection('pending', 'pendingOrders');
+            updateOrdersInSection('confirmed', 'confirmedOrders');
+            updateOrdersInSection('prepared', 'preparedOrders');
+            updateOrdersInSection('shipped', 'shippedOrders');
+        }
+
+        function updateOrdersInSection(status, containerId) {
+            const container = document.getElementById(containerId);
+            let filteredOrders = orders.filter(order => order.status === status);
+
+            // Aplicar filtro de método de entrega si está activo
+            if (currentDeliveryMethodFilter !== 'all') {
+                filteredOrders = filteredOrders.filter(order => 
+                    (order.deliveryMethod || 'delivery') === currentDeliveryMethodFilter
+                );
+            }
+
+            if (filteredOrders.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #666; padding: 2rem;">No hay pedidos en este estado.</p>';
+                return;
+            }
+
+            container.innerHTML = filteredOrders.map(order => {
+                const orderDate = new Date(order.date);
+                const daysDiff = Math.floor((new Date() - orderDate) / (1000 * 60 * 60 * 24));
+                const isUrgent = daysDiff >= 2 && status !== 'delivered';
+                const urgentClass = isUrgent ? 'urgent' : '';
+                
+                const deliveryMethod = order.deliveryMethod || 'delivery';
+                const deliveryPerson = order.deliveryPerson || 'Sin asignar';
+                const deliveryAddress = order.deliveryAddress || 'Sin dirección';
+
+                return `
+                    <div class="delivery-item ${urgentClass}" style="border-left-color: ${getStatusColor(status)}">
+                        <div class="delivery-header">
+                            <div class="delivery-customer">${order.customer}</div>
+                            <div class="delivery-date">${orderDate.toLocaleDateString()} 
+                                ${isUrgent ? '<span style="color: #e74c3c; font-weight: bold;">⚠️ URGENTE</span>' : ''}
+                            </div>
+                        </div>
+                        <div class="delivery-product">${order.productName} (x${order.quantity})</div>
+                        <div class="delivery-total">Total: ${formatCurrency(order.total)}</div>
+                        <div style="font-size: 0.8rem; color: #666; margin: 0.5rem 0;">
+                            Canal: <strong>${order.channel}</strong> • 
+                            ${getDeliveryMethodLabel(deliveryMethod)}: <strong>${deliveryPerson}</strong>
+                        </div>
+                        <div style="font-size: 0.8rem; color: #666; margin: 0.5rem 0;">
+                            📍 ${deliveryAddress}
+                            ${order.comments ? ` • 💬 ${order.comments.substring(0, 50)}${order.comments.length > 50 ? '...' : ''}` : ''}
+                        </div>
+                        <div class="quick-actions">
+                            ${getQuickActionButtons(order, status)}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function getStatusColor(status) {
+            const colors = {
+                'pending': '#f39c12',
+                'confirmed': '#3498db',
+                'prepared': '#17a2b8',
+                'shipped': '#9b59b6',
+                'delivered': '#27ae60',
+                'cancelled': '#e74c3c'
+            };
+            return colors[status] || '#ddd';
+        }
+
+        function getDeliveryMethodLabel(method) {
+            const labels = {
+                'delivery': '🛵 Delivery',
+                'personal': '🚶‍♂️ Nosotros',
+                'pickup': '🏪 Recolección',
+                'shipping': '📮 Envío'
+            };
+            return labels[method] || '🛵 Delivery';
+        }
+
+        function getQuickActionButtons(order, currentStatus) {
+            let buttons = '';
+            
+            switch(currentStatus) {
+                case 'pending':
+                    buttons = `
+                        <button class="quick-btn confirm" onclick="quickUpdateStatus('${order.id}', 'confirmed')">✅ Confirmar</button>
+                        <button class="quick-btn cancel" onclick="quickUpdateStatus('${order.id}', 'cancelled')">❌ Cancelar</button>
+                    `;
+                    break;
+                case 'confirmed':
+                    buttons = `
+                        <button class="quick-btn ship" onclick="quickUpdateStatus('${order.id}', 'shipped')">🚚 Enviar</button>
+                        <button class="quick-btn cancel" onclick="quickUpdateStatus('${order.id}', 'cancelled')">❌ Cancelar</button>
+                    `;
+                    break;
+                case 'shipped':
+                    buttons = `
+                        <button class="quick-btn deliver" onclick="quickUpdateStatus('${order.id}', 'delivered')">✅ Entregado</button>
+                        <button class="quick-btn cancel" onclick="quickUpdateStatus('${order.id}', 'cancelled')">❌ Cancelar</button>
+                    `;
+                    break;
+            }
+            
+            buttons += `<button class="quick-btn" onclick="openOrderModal('${order.id}')" style="background: #6c757d; color: white;">✏️ Editar</button>`;
+            return buttons;
+        }
+
+        function updateTodaySummary() {
+            const today = new Date().toDateString();
+            const todayOrders = orders.filter(order => new Date(order.date).toDateString() === today);
+            const todayDelivered = orders.filter(order => 
+                order.status === 'delivered' && new Date(order.date).toDateString() === today
+            );
+            const todayRevenue = todayDelivered.reduce((sum, order) => sum + (order.total || 0), 0);
+
+            document.getElementById('todayNewOrders').textContent = todayOrders.length;
+            document.getElementById('todayDelivered').textContent = todayDelivered.length;
+            document.getElementById('todayRevenue').textContent = formatCurrency(todayRevenue);
+        }
+
+        function checkUrgentDeliveries() {
+            const urgentOrders = orders.filter(order => {
+                if (order.status === 'delivered' || order.status === 'cancelled') return false;
+                const orderDate = new Date(order.date);
+                const daysDiff = Math.floor((new Date() - orderDate) / (1000 * 60 * 60 * 24));
+                return daysDiff >= 2;
+            });
+
+            const urgentSection = document.getElementById('urgentDeliveries');
+            const urgentGrid = document.getElementById('urgentDeliveriesGrid');
+
+            if (urgentOrders.length > 0) {
+                urgentSection.style.display = 'block';
+                urgentGrid.innerHTML = urgentOrders.map(order => {
+                    const daysDiff = Math.floor((new Date() - new Date(order.date)) / (1000 * 60 * 60 * 24));
+                    return `
+                        <div class="priority-item">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                <strong>${order.customer}</strong>
+                                <span style="background: rgba(255,255,255,0.3); padding: 0.2rem 0.5rem; border-radius: 10px;">
+                                    ${daysDiff} días
+                                </span>
+                            </div>
+                            <div style="margin-bottom: 0.5rem;">${order.productName}</div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span>${formatCurrency(order.total)}</span>
+                                <div style="display: flex; gap: 0.3rem;">
+                                    <button class="quick-btn" onclick="quickUpdateStatus('${order.id}', '${getNextStatus(order.status)}')" style="background: rgba(255,255,255,0.2); color: white; font-size: 0.7rem;">
+                                        ${getNextStatusLabel(order.status)}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } else {
+                urgentSection.style.display = 'none';
+            }
+        }
+
+        function getNextStatus(currentStatus) {
+            const statusFlow = {
+                'pending': 'confirmed',
+                'confirmed': 'shipped',
+                'shipped': 'delivered'
+            };
+            return statusFlow[currentStatus] || currentStatus;
+        }
+
+        function getNextStatusLabel(currentStatus) {
+            const labels = {
+                'pending': '✅ Confirmar',
+                'confirmed': '🚚 Enviar',
+                'shipped': '✅ Entregar'
+            };
+            return labels[currentStatus] || 'Actualizar';
+        }
+
+        async function quickUpdateStatus(orderId, newStatus) {
+            const orderIndex = orders.findIndex(o => o.id === orderId);
+            if (orderIndex !== -1) {
+                const oldStatus = orders[orderIndex].status;
+                orders[orderIndex].status = newStatus;
+                
+                try {
+                    if (isFirebaseConnected) {
+                        await saveToFirebase('orders', orders[orderIndex], orderId);
+                    }
+                    
+                    saveToLocalStorage();
+                    updateAllDisplays();
+                    
+                    showToast(`Pedido ${getStatusLabel(newStatus).toLowerCase()} correctamente`, 'success');
+                    
+                } catch (error) {
+                    orders[orderIndex].status = oldStatus; // Revertir cambio
+                    showToast('Error al actualizar estado', 'error');
+                }
+            }
+        }
+
+        function toggleDeliverySection(sectionId) {
+            const section = document.getElementById(sectionId);
+            const isVisible = section.style.display !== 'none';
+            
+            // Cerrar todas las secciones
+            document.querySelectorAll('#pending-section, #confirmed-section, #shipped-section').forEach(s => {
+                s.style.display = 'none';
+            });
+            
+            // Abrir la sección solicitada si no estaba visible
+            if (!isVisible) {
+                section.style.display = 'block';
+                section.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+        function filterDeliveryStatus(status) {
+            currentDeliveryStatusFilter = status;
+            
+            // Actualizar botones activos
+            document.querySelectorAll('#delivery .filter-chip').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Por ahora solo actualiza la vista, puedes expandir esta funcionalidad
+            updateDeliveryPanel();
+        }
+
+        // ============= FIN DE FUNCIONES DEL PANEL DE ENTREGAS =============
 
         function openProductModal(productId = null) {
             const modal = document.getElementById('productModal');
