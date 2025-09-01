@@ -1844,34 +1844,12 @@
         function filterByDatePeriod(period) {
             currentDatePeriod = period;
             
-            // IMPORTANTE: Resetear filtros locales de pedidos cuando se cambia filtro global
-            currentOrderDateFilter = '';
-            currentOrderStatusFilter = '';
-            
-            // Actualizar botones del navbar
             document.querySelectorAll('.date-filter-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
             event.target.classList.add('active');
             
-            // Resetear también los botones del panel de pedidos si está visible
-            const ordersSection = document.getElementById('orders');
-            if (ordersSection && ordersSection.classList.contains('active')) {
-                // Resetear botones de filtros locales
-                document.querySelectorAll('#orders .filter-chip').forEach(btn => {
-                    btn.classList.remove('active');
-                });
-                // Activar botones "Todos"
-                const allStatusBtn = document.querySelector('#orders .compact-filters .filter-group:first-child .filter-chip:first-child');
-                const allDateBtn = document.querySelector('#orders .compact-filters .filter-group:last-child .filter-chip:first-child');
-                if (allStatusBtn) allStatusBtn.classList.add('active');
-                if (allDateBtn) allDateBtn.classList.add('active');
-                
-                // Limpiar input de fecha personalizada
-                const customDateInput = document.getElementById('customDateFilter');
-                if (customDateInput) customDateInput.value = '';
-            }
-            
+            // SOLO actualizar displays, NO resetear filtros locales
             updateAllDisplays();
         }
 
@@ -2786,35 +2764,43 @@
         function updateOrdersTable() {
             const tbody = document.getElementById('ordersTable');
             
-            // SISTEMA SIMPLIFICADO - Una sola fuente de verdad
-            let ordersToShow = orders;
+            // SISTEMA COMPLETAMENTE NUEVO - SIMPLE Y DIRECTO
+            console.log('=== DEBUG FILTROS ===');
+            console.log('Total orders:', orders.length);
+            console.log('Navbar filter (currentDatePeriod):', currentDatePeriod);
+            console.log('Status filter (currentOrderStatusFilter):', currentOrderStatusFilter);
+            console.log('Date filter (currentOrderDateFilter):', currentOrderDateFilter);
             
-            // 1. APLICAR FILTRO DE ESTADO (siempre)
-            if (currentOrderStatusFilter !== '') {
-                ordersToShow = ordersToShow.filter(order => order.status === currentOrderStatusFilter);
-            }
+            let ordersToShow = [...orders]; // Copia del array original
             
-            // 2. APLICAR FILTRO DE FECHA
-            // Si hay filtro local específico, usar ese. Si no, usar el filtro global del navbar
+            // PASO 1: Aplicar filtro de fecha (SOLO UNO)
             if (currentOrderDateFilter && currentOrderDateFilter !== '') {
-                // Usar filtro local del panel de pedidos
+                // Si hay filtro local específico del panel, usar ESE
+                console.log('Usando filtro LOCAL de fecha:', currentOrderDateFilter);
                 ordersToShow = ordersToShow.filter(order => {
                     const orderDate = new Date(order.date);
-                    const now = new Date();
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0); // Resetear horas para comparación exacta
                     
                     switch(currentOrderDateFilter) {
                         case 'today':
-                            return orderDate.toDateString() === now.toDateString();
+                            const orderDay = new Date(orderDate);
+                            orderDay.setHours(0, 0, 0, 0);
+                            return orderDay.getTime() === today.getTime();
                         case 'week':
-                            const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                            const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
                             return orderDate >= weekAgo;
                         case 'month':
-                            const monthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+                            const monthAgo = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
                             return orderDate >= monthAgo;
                         case 'custom':
                             const customDate = document.getElementById('customDateFilter').value;
                             if (customDate) {
-                                return orderDate.toDateString() === new Date(customDate).toDateString();
+                                const customDay = new Date(customDate);
+                                customDay.setHours(0, 0, 0, 0);
+                                const orderDay2 = new Date(orderDate);
+                                orderDay2.setHours(0, 0, 0, 0);
+                                return orderDay2.getTime() === customDay.getTime();
                             }
                             return true;
                         default:
@@ -2822,12 +2808,75 @@
                     }
                 });
             } else {
-                // Usar filtro global del navbar solo si no hay filtro local activo
-                ordersToShow = getOrdersByPeriod(currentDatePeriod);
-                // Aplicar nuevamente filtro de estado porque getOrdersByPeriod puede haber cambiado el array
-                if (currentOrderStatusFilter !== '') {
-                    ordersToShow = ordersToShow.filter(order => order.status === currentOrderStatusFilter);
+                // Si NO hay filtro local, usar el filtro del navbar
+                console.log('Usando filtro NAVBAR de fecha:', currentDatePeriod);
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                
+                switch(currentDatePeriod) {
+                    case 'today':
+                        ordersToShow = ordersToShow.filter(order => {
+                            const orderDay = new Date(order.date);
+                            orderDay.setHours(0, 0, 0, 0);
+                            return orderDay.getTime() === today.getTime();
+                        });
+                        break;
+                    case 'yesterday':
+                        const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
+                        ordersToShow = ordersToShow.filter(order => {
+                            const orderDay = new Date(order.date);
+                            orderDay.setHours(0, 0, 0, 0);
+                            return orderDay.getTime() === yesterday.getTime();
+                        });
+                        break;
+                    case 'week':
+                        const weekStart = new Date(today.getTime() - (today.getDay() * 24 * 60 * 60 * 1000));
+                        ordersToShow = ordersToShow.filter(order => new Date(order.date) >= weekStart);
+                        break;
+                    case 'lastWeek':
+                        const lastWeekEnd = new Date(today.getTime() - (today.getDay() * 24 * 60 * 60 * 1000) - 1);
+                        const lastWeekStart = new Date(lastWeekEnd.getTime() - (6 * 24 * 60 * 60 * 1000));
+                        ordersToShow = ordersToShow.filter(order => {
+                            const orderDate = new Date(order.date);
+                            return orderDate >= lastWeekStart && orderDate <= lastWeekEnd;
+                        });
+                        break;
+                    case 'month':
+                        const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
+                        ordersToShow = ordersToShow.filter(order => new Date(order.date) >= monthStart);
+                        break;
+                    case 'lastMonth':
+                        const lastMonthStart = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+                        const lastMonthEnd = new Date(today.getFullYear(), today.getMonth(), 0);
+                        ordersToShow = ordersToShow.filter(order => {
+                            const orderDate = new Date(order.date);
+                            return orderDate >= lastMonthStart && orderDate <= lastMonthEnd;
+                        });
+                        break;
+                    case 'all':
+                    default:
+                        // No filtrar por fecha
+                        break;
                 }
+            }
+            
+            console.log('Después de filtro de fecha:', ordersToShow.length);
+            
+            // PASO 2: Aplicar filtro de estado
+            if (currentOrderStatusFilter && currentOrderStatusFilter !== '') {
+                ordersToShow = ordersToShow.filter(order => order.status === currentOrderStatusFilter);
+                console.log('Después de filtro de estado:', ordersToShow.length);
+            }
+            
+            console.log('RESULTADO FINAL:', ordersToShow.length, 'pedidos');
+            console.log('=====================');
+            
+            if (ordersToShow.length === 0) {
+                const message = (currentOrderStatusFilter || currentOrderDateFilter || currentDatePeriod !== 'all') ? 
+                    'No se encontraron pedidos con los filtros seleccionados.' : 
+                    'No hay pedidos registrados. Crea tu primer pedido.';
+                tbody.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 2rem; color: #657786;">${message}</td></tr>`;
+                return;
             }
             
             if (ordersToShow.length === 0) {
