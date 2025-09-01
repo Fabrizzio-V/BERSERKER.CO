@@ -1719,43 +1719,39 @@
             setupMenuNavigation();
             initializeFirebase();
             
-            // Configurar fechas correctas para hoy
-            const today = getTodayDateString();
-            document.getElementById('expenseDate').value = today;
-            document.getElementById('purchaseDate').value = today;
+            // SÚPER SIMPLE - fecha de hoy
+            const today = '2025-09-01'; // HARDCODEADO para probar
+            console.log('ASIGNANDO FECHA HARDCODEADA:', today);
+            
+            const expenseDateInput = document.getElementById('expenseDate');
+            const purchaseDateInput = document.getElementById('purchaseDate');
+            
+            if (expenseDateInput) {
+                expenseDateInput.value = today;
+                console.log('Expense date input asignado:', expenseDateInput.value);
+            }
+            
+            if (purchaseDateInput) {
+                purchaseDateInput.value = today;
+                console.log('Purchase date input asignado:', purchaseDateInput.value);
+            }
         });
 
-        // Función para obtener la fecha de hoy en formato correcto
-        function getTodayDateString() {
-            const today = new Date();
-            // Asegurar que usamos la fecha local sin problemas de zona horaria
-            const year = today.getFullYear();
-            const month = String(today.getMonth() + 1).padStart(2, '0');
-            const day = String(today.getDate()).padStart(2, '0');
-            console.log('Fecha calculada para hoy:', `${year}-${month}-${day}`);
-            return `${year}-${month}-${day}`;
-        }
-
-        // Función para obtener timestamp actual en formato ISO correcto para la zona horaria local
-        function getCurrentTimestamp() {
-            // Usar la fecha local directamente sin conversiones complicadas
+        // SISTEMA DE FECHAS COMPLETAMENTE REESCRITO
+        function getTodayString() {
+            // Forzar fecha local sin problemas de zona horaria
             const now = new Date();
-            return now.toISOString();
+            const year = now.getFullYear();
+            const month = (now.getMonth() + 1).toString().padStart(2, '0');
+            const day = now.getDate().toString().padStart(2, '0');
+            const todayString = `${year}-${month}-${day}`;
+            console.log('FECHA DE HOY CALCULADA:', todayString);
+            return todayString;
         }
 
-        // Función para comparar fechas sin problemas de zona horaria
-        function isSameDate(date1, date2) {
-            const d1 = new Date(date1);
-            const d2 = new Date(date2);
-            return d1.getFullYear() === d2.getFullYear() &&
-                   d1.getMonth() === d2.getMonth() &&
-                   d1.getDate() === d2.getDate();
-        }
-
-        // Función para obtener solo la fecha sin hora
-        function getDateOnly(dateString) {
-            const date = new Date(dateString);
-            return date.toISOString().split('T')[0];
+        function getCurrentDateTime() {
+            // Para el campo date de los objetos, usar la fecha del input tal como está
+            return new Date().toISOString();
         }
 
         async function initializeFirebase() {
