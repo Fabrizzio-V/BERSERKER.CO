@@ -1233,6 +1233,7 @@
                                 <button class="filter-chip active" onclick="filterOrdersByStatus('')">Todos</button>
                                 <button class="filter-chip" onclick="filterOrdersByStatus('pending')">Pendiente</button>
                                 <button class="filter-chip" onclick="filterOrdersByStatus('confirmed')">Confirmado</button>
+                                <button class="filter-chip" onclick="filterOrdersByStatus('prepared')">Preparado</button>
                                 <button class="filter-chip" onclick="filterOrdersByStatus('shipped')">Enviado</button>
                                 <button class="filter-chip" onclick="filterOrdersByStatus('delivered')">Entregado</button>
                                 <button class="filter-chip" onclick="filterOrdersByStatus('cancelled')">Cancelado</button>
@@ -1685,6 +1686,7 @@
                 <select class="form-control" id="newOrderStatus">
                     <option value="pending">Pendiente</option>
                     <option value="confirmed">Confirmado</option>
+                    <option value="prepared">Preparado</option>
                     <option value="shipped">Enviado</option>
                     <option value="delivered">Entregado</option>
                     <option value="cancelled">Cancelado</option>
@@ -2361,7 +2363,7 @@
             const isVisible = section.style.display !== 'none';
             
             // Cerrar todas las secciones
-            document.querySelectorAll('#pending-section, #confirmed-section, #shipped-section').forEach(s => {
+            document.querySelectorAll('#pending-section, #confirmed-section, #prepared-section, #shipped-section').forEach(s => {
                 s.style.display = 'none';
             });
             
@@ -2597,6 +2599,9 @@
             document.getElementById('orderQuantity').value = '1';
             document.getElementById('orderTotal').value = '';
             document.getElementById('orderStatus').value = 'pending';
+            document.getElementById('orderDeliveryMethod').value = 'delivery';
+            document.getElementById('orderDeliveryPerson').value = '';
+            document.getElementById('orderDeliveryAddress').value = '';
             document.getElementById('orderComments').value = '';
             
             if (orderId) {
@@ -2610,6 +2615,9 @@
                     document.getElementById('orderQuantity').value = order.quantity;
                     document.getElementById('orderTotal').value = order.total;
                     document.getElementById('orderStatus').value = order.status;
+                    document.getElementById('orderDeliveryMethod').value = order.deliveryMethod || 'delivery';
+                    document.getElementById('orderDeliveryPerson').value = order.deliveryPerson || '';
+                    document.getElementById('orderDeliveryAddress').value = order.deliveryAddress || '';
                     document.getElementById('orderComments').value = order.comments || '';
                 }
             } else {
@@ -2688,6 +2696,9 @@
                 total: total,
                 cost: product.cost * newQuantity,
                 status: document.getElementById('orderStatus').value,
+                deliveryMethod: document.getElementById('orderDeliveryMethod').value,
+                deliveryPerson: document.getElementById('orderDeliveryPerson').value,
+                deliveryAddress: document.getElementById('orderDeliveryAddress').value,
                 comments: document.getElementById('orderComments').value || '',
                 date: isEditing ? orders.find(o => o.id === orderId)?.date : new Date().toISOString()
             };
@@ -2754,39 +2765,40 @@
         function updateOrdersTable() {
             const tbody = document.getElementById('ordersTable');
             
-            let ordersToShow = orders.filter(order => {
-                const matchesStatus = currentOrderStatusFilter === '' || order.status === currentOrderStatusFilter;
-                
-                let matchesDate = true;
-                if (currentOrderDateFilter) {
+            // USAR EL FILTRO PRINCIPAL DEL NAVBAR, NO EL LOCAL
+            let ordersToShow = getOrdersByPeriod(currentDatePeriod);
+            
+            // Aplicar filtro de estado
+            ordersToShow = ordersToShow.filter(order => {
+                return currentOrderStatusFilter === '' || order.status === currentOrderStatusFilter;
+            });
+            
+            // Solo aplicar filtro de fecha local si NO es el filtro por defecto
+            if (currentOrderDateFilter && currentOrderDateFilter !== '') {
+                ordersToShow = ordersToShow.filter(order => {
                     const orderDate = new Date(order.date);
                     const now = new Date();
                     
                     switch(currentOrderDateFilter) {
                         case 'today':
-                            matchesDate = orderDate.toDateString() === now.toDateString();
-                            break;
+                            return orderDate.toDateString() === now.toDateString();
                         case 'week':
                             const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-                            matchesDate = orderDate >= weekAgo;
-                            break;
+                            return orderDate >= weekAgo;
                         case 'month':
                             const monthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
-                            matchesDate = orderDate >= monthAgo;
-                            break;
+                            return orderDate >= monthAgo;
                         case 'custom':
                             const customDate = document.getElementById('customDateFilter').value;
                             if (customDate) {
-                                matchesDate = orderDate.toDateString() === new Date(customDate).toDateString();
+                                return orderDate.toDateString() === new Date(customDate).toDateString();
                             }
-                            break;
+                            return true;
                         default:
-                            matchesDate = true;
+                            return true;
                     }
-                }
-                
-                return matchesStatus && matchesDate;
-            });
+                });
+            }
             
             if (ordersToShow.length === 0) {
                 const message = (currentOrderStatusFilter || currentOrderDateFilter) ? 
@@ -2843,7 +2855,12 @@
         function filterOrdersByDate(dateType) {
             currentOrderDateFilter = dateType;
             
-            document.querySelectorAll('.compact-filters .filter-group:last-child .filter-chip').forEach(btn => {
+            // Si se selecciona un filtro local, desactivar el filtro del navbar temporalmente
+            if (dateType && dateType !== '') {
+                console.log('Aplicando filtro local de fecha:', dateType);
+            }
+            
+            document.querySelectorAll('#orders .compact-filters .filter-group:last-child .filter-chip').forEach(btn => {
                 btn.classList.remove('active');
             });
             
@@ -2852,7 +2869,7 @@
             } else {
                 const customDateInput = document.getElementById('customDateFilter');
                 if (customDateInput.value) {
-                    document.querySelector('.filter-chip[onclick="filterOrdersByDate(\'custom\')"]').classList.add('active');
+                    document.querySelector('#orders .filter-chip[onclick="filterOrdersByDate(\'custom\')"]').classList.add('active');
                 }
             }
             
@@ -2874,6 +2891,7 @@
             const labels = {
                 'pending': 'Pendiente',
                 'confirmed': 'Confirmado',
+                'prepared': 'Preparado',
                 'shipped': 'Enviado',
                 'delivered': 'Entregado',
                 'cancelled': 'Cancelado'
