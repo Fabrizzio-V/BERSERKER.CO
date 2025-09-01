@@ -1718,9 +1718,30 @@
         document.addEventListener('DOMContentLoaded', function() {
             setupMenuNavigation();
             initializeFirebase();
-            document.getElementById('expenseDate').value = new Date().toISOString().split('T')[0];
-            document.getElementById('purchaseDate').value = new Date().toISOString().split('T')[0];
+            
+            // Configurar fechas correctas para hoy
+            const today = getTodayDateString();
+            document.getElementById('expenseDate').value = today;
+            document.getElementById('purchaseDate').value = today;
         });
+
+        // Función para obtener la fecha de hoy en formato correcto
+        function getTodayDateString() {
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        // Función para obtener timestamp actual en formato ISO correcto para la zona horaria local
+        function getCurrentTimestamp() {
+            const now = new Date();
+            // Ajustar por zona horaria para evitar problemas
+            const offset = now.getTimezoneOffset() * 60000;
+            const localTime = new Date(now.getTime() - offset);
+            return localTime.toISOString();
+        }
 
         async function initializeFirebase() {
             showSyncStatus('Conectando a Firebase...', false);
@@ -2433,7 +2454,7 @@
                 minStock: parseInt(document.getElementById('productMinStock').value) || 5,
                 cost: parseFloat(document.getElementById('productCost').value) || 0,
                 price: parseFloat(document.getElementById('productPrice').value) || 0,
-                timestamp: new Date().toISOString()
+                timestamp: getCurrentTimestamp()
             };
 
             try {
@@ -2699,7 +2720,7 @@
                 deliveryPerson: document.getElementById('orderDeliveryPerson').value,
                 deliveryAddress: document.getElementById('orderDeliveryAddress').value,
                 comments: document.getElementById('orderComments').value || '',
-                date: isEditing ? orders.find(o => o.id === orderId)?.date : new Date().toISOString()
+                date: isEditing ? orders.find(o => o.id === orderId)?.date : getCurrentTimestamp()
             };
 
             try {
@@ -2991,7 +3012,7 @@
             document.getElementById('purchaseUnitPrice').value = '';
             document.getElementById('purchaseTotal').value = '';
             document.getElementById('purchaseNotes').value = '';
-            document.getElementById('purchaseDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('purchaseDate').value = getTodayDateString();
             
             if (purchaseId) {
                 const purchase = purchases.find(p => p.id === purchaseId);
@@ -3070,7 +3091,7 @@
                 total: total,
                 notes: document.getElementById('purchaseNotes').value || '',
                 date: document.getElementById('purchaseDate').value,
-                timestamp: new Date().toISOString()
+                timestamp: getCurrentTimestamp()
             };
 
             try {
@@ -3291,7 +3312,7 @@
             document.getElementById('expenseDescription').value = '';
             document.getElementById('expenseCategory').value = 'marketing';
             document.getElementById('expenseAmount').value = '';
-            document.getElementById('expenseDate').value = new Date().toISOString().split('T')[0];
+            document.getElementById('expenseDate').value = getTodayDateString();
             
             if (expenseId) {
                 const expense = expenses.find(e => e.id === expenseId);
@@ -3320,7 +3341,7 @@
                 category: document.getElementById('expenseCategory').value,
                 amount: parseFloat(document.getElementById('expenseAmount').value) || 0,
                 date: document.getElementById('expenseDate').value,
-                timestamp: new Date().toISOString()
+                timestamp: getCurrentTimestamp()
             };
 
             try {
@@ -3424,9 +3445,9 @@
             ];
 
             const sampleExpenses = [
-                { description: 'Facebook Ads - Campaña Octubre', category: 'marketing', amount: 150000, date: '2024-11-01' },
-                { description: 'Comisión Mercado Libre', category: 'plataforma', amount: 8500, date: '2024-11-02' },
-                { description: 'Envío Express', category: 'envios', amount: 25000, date: '2024-11-03' }
+                { description: 'Facebook Ads - Campaña Octubre', category: 'marketing', amount: 150000, date: getTodayDateString() },
+                { description: 'Comisión Mercado Libre', category: 'plataforma', amount: 8500, date: getTodayDateString() },
+                { description: 'Envío Express', category: 'envios', amount: 25000, date: getTodayDateString() }
             ];
 
             try {
@@ -3441,20 +3462,30 @@
                     products.push({ id: newId, ...productData });
                 }
 
-                // Agregar compras de ejemplo
+                // Agregar compras de ejemplo con fechas relativas correctas
+                const today = new Date();
+                const getDaysAgo = (days) => {
+                    const date = new Date(today);
+                    date.setDate(date.getDate() - days);
+                    const year = date.getFullYear();
+                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                    const day = String(date.getDate()).padStart(2, '0');
+                    return `${year}-${month}-${day}`;
+                };
+
                 const samplePurchases = [
-                    { productId: products[0]?.id, productName: 'Auriculares Bluetooth', supplier: 'TechSupplier', quantity: 15, unitPrice: 45000, total: 675000, type: 'historical', notes: 'Inventario inicial - compra anterior al sistema', date: new Date(Date.now() - 86400000 * 30).toISOString().split('T')[0] },
-                    { productId: products[1]?.id, productName: 'Camiseta Deportiva', supplier: 'SportWear Co', quantity: 30, unitPrice: 25000, total: 750000, type: 'historical', notes: 'Stock inicial previo al sistema', date: new Date(Date.now() - 86400000 * 25).toISOString().split('T')[0] },
-                    { productId: products[2]?.id, productName: 'Lámpara LED', supplier: 'HomeDecor', quantity: 10, unitPrice: 35000, total: 350000, type: 'operational', notes: 'Primera compra operacional', date: new Date(Date.now() - 86400000 * 5).toISOString().split('T')[0] },
-                    { productId: products[3]?.id, productName: 'Mochila Táctica', supplier: 'OutdoorGear', quantity: 5, unitPrice: 55000, total: 275000, type: 'operational', notes: 'Restock operacional', date: new Date(Date.now() - 86400000 * 2).toISOString().split('T')[0] }
+                    { productId: products[0]?.id, productName: 'Auriculares Bluetooth', supplier: 'TechSupplier', quantity: 15, unitPrice: 45000, total: 675000, type: 'historical', notes: 'Inventario inicial - compra anterior al sistema', date: getDaysAgo(30) },
+                    { productId: products[1]?.id, productName: 'Camiseta Deportiva', supplier: 'SportWear Co', quantity: 30, unitPrice: 25000, total: 750000, type: 'historical', notes: 'Stock inicial previo al sistema', date: getDaysAgo(25) },
+                    { productId: products[2]?.id, productName: 'Lámpara LED', supplier: 'HomeDecor', quantity: 10, unitPrice: 35000, total: 350000, type: 'operational', notes: 'Primera compra operacional', date: getDaysAgo(5) },
+                    { productId: products[3]?.id, productName: 'Mochila Táctica', supplier: 'OutdoorGear', quantity: 5, unitPrice: 55000, total: 275000, type: 'operational', notes: 'Restock operacional', date: getDaysAgo(2) }
                 ];
 
-                // Agregar pedidos de ejemplo
+                // Agregar pedidos de ejemplo con fechas relativas correctas
                 const sampleOrders = [
-                    { customer: 'María González', channel: 'facebook', productId: products[0]?.id, productName: 'Auriculares Bluetooth', quantity: 1, total: 89000, cost: 45000, status: 'delivered', comments: 'Cliente pidió entrega urgente. Completado exitosamente.', date: new Date(Date.now() - 86400000 * 2).toISOString() },
-                    { customer: 'Carlos Rodríguez', channel: 'instagram', productId: products[1]?.id, productName: 'Camiseta Deportiva', quantity: 2, total: 110000, cost: 50000, status: 'shipped', comments: 'Envío a sucursal. Número de seguimiento: ABC123', date: new Date(Date.now() - 86400000 * 1).toISOString() },
-                    { customer: 'Ana López', channel: 'whatsapp', productId: products[2]?.id, productName: 'Lámpara LED', quantity: 1, total: 75000, cost: 35000, status: 'confirmed', comments: 'Verificar color antes de enviar', date: new Date().toISOString() },
-                    { customer: 'Pedro Martínez', channel: 'marketplace', productId: products[3]?.id, productName: 'Mochila Táctica', quantity: 1, total: 120000, cost: 55000, status: 'pending', comments: '', date: new Date().toISOString() }
+                    { customer: 'María González', channel: 'facebook', productId: products[0]?.id, productName: 'Auriculares Bluetooth', quantity: 1, total: 89000, cost: 45000, status: 'delivered', comments: 'Cliente pidió entrega urgente. Completado exitosamente.', date: getCurrentTimestamp() },
+                    { customer: 'Carlos Rodríguez', channel: 'instagram', productId: products[1]?.id, productName: 'Camiseta Deportiva', quantity: 2, total: 110000, cost: 50000, status: 'shipped', comments: 'Envío a sucursal. Número de seguimiento: ABC123', date: getCurrentTimestamp() },
+                    { customer: 'Ana López', channel: 'whatsapp', productId: products[2]?.id, productName: 'Lámpara LED', quantity: 1, total: 75000, cost: 35000, status: 'confirmed', comments: 'Verificar color antes de enviar', date: getCurrentTimestamp() },
+                    { customer: 'Pedro Martínez', channel: 'marketplace', productId: products[3]?.id, productName: 'Mochila Táctica', quantity: 1, total: 120000, cost: 55000, status: 'pending', comments: '', date: getCurrentTimestamp() }
                 ];
 
                 // Guardar compras
