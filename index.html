@@ -1754,6 +1754,10 @@
             return new Date().toISOString();
         }
 
+        function getCurrentTimestamp() {
+            return new Date().toISOString();
+        }
+
         async function initializeFirebase() {
             showSyncStatus('Conectando a Firebase...', false);
             showLoading(true);
@@ -2418,6 +2422,18 @@
             updateDeliveryPanel();
         }
 
+        function filterDeliveryMethod(method) {
+            currentDeliveryMethodFilter = method;
+            
+            // Actualizar botones activos
+            document.querySelectorAll('#delivery .filter-group:last-child .filter-chip').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            updateDeliveryPanel();
+        }
+
         // ============= FIN DE FUNCIONES DEL PANEL DE ENTREGAS =============
 
         function openProductModal(productId = null) {
@@ -2872,14 +2888,6 @@
                 tbody.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 2rem; color: #657786;">${message}</td></tr>`;
                 return;
             }
-            
-            if (ordersToShow.length === 0) {
-                const message = (currentOrderStatusFilter || currentOrderDateFilter) ? 
-                    'No se encontraron pedidos con los filtros seleccionados.' : 
-                    'No hay pedidos registrados. Crea tu primer pedido.';
-                tbody.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 2rem; color: #657786;">${message}</td></tr>`;
-                return;
-            }
 
             tbody.innerHTML = ordersToShow.map(order => {
                 const profit = order.total - order.cost;
@@ -2921,30 +2929,6 @@
                 btn.classList.remove('active');
             });
             event.target.classList.add('active');
-            
-            updateOrdersTable();
-        }
-
-        function filterOrdersByDate(dateType) {
-            currentOrderDateFilter = dateType;
-            
-            // Si se selecciona un filtro local, desactivar el filtro del navbar temporalmente
-            if (dateType && dateType !== '') {
-                console.log('Aplicando filtro local de fecha:', dateType);
-            }
-            
-            document.querySelectorAll('#orders .compact-filters .filter-group:last-child .filter-chip').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            if (dateType !== 'custom') {
-                event.target.classList.add('active');
-            } else {
-                const customDateInput = document.getElementById('customDateFilter');
-                if (customDateInput.value) {
-                    document.querySelector('#orders .filter-chip[onclick="filterOrdersByDate(\'custom\')"]').classList.add('active');
-                }
-            }
             
             updateOrdersTable();
         }
@@ -3010,6 +2994,7 @@
             });
         }
 
+        // FUNCIÓN CORREGIDA - usar getTodayString() en lugar de getTodayDateString()
         function openPurchaseModal(purchaseId = null) {
             const modal = document.getElementById('purchaseModal');
             const title = document.getElementById('purchaseModalTitle');
@@ -3024,8 +3009,8 @@
             document.getElementById('purchaseTotal').value = '';
             document.getElementById('purchaseNotes').value = '';
             
-            // FORZAR fecha de hoy correcta
-            const todayString = getTodayDateString();
+            // CORRECCIÓN: usar getTodayString() en lugar de getTodayDateString()
+            const todayString = getTodayString();
             console.log('Asignando fecha de hoy:', todayString);
             document.getElementById('purchaseDate').value = todayString;
             
@@ -3049,9 +3034,9 @@
                 }
             } else {
                 title.textContent = 'Nueva Compra';
-                // DOBLE VERIFICACIÓN - asegurar que el input tiene la fecha correcta
+                // CORRECCIÓN: usar getTodayString() en lugar de getTodayDateString()
                 setTimeout(() => {
-                    document.getElementById('purchaseDate').value = getTodayDateString();
+                    document.getElementById('purchaseDate').value = getTodayString();
                     console.log('Fecha verificada después de timeout:', document.getElementById('purchaseDate').value);
                 }, 100);
             }
@@ -3101,7 +3086,7 @@
             const dateFromInput = document.getElementById('purchaseDate').value;
             console.log('=== DEBUG FECHA AL GUARDAR ===');
             console.log('Fecha del input:', dateFromInput);
-            console.log('Fecha actual calculada:', getTodayDateString());
+            console.log('Fecha actual calculada:', getTodayString());
             console.log('Timestamp actual:', getCurrentTimestamp());
             
             if (!productName || !supplier) {
@@ -3335,6 +3320,7 @@
         }
 
         // FUNCIONES GASTOS
+        // FUNCIÓN CORREGIDA - usar getTodayString() en lugar de getTodayDateString()
         function openExpenseModal(expenseId = null) {
             const modal = document.getElementById('expenseModal');
             const title = document.querySelector('#expenseModal h2');
@@ -3343,7 +3329,8 @@
             document.getElementById('expenseDescription').value = '';
             document.getElementById('expenseCategory').value = 'marketing';
             document.getElementById('expenseAmount').value = '';
-            document.getElementById('expenseDate').value = getTodayDateString();
+            // CORRECCIÓN: usar getTodayString() en lugar de getTodayDateString()
+            document.getElementById('expenseDate').value = getTodayString();
             
             if (expenseId) {
                 const expense = expenses.find(e => e.id === expenseId);
@@ -3476,9 +3463,9 @@
             ];
 
             const sampleExpenses = [
-                { description: 'Facebook Ads - Campaña Octubre', category: 'marketing', amount: 150000, date: getTodayDateString() },
-                { description: 'Comisión Mercado Libre', category: 'plataforma', amount: 8500, date: getTodayDateString() },
-                { description: 'Envío Express', category: 'envios', amount: 25000, date: getTodayDateString() }
+                { description: 'Facebook Ads - Campaña Octubre', category: 'marketing', amount: 150000, date: getTodayString() },
+                { description: 'Comisión Mercado Libre', category: 'plataforma', amount: 8500, date: getTodayString() },
+                { description: 'Envío Express', category: 'envios', amount: 25000, date: getTodayString() }
             ];
 
             try {
