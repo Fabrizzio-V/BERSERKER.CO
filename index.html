@@ -109,14 +109,14 @@
             border-radius: 8px;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            min-width: 140px;
-            max-width: 160px;
+            min-width: 120px;
+            max-width: 140px;
             flex: 1;
         }
 
         .stat-value {
             font-weight: 700;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             margin-bottom: 0.2rem;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
             line-height: 1.1;
@@ -124,7 +124,7 @@
         }
 
         .stat-label {
-            font-size: 0.6rem;
+            font-size: 0.55rem;
             opacity: 0.95;
             text-transform: uppercase;
             letter-spacing: 0.3px;
@@ -787,17 +787,17 @@
             }
 
             .stat-item {
-                min-width: 90px;
-                max-width: 110px;
-                font-size: 0.75rem;
-            }
-
-            .stat-value {
+                min-width: 80px;
+                max-width: 100px;
                 font-size: 0.7rem;
             }
 
+            .stat-value {
+                font-size: 0.65rem;
+            }
+
             .stat-label {
-                font-size: 0.5rem;
+                font-size: 0.45rem;
             }
 
             .date-filters {
@@ -898,6 +898,10 @@
                         <div class="stat-value" id="navbarProfit" style="color: #27ae60;">₲0</div>
                         <div class="stat-label" style="color: #27ae60;">Ganancia Neta</div>
                     </div>
+                    <div class="stat-item" style="background: rgba(52, 152, 219, 0.2); border: 1px solid rgba(52, 152, 219, 0.3);">
+                        <div class="stat-value" id="navbarBank" style="color: #3498db;">₲0</div>
+                        <div class="stat-label" style="color: #3498db;">Saldo Banco</div>
+                    </div>
                 </div>
                 <div class="date-filters">
                     <span style="font-size: 0.8rem; opacity: 0.9;">Período:</span>
@@ -970,6 +974,10 @@
                             <div class="stat-card" style="background: var(--gradient-primary); color: white;">
                                 <div class="stat-value" id="dashMargin">0%</div>
                                 <div class="stat-label">Margen Promedio</div>
+                            </div>
+                            <div class="stat-card" style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); color: white;">
+                                <div class="stat-value" id="dashBank">₲0</div>
+                                <div class="stat-label">Saldo Banco</div>
                             </div>
                         </div>
 
@@ -1447,6 +1455,10 @@
                             <div class="stat-card" style="background: var(--gradient-success); color: white;">
                                 <div class="stat-value" id="reportProfit">₲0</div>
                                 <div class="stat-label">Ganancia Neta</div>
+                            </div>
+                            <div class="stat-card" style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); color: white;">
+                                <div class="stat-value" id="reportBank">₲0</div>
+                                <div class="stat-label">Saldo Banco</div>
                             </div>
                         </div>
                     </div>
@@ -2105,13 +2117,23 @@
             const netProfit = totalRevenue - totalCosts - totalExpenses;
             // ============================================
             
-            // Debug para verificar la fórmula
+            // ========== FÓRMULA DE SALDO BANCO (según usuario) ==========
+            // NOTA: Esta fórmula puede dar valores negativos inesperados porque
+            // resta la ganancia neta (que ya incluye gastos) y luego vuelve a restar gastos
+            const bankBalance = totalRevenue - netProfit - totalExpenses;
+            // Fórmula alternativa más lógica sería: totalRevenue - totalPurchases - totalExpenses
+            // ============================================================
+            
+            // Debug para verificar las fórmulas
             console.log('=== CÁLCULO GANANCIA NETA ===');
             console.log('Ingresos:', formatCurrency(totalRevenue));
             console.log('Costos de ventas:', formatCurrency(totalCosts));
             console.log('Gastos:', formatCurrency(totalExpenses));
             console.log('Inventario (NO se resta):', formatCurrency(totalPurchases));
             console.log('GANANCIA NETA:', formatCurrency(netProfit));
+            console.log('=== CÁLCULO SALDO BANCO ===');
+            console.log('Fórmula usada: Ingresos - Ganancia Neta - Gastos');
+            console.log('SALDO BANCO:', formatCurrency(bankBalance));
 
             document.getElementById('totalOrders').textContent = filteredOrders.length;
             document.getElementById('totalProducts').textContent = products.length;
@@ -2121,10 +2143,15 @@
             document.getElementById('totalPurchases').textContent = formatCurrency(totalPurchases);
             document.getElementById('totalExpenses').textContent = formatCurrency(totalExpenses);
             document.getElementById('navbarProfit').textContent = formatCurrency(netProfit);
+            document.getElementById('navbarBank').textContent = formatCurrency(bankBalance);
             
             const navbarProfitElement = document.getElementById('navbarProfit');
             const navbarProfitParent = navbarProfitElement.parentElement.parentElement;
             const navbarProfitLabel = navbarProfitParent.querySelector('.stat-label');
+            
+            const navbarBankElement = document.getElementById('navbarBank');
+            const navbarBankParent = navbarBankElement.parentElement.parentElement;
+            const navbarBankLabel = navbarBankParent.querySelector('.stat-label');
             
             if (netProfit >= 0) {
                 navbarProfitElement.style.color = '#27ae60';
@@ -2138,6 +2165,19 @@
                 navbarProfitParent.style.border = '1px solid rgba(231, 76, 60, 0.3)';
             }
 
+            // Colorear saldo banco según si es positivo o negativo
+            if (bankBalance >= 0) {
+                navbarBankElement.style.color = '#3498db';
+                navbarBankLabel.style.color = '#3498db';
+                navbarBankParent.style.background = 'rgba(52, 152, 219, 0.2)';
+                navbarBankParent.style.border = '1px solid rgba(52, 152, 219, 0.3)';
+            } else {
+                navbarBankElement.style.color = '#e74c3c';
+                navbarBankLabel.style.color = '#e74c3c';
+                navbarBankParent.style.background = 'rgba(231, 76, 60, 0.2)';
+                navbarBankParent.style.border = '1px solid rgba(231, 76, 60, 0.3)';
+            }
+
             // Dashboard - mismo cálculo limpio
             document.getElementById('dashProducts').textContent = products.length;
             document.getElementById('dashOrders').textContent = filteredOrders.length;
@@ -2145,6 +2185,7 @@
             document.getElementById('dashPurchases').textContent = formatCurrency(totalPurchases);
             document.getElementById('dashExpenses').textContent = formatCurrency(totalExpenses);
             document.getElementById('dashProfit').textContent = formatCurrency(netProfit);
+            document.getElementById('dashBank').textContent = formatCurrency(bankBalance);
             document.getElementById('dashMargin').textContent = totalRevenue > 0 ? ((netProfit / totalRevenue) * 100).toFixed(1) + '%' : '0%';
 
             // Reports - mismo cálculo limpio
@@ -2152,6 +2193,7 @@
             document.getElementById('reportPurchases').textContent = formatCurrency(totalPurchases);
             document.getElementById('reportExpenses').textContent = formatCurrency(totalExpenses);
             document.getElementById('reportProfit').textContent = formatCurrency(netProfit);
+            document.getElementById('reportBank').textContent = formatCurrency(bankBalance);
 
             populateOrderProductSelect();
             populatePurchaseProductSelect();
