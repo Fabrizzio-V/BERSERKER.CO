@@ -1302,7 +1302,11 @@
                         <div class="stats-grid" style="margin-bottom: 2rem;">
                             <div class="stat-card" style="background: var(--gradient-info); color: white;">
                                 <div class="stat-value" id="purchasesSummaryTotal">₲0</div>
-                                <div class="stat-label">Total Compras</div>
+                                <div class="stat-label">Inversión Total</div>
+                            </div>
+                            <div class="stat-card" style="background: var(--gradient-warning); color: white;">
+                                <div class="stat-value" id="purchasesSummaryOperational">₲0</div>
+                                <div class="stat-label">Compras Operacionales</div>
                             </div>
                             <div class="stat-card">
                                 <div class="stat-value" id="purchasesSummaryCount">0</div>
@@ -1329,13 +1333,14 @@
                                         <th>Cantidad</th>
                                         <th>Precio Unitario</th>
                                         <th>Total</th>
+                                        <th>Tipo</th>
                                         <th>Notas</th>
                                         <th>Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody id="purchasesTable">
                                     <tr>
-                                        <td colspan="9" style="text-align: center; padding: 2rem; color: #657786;">
+                                        <td colspan="10" style="text-align: center; padding: 2rem; color: #657786;">
                                             No hay compras registradas. Registra tu primera compra.
                                         </td>
                                     </tr>
@@ -1620,9 +1625,19 @@
                         <input type="number" class="form-control" id="purchaseUnitPrice" onchange="updatePurchaseTotal()" required>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label>Total (₲)</label>
-                    <input type="number" class="form-control" id="purchaseTotal" readonly>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Total (₲)</label>
+                        <input type="number" class="form-control" id="purchaseTotal" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Tipo de Compra</label>
+                        <select class="form-control" id="purchaseType" style="border: 2px solid #3498db;">
+                            <option value="operational">💰 Operacional (afecta ganancia)</option>
+                            <option value="investment">🏦 Inversión Inicial (no afecta ganancia)</option>
+                        </select>
+                        <small class="text-muted" style="color: #3498db !important;">Las compras operacionales se restan de la ganancia neta</small>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label>Notas (opcional)</label>
@@ -2095,30 +2110,36 @@
             const filteredExpenses = getExpensesByPeriod(currentDatePeriod);
             
             const totalRevenue = filteredOrders.reduce((sum, order) => sum + (order.total || 0), 0);
-            const totalPurchases = filteredPurchases.reduce((sum, purchase) => sum + (purchase.total || 0), 0);
+            const totalPurchasesAll = filteredPurchases.reduce((sum, purchase) => sum + (purchase.total || 0), 0);
+            
+            // NUEVA LÓGICA: Separar compras operacionales de inversión inicial
+            const operationalPurchases = filteredPurchases.filter(p => (p.type || 'operational') === 'operational');
+            const totalOperationalPurchases = operationalPurchases.reduce((sum, purchase) => sum + (purchase.total || 0), 0);
+            
             const totalExpenses = filteredExpenses.reduce((sum, expense) => sum + (expense.amount || 0), 0);
             const totalCosts = filteredOrders.reduce((sum, order) => sum + (order.cost || 0), 0);
             
-            // ========== FÓRMULA DE GANANCIA NETA ==========
-            // SOLO: Ingresos - Costos de productos vendidos - Gastos operativos
-            // NO SE INCLUYEN LAS COMPRAS/INVENTARIO EN ESTE CÁLCULO
-            const netProfit = totalRevenue - totalCosts - totalExpenses;
-            // ============================================
+            // ========== NUEVA FÓRMULA DE GANANCIA NETA ==========
+            // SOLO: Ingresos - Costos de productos vendidos - Gastos operativos - Compras operacionales
+            // NO SE INCLUYEN LAS COMPRAS DE INVERSIÓN INICIAL
+            const netProfit = totalRevenue - totalCosts - totalExpenses - totalOperationalPurchases;
+            // ===================================================
             
-            // Debug para verificar la fórmula
-            console.log('=== CÁLCULO GANANCIA NETA ===');
+            // Debug para verificar la nueva fórmula
+            console.log('=== NUEVA FÓRMULA GANANCIA NETA ===');
             console.log('Ingresos:', formatCurrency(totalRevenue));
             console.log('Costos de ventas:', formatCurrency(totalCosts));
-            console.log('Gastos:', formatCurrency(totalExpenses));
-            console.log('Inventario (NO se resta):', formatCurrency(totalPurchases));
+            console.log('Gastos operativos:', formatCurrency(totalExpenses));
+            console.log('Compras operacionales:', formatCurrency(totalOperationalPurchases));
+            console.log('Inversión total (NO se resta):', formatCurrency(totalPurchasesAll));
             console.log('GANANCIA NETA:', formatCurrency(netProfit));
 
             document.getElementById('totalOrders').textContent = filteredOrders.length;
             document.getElementById('totalProducts').textContent = products.length;
             document.getElementById('totalRevenue').textContent = formatCurrency(totalRevenue);
             
-            // Mostrar inversión en stock pero SIN afectar ganancia
-            document.getElementById('totalPurchases').textContent = formatCurrency(totalPurchases);
+            // Mostrar inversión total en stock (no afecta ganancia)
+            document.getElementById('totalPurchases').textContent = formatCurrency(totalPurchasesAll);
             document.getElementById('totalExpenses').textContent = formatCurrency(totalExpenses);
             document.getElementById('navbarProfit').textContent = formatCurrency(netProfit);
             
@@ -2138,18 +2159,18 @@
                 navbarProfitParent.style.border = '1px solid rgba(231, 76, 60, 0.3)';
             }
 
-            // Dashboard - mismo cálculo limpio
+            // Dashboard - mismo cálculo mejorado
             document.getElementById('dashProducts').textContent = products.length;
             document.getElementById('dashOrders').textContent = filteredOrders.length;
             document.getElementById('dashRevenue').textContent = formatCurrency(totalRevenue);
-            document.getElementById('dashPurchases').textContent = formatCurrency(totalPurchases);
+            document.getElementById('dashPurchases').textContent = formatCurrency(totalPurchasesAll);
             document.getElementById('dashExpenses').textContent = formatCurrency(totalExpenses);
             document.getElementById('dashProfit').textContent = formatCurrency(netProfit);
             document.getElementById('dashMargin').textContent = totalRevenue > 0 ? ((netProfit / totalRevenue) * 100).toFixed(1) + '%' : '0%';
 
-            // Reports - mismo cálculo limpio
+            // Reports - mismo cálculo mejorado
             document.getElementById('reportRevenue').textContent = formatCurrency(totalRevenue);
-            document.getElementById('reportPurchases').textContent = formatCurrency(totalPurchases);
+            document.getElementById('reportPurchases').textContent = formatCurrency(totalPurchasesAll);
             document.getElementById('reportExpenses').textContent = formatCurrency(totalExpenses);
             document.getElementById('reportProfit').textContent = formatCurrency(netProfit);
 
@@ -2994,7 +3015,6 @@
             });
         }
 
-        // FUNCIÓN CORREGIDA - usar getTodayString() en lugar de getTodayDateString()
         function openPurchaseModal(purchaseId = null) {
             const modal = document.getElementById('purchaseModal');
             const title = document.getElementById('purchaseModalTitle');
@@ -3008,8 +3028,8 @@
             document.getElementById('purchaseUnitPrice').value = '';
             document.getElementById('purchaseTotal').value = '';
             document.getElementById('purchaseNotes').value = '';
+            document.getElementById('purchaseType').value = 'operational'; // Default operacional
             
-            // CORRECCIÓN: usar getTodayString() en lugar de getTodayDateString()
             const todayString = getTodayString();
             console.log('Asignando fecha de hoy:', todayString);
             document.getElementById('purchaseDate').value = todayString;
@@ -3030,11 +3050,11 @@
                     document.getElementById('purchaseUnitPrice').value = purchase.unitPrice;
                     document.getElementById('purchaseTotal').value = purchase.total;
                     document.getElementById('purchaseNotes').value = purchase.notes || '';
+                    document.getElementById('purchaseType').value = purchase.type || 'operational';
                     document.getElementById('purchaseDate').value = purchase.date;
                 }
             } else {
                 title.textContent = 'Nueva Compra';
-                // CORRECCIÓN: usar getTodayString() en lugar de getTodayDateString()
                 setTimeout(() => {
                     document.getElementById('purchaseDate').value = getTodayString();
                     console.log('Fecha verificada después de timeout:', document.getElementById('purchaseDate').value);
@@ -3082,7 +3102,6 @@
             const unitPrice = parseFloat(document.getElementById('purchaseUnitPrice').value) || 0;
             const total = parseFloat(document.getElementById('purchaseTotal').value) || 0;
             
-            // DEBUG ESPECÍFICO PARA FECHAS
             const dateFromInput = document.getElementById('purchaseDate').value;
             console.log('=== DEBUG FECHA AL GUARDAR ===');
             console.log('Fecha del input:', dateFromInput);
@@ -3101,6 +3120,7 @@
                 quantity: quantity,
                 unitPrice: unitPrice,
                 total: total,
+                type: document.getElementById('purchaseType').value, // Nuevo campo
                 notes: document.getElementById('purchaseNotes').value || '',
                 date: dateFromInput, // Usar exactamente lo que está en el input
                 timestamp: getCurrentTimestamp()
@@ -3248,13 +3268,17 @@
                 const message = (currentPurchaseSupplierFilter || currentPurchaseDateFilter) ? 
                     'No se encontraron compras con los filtros seleccionados.' : 
                     'No hay compras registradas. Registra tu primera compra.';
-                tbody.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 2rem; color: #657786;">${message}</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="10" style="text-align: center; padding: 2rem; color: #657786;">${message}</td></tr>`;
                 return;
             }
 
             tbody.innerHTML = purchasesToShow.map(purchase => {
                 const notes = purchase.notes || '';
                 const noteDisplay = notes.length > 30 ? notes.substring(0, 30) + '...' : notes;
+                const type = purchase.type || 'operational'; // Default operacional para compras antiguas
+                const typeDisplay = type === 'operational' ? 
+                    '<span style="background: #f39c12; color: white; padding: 0.2rem 0.5rem; border-radius: 12px; font-size: 0.75rem;">💰 Operacional</span>' :
+                    '<span style="background: #3498db; color: white; padding: 0.2rem 0.5rem; border-radius: 12px; font-size: 0.75rem;">🏦 Inversión</span>';
                 
                 return `
                     <tr>
@@ -3265,6 +3289,7 @@
                         <td style="text-align: center;"><strong>${purchase.quantity}</strong></td>
                         <td>${formatCurrency(purchase.unitPrice)}</td>
                         <td><strong>${formatCurrency(purchase.total)}</strong></td>
+                        <td style="text-align: center;">${typeDisplay}</td>
                         <td title="${notes}" style="max-width: 150px; cursor: pointer;" onclick="showFullComment('${notes.replace(/'/g, "\\'")}')">
                             ${noteDisplay || '<i style="color: #ccc;">Sin notas</i>'}
                         </td>
@@ -3281,11 +3306,17 @@
             const filteredPurchases = getPurchasesByPeriod(currentDatePeriod);
             
             const totalAmount = filteredPurchases.reduce((sum, purchase) => sum + (purchase.total || 0), 0);
+            
+            // Separar compras operacionales de inversión inicial
+            const operationalPurchases = filteredPurchases.filter(p => (p.type || 'operational') === 'operational');
+            const totalOperational = operationalPurchases.reduce((sum, purchase) => sum + (purchase.total || 0), 0);
+            
             const totalCount = filteredPurchases.length;
             const totalProducts = filteredPurchases.reduce((sum, purchase) => sum + (purchase.quantity || 0), 0);
             const uniqueSuppliers = [...new Set(filteredPurchases.map(p => p.supplier))].length;
             
             document.getElementById('purchasesSummaryTotal').textContent = formatCurrency(totalAmount);
+            document.getElementById('purchasesSummaryOperational').textContent = formatCurrency(totalOperational);
             document.getElementById('purchasesSummaryCount').textContent = totalCount;
             document.getElementById('purchasesSummaryProducts').textContent = totalProducts;
             document.getElementById('purchasesSummarySuppliers').textContent = uniqueSuppliers;
@@ -3320,7 +3351,6 @@
         }
 
         // FUNCIONES GASTOS
-        // FUNCIÓN CORREGIDA - usar getTodayString() en lugar de getTodayDateString()
         function openExpenseModal(expenseId = null) {
             const modal = document.getElementById('expenseModal');
             const title = document.querySelector('#expenseModal h2');
@@ -3329,7 +3359,6 @@
             document.getElementById('expenseDescription').value = '';
             document.getElementById('expenseCategory').value = 'marketing';
             document.getElementById('expenseAmount').value = '';
-            // CORRECCIÓN: usar getTodayString() en lugar de getTodayDateString()
             document.getElementById('expenseDate').value = getTodayString();
             
             if (expenseId) {
@@ -3492,10 +3521,10 @@
                 };
 
                 const samplePurchases = [
-                    { productId: products[0]?.id, productName: 'Auriculares Bluetooth', supplier: 'TechSupplier', quantity: 15, unitPrice: 45000, total: 675000, type: 'historical', notes: 'Inventario inicial - compra anterior al sistema', date: getDaysAgo(30) },
-                    { productId: products[1]?.id, productName: 'Camiseta Deportiva', supplier: 'SportWear Co', quantity: 30, unitPrice: 25000, total: 750000, type: 'historical', notes: 'Stock inicial previo al sistema', date: getDaysAgo(25) },
-                    { productId: products[2]?.id, productName: 'Lámpara LED', supplier: 'HomeDecor', quantity: 10, unitPrice: 35000, total: 350000, type: 'operational', notes: 'Primera compra operacional', date: getDaysAgo(5) },
-                    { productId: products[3]?.id, productName: 'Mochila Táctica', supplier: 'OutdoorGear', quantity: 5, unitPrice: 55000, total: 275000, type: 'operational', notes: 'Restock operacional', date: getDaysAgo(2) }
+                    { productId: products[0]?.id, productName: 'Auriculares Bluetooth', supplier: 'TechSupplier', quantity: 15, unitPrice: 45000, total: 675000, type: 'investment', notes: 'Inventario inicial - compra anterior al sistema', date: getDaysAgo(30) },
+                    { productId: products[1]?.id, productName: 'Camiseta Deportiva', supplier: 'SportWear Co', quantity: 30, unitPrice: 25000, total: 750000, type: 'investment', notes: 'Stock inicial previo al sistema', date: getDaysAgo(25) },
+                    { productId: products[2]?.id, productName: 'Lámpara LED', supplier: 'HomeDecor', quantity: 10, unitPrice: 35000, total: 350000, type: 'operational', notes: 'Primera compra operacional con ganancias', date: getDaysAgo(5) },
+                    { productId: products[3]?.id, productName: 'Mochila Táctica', supplier: 'OutdoorGear', quantity: 5, unitPrice: 55000, total: 275000, type: 'operational', notes: 'Restock operacional con ingresos de ventas', date: getDaysAgo(2) }
                 ];
 
                 // Agregar pedidos de ejemplo con fechas relativas correctas
