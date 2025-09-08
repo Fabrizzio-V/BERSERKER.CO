@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -2112,29 +2111,25 @@
             const totalExpenses = filteredExpenses.reduce((sum, expense) => sum + (expense.amount || 0), 0);
             const totalCosts = filteredOrders.reduce((sum, order) => sum + (order.cost || 0), 0);
             
-            // ========== FÓRMULA DE GANANCIA NETA ==========
-            // SOLO: Ingresos - Costos de productos vendidos - Gastos operativos
-            // NO SE INCLUYEN LAS COMPRAS/INVENTARIO EN ESTE CÁLCULO
-            const netProfit = totalRevenue - totalCosts - totalExpenses;
-            // ============================================
+            // ========== FÓRMULAS CORREGIDAS ==========
+            // GANANCIA NETA: Solo ingresos menos costos de productos vendidos
+            const netProfit = totalRevenue - totalCosts;
             
-            // ========== FÓRMULA DE SALDO BANCO (según usuario) ==========
-            // NOTA: Esta fórmula puede dar valores negativos inesperados porque
-            // resta la ganancia neta (que ya incluye gastos) y luego vuelve a restar gastos
-            const bankBalance = totalRevenue - netProfit - totalExpenses;
-            // Fórmula alternativa más lógica sería: totalRevenue - totalPurchases - totalExpenses
-            // ============================================================
+            // SALDO BANCO: Ingresos menos inversión en inventario menos gastos operativos
+            const bankBalance = totalRevenue - totalPurchases - totalExpenses;
+            // ========================================
             
-            // Debug para verificar las fórmulas
-            console.log('=== CÁLCULO GANANCIA NETA ===');
+            // Debug para verificar las fórmulas corregidas
+            console.log('=== CÁLCULO GANANCIA NETA CORREGIDO ===');
             console.log('Ingresos:', formatCurrency(totalRevenue));
             console.log('Costos de ventas:', formatCurrency(totalCosts));
-            console.log('Gastos:', formatCurrency(totalExpenses));
-            console.log('Inventario (NO se resta):', formatCurrency(totalPurchases));
-            console.log('GANANCIA NETA:', formatCurrency(netProfit));
-            console.log('=== CÁLCULO SALDO BANCO ===');
-            console.log('Fórmula usada: Ingresos - Ganancia Neta - Gastos');
+            console.log('GANANCIA NETA (SIN egresos):', formatCurrency(netProfit));
+            console.log('=== CÁLCULO SALDO BANCO CORREGIDO ===');
+            console.log('Fórmula: Ingresos - Compras/Inventario - Gastos Operativos');
+            console.log('Inventario:', formatCurrency(totalPurchases));
+            console.log('Gastos operativos:', formatCurrency(totalExpenses));
             console.log('SALDO BANCO:', formatCurrency(bankBalance));
+            console.log('========================================');
 
             document.getElementById('totalOrders').textContent = filteredOrders.length;
             document.getElementById('totalProducts').textContent = products.length;
