@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -1003,7 +1005,164 @@
                         <p>Controla en tiempo real el estado de todos tus pedidos y entregas</p>
                     </div>
                     <div class="content-body">
-                        <p>Panel de entregas funcional aquí...</p>
+                        <!-- Resumen de Estados -->
+                        <div class="stats-grid">
+                            <div class="stat-card" style="background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); color: white;">
+                                <div class="stat-value" id="deliveryPending">0</div>
+                                <div class="stat-label">Pendientes</div>
+                            </div>
+                            <div class="stat-card" style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); color: white;">
+                                <div class="stat-value" id="deliveryConfirmed">0</div>
+                                <div class="stat-label">Confirmados</div>
+                            </div>
+                            <div class="stat-card" style="background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%); color: white;">
+                                <div class="stat-value" id="deliveryShipped">0</div>
+                                <div class="stat-label">En Tránsito</div>
+                            </div>
+                            <div class="stat-card" style="background: linear-gradient(135deg, #27ae60 0%, #229954 100%); color: white;">
+                                <div class="stat-value" id="deliveryDelivered">0</div>
+                                <div class="stat-label">Entregados</div>
+                            </div>
+                        </div>
+
+                        <!-- Sección Prioritaria - Pedidos Urgentes -->
+                        <div class="priority-section" id="urgentDeliveries" style="display: none;">
+                            <div class="priority-title">
+                                🚨 ATENCIÓN - Pedidos que requieren acción inmediata
+                            </div>
+                            <div class="priority-grid" id="urgentDeliveriesGrid">
+                                <!-- Se llena dinámicamente -->
+                            </div>
+                        </div>
+
+                        <!-- Filtros -->
+                        <div class="compact-filters">
+                            <div class="filter-group">
+                                <span class="filter-label">Ver:</span>
+                                <button class="filter-chip active" onclick="filterDeliveryStatus('all')">Todos</button>
+                                <button class="filter-chip" onclick="filterDeliveryStatus('pending')">Pendientes</button>
+                                <button class="filter-chip" onclick="filterDeliveryStatus('confirmed')">Confirmados</button>
+                                <button class="filter-chip" onclick="filterDeliveryStatus('prepared')">Preparados</button>
+                                <button class="filter-chip" onclick="filterDeliveryStatus('shipped')">En Tránsito</button>
+                            </div>
+                            <div class="filter-group">
+                                <span class="filter-label">Método:</span>
+                                <button class="filter-chip active" onclick="filterDeliveryMethod('all')">Todos</button>
+                                <button class="filter-chip" onclick="filterDeliveryMethod('personal')">🚶‍♂️ Nosotros</button>
+                                <button class="filter-chip" onclick="filterDeliveryMethod('delivery')">🛵 Delivery</button>
+                                <button class="filter-chip" onclick="filterDeliveryMethod('pickup')">🏪 Recolección</button>
+                                <button class="filter-chip" onclick="filterDeliveryMethod('shipping')">📮 Envío</button>
+                            </div>
+                        </div>
+
+                        <!-- Panel Principal de Estados -->
+                        <div class="delivery-grid">
+                            <!-- PENDIENTES -->
+                            <div class="delivery-status-card pending" onclick="toggleDeliverySection('pending-section')">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <h3>⏳ PENDIENTES</h3>
+                                        <p>Esperando confirmación del cliente</p>
+                                    </div>
+                                    <div style="font-size: 2rem; font-weight: bold;" id="pendingCount">0</div>
+                                </div>
+                            </div>
+
+                            <!-- CONFIRMADOS -->
+                            <div class="delivery-status-card confirmed" onclick="toggleDeliverySection('confirmed-section')">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <h3>✅ CONFIRMADOS</h3>
+                                        <p>Listos para preparar</p>
+                                    </div>
+                                    <div style="font-size: 2rem; font-weight: bold;" id="confirmedCount">0</div>
+                                </div>
+                            </div>
+
+                            <!-- PREPARADOS -->
+                            <div class="delivery-status-card" style="border-left-color: #17a2b8; background: linear-gradient(135deg, #d1ecf1 0%, #ffffff 100%);" onclick="toggleDeliverySection('prepared-section')">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <h3>📦 PREPARADOS</h3>
+                                        <p>Listos para entregar/enviar</p>
+                                    </div>
+                                    <div style="font-size: 2rem; font-weight: bold;" id="preparedCount">0</div>
+                                </div>
+                            </div>
+
+                            <!-- EN TRÁNSITO -->
+                            <div class="delivery-status-card shipped" onclick="toggleDeliverySection('shipped-section')">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <h3>🚚 EN TRÁNSITO</h3>
+                                        <p>En camino al cliente</p>
+                                    </div>
+                                    <div style="font-size: 2rem; font-weight: bold;" id="shippedCount">0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Secciones Expandibles -->
+                        <div id="pending-section" class="card" style="display: none;">
+                            <div class="card-header">
+                                <h3>⏳ Pedidos Pendientes</h3>
+                                <button class="btn btn-secondary btn-sm" onclick="toggleDeliverySection('pending-section')">Cerrar</button>
+                            </div>
+                            <div id="pendingOrders">
+                                <!-- Se llena dinámicamente -->
+                            </div>
+                        </div>
+
+                        <div id="confirmed-section" class="card" style="display: none;">
+                            <div class="card-header">
+                                <h3>✅ Pedidos Confirmados - Por Preparar</h3>
+                                <button class="btn btn-secondary btn-sm" onclick="toggleDeliverySection('confirmed-section')">Cerrar</button>
+                            </div>
+                            <div id="confirmedOrders">
+                                <!-- Se llena dinámicamente -->
+                            </div>
+                        </div>
+
+                        <div id="prepared-section" class="card" style="display: none;">
+                            <div class="card-header">
+                                <h3>📦 Pedidos Preparados - Asignar Entrega</h3>
+                                <button class="btn btn-secondary btn-sm" onclick="toggleDeliverySection('prepared-section')">Cerrar</button>
+                            </div>
+                            <div id="preparedOrders">
+                                <!-- Se llena dinámicamente -->
+                            </div>
+                        </div>
+
+                        <div id="shipped-section" class="card" style="display: none;">
+                            <div class="card-header">
+                                <h3>🚚 Pedidos en Tránsito - Por Confirmar Entrega</h3>
+                                <button class="btn btn-secondary btn-sm" onclick="toggleDeliverySection('shipped-section')">Cerrar</button>
+                            </div>
+                            <div id="shippedOrders">
+                                <!-- Se llena dinámicamente -->
+                            </div>
+                        </div>
+
+                        <!-- Resumen de Hoy -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>📅 Resumen de Hoy</h3>
+                            </div>
+                            <div class="stats-grid">
+                                <div class="stat-card">
+                                    <div class="stat-value" id="todayNewOrders">0</div>
+                                    <div class="stat-label">Pedidos Nuevos</div>
+                                </div>
+                                <div class="stat-card" style="background: var(--gradient-success); color: white;">
+                                    <div class="stat-value" id="todayDelivered">0</div>
+                                    <div class="stat-label">Entregados Hoy</div>
+                                </div>
+                                <div class="stat-card" style="background: var(--gradient-info); color: white;">
+                                    <div class="stat-value" id="todayRevenue">₲0</div>
+                                    <div class="stat-label">Ingresos del Día</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -1030,6 +1189,13 @@
                                 <button class="filter-chip" onclick="filterByCategory('deportes')">Deportes</button>
                                 <button class="filter-chip" onclick="filterByCategory('belleza')">Belleza</button>
                                 <button class="filter-chip" onclick="filterByCategory('otros')">Otros</button>
+                            </div>
+                            <div class="filter-group">
+                                <span class="filter-label">Stock:</span>
+                                <button class="filter-chip active" onclick="filterByStock('')">Todos</button>
+                                <button class="filter-chip" onclick="filterByStock('available')">Con Stock</button>
+                                <button class="filter-chip" onclick="filterByStock('low')">Poco Stock</button>
+                                <button class="filter-chip" onclick="filterByStock('out')">Sin Stock</button>
                             </div>
                         </div>
 
@@ -1121,6 +1287,44 @@
                             <button class="btn btn-info" onclick="openPurchaseModal()">📦 Nueva Compra</button>
                             <div class="toolbar">
                                 <button class="btn btn-secondary" onclick="syncData()">Sincronizar</button>
+                            </div>
+                        </div>
+
+                        <div class="compact-filters">
+                            <div class="filter-group">
+                                <span class="filter-label">Proveedor:</span>
+                                <button class="filter-chip active" onclick="filterPurchasesBySupplier('')">Todos</button>
+                                <button class="filter-chip" onclick="filterPurchasesBySupplier('TechSupplier')">TechSupplier</button>
+                                <button class="filter-chip" onclick="filterPurchasesBySupplier('SportWear Co')">SportWear Co</button>
+                                <button class="filter-chip" onclick="filterPurchasesBySupplier('HomeDecor')">HomeDecor</button>
+                                <button class="filter-chip" onclick="filterPurchasesBySupplier('OutdoorGear')">OutdoorGear</button>
+                            </div>
+                            <div class="filter-group">
+                                <span class="filter-label">Fecha:</span>
+                                <button class="filter-chip active" onclick="filterPurchasesByDate('')">Todas</button>
+                                <button class="filter-chip" onclick="filterPurchasesByDate('today')">Hoy</button>
+                                <button class="filter-chip" onclick="filterPurchasesByDate('week')">Esta Semana</button>
+                                <button class="filter-chip" onclick="filterPurchasesByDate('month')">Este Mes</button>
+                                <input type="date" class="form-control" id="customPurchaseDateFilter" onchange="filterPurchasesByDate('custom')" style="max-width: 150px; margin-left: 10px;">
+                            </div>
+                        </div>
+
+                        <div class="stats-grid" style="margin-bottom: 2rem;">
+                            <div class="stat-card" style="background: var(--gradient-info); color: white;">
+                                <div class="stat-value" id="purchasesSummaryTotal">₲0</div>
+                                <div class="stat-label">Total Compras</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="purchasesSummaryCount">0</div>
+                                <div class="stat-label">Número de Compras</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="purchasesSummaryProducts">0</div>
+                                <div class="stat-label">Productos Comprados</div>
+                            </div>
+                            <div class="stat-card" style="background: var(--gradient-primary); color: white;">
+                                <div class="stat-value" id="purchasesSummarySuppliers">0</div>
+                                <div class="stat-label">Proveedores Activos</div>
                             </div>
                         </div>
 
@@ -1318,6 +1522,186 @@
         </div>
     </div>
 
+    <div id="orderModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('orderModal')">&times;</span>
+            <h2>Nuevo Pedido</h2>
+            <form onsubmit="saveOrder(event)">
+                <input type="hidden" id="orderId">
+                <div class="form-group">
+                    <label>Cliente</label>
+                    <input type="text" class="form-control" id="orderCustomer" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Canal de Venta</label>
+                        <select class="form-control" id="orderChannel">
+                            <option value="facebook">Facebook</option>
+                            <option value="instagram">Instagram</option>
+                            <option value="whatsapp">WhatsApp</option>
+                            <option value="marketplace">Marketplace</option>
+                            <option value="web">Sitio Web</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Estado</label>
+                        <select class="form-control" id="orderStatus">
+                            <option value="pending">Pendiente</option>
+                            <option value="confirmed">Confirmado</option>
+                            <option value="prepared">Preparado</option>
+                            <option value="shipped">En Tránsito</option>
+                            <option value="delivered">Entregado</option>
+                            <option value="cancelled">Cancelado</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Método de Entrega</label>
+                        <select class="form-control" id="orderDeliveryMethod">
+                            <option value="delivery">Delivery Tercerizado</option>
+                            <option value="personal">Entrega Personal (Nosotros)</option>
+                            <option value="pickup">Recolección en Punto</option>
+                            <option value="shipping">Envío Postal</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Responsable de Entrega</label>
+                        <input type="text" class="form-control" id="orderDeliveryPerson" placeholder="Ej: Juan, Delivery Express, Cliente">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Dirección de Entrega</label>
+                    <input type="text" class="form-control" id="orderDeliveryAddress" placeholder="Dirección completa para entrega">
+                </div>
+                <div class="form-group">
+                    <label>Producto</label>
+                    <select class="form-control" id="orderProduct" onchange="updateOrderPrice()" required>
+                        <option value="">Seleccionar producto...</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Cantidad</label>
+                        <input type="number" class="form-control" id="orderQuantity" value="1" min="1" onchange="updateOrderPrice()">
+                    </div>
+                    <div class="form-group">
+                        <label>Total (₲)</label>
+                        <input type="number" class="form-control" id="orderTotal" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Comentarios (opcional)</label>
+                    <textarea class="form-control" id="orderComments" rows="3" placeholder="Notas sobre el pedido, instrucciones especiales, seguimiento..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-success">💾 Crear Pedido</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="purchaseModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('purchaseModal')">&times;</span>
+            <h2 id="purchaseModalTitle">Nueva Compra</h2>
+            <form onsubmit="savePurchase(event)">
+                <input type="hidden" id="purchaseId">
+                <div class="form-group">
+                    <label>Producto</label>
+                    <select class="form-control" id="purchaseProduct" onchange="updatePurchaseDetails()">
+                        <option value="">Seleccionar producto existente (opcional)</option>
+                    </select>
+                    <input type="text" class="form-control" id="purchaseProductName" placeholder="O escribir nombre del producto" style="margin-top: 0.5rem;" required>
+                    <small class="text-muted">Selecciona un producto existente o escribe el nombre de uno nuevo</small>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Proveedor</label>
+                        <input type="text" class="form-control" id="purchaseSupplier" placeholder="Nombre del proveedor" required>
+                        <small class="text-muted">Puedes escribir cualquier proveedor, nuevo o existente</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Fecha de Compra</label>
+                        <input type="date" class="form-control" id="purchaseDate" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Cantidad</label>
+                        <input type="number" class="form-control" id="purchaseQuantity" value="1" min="1" onchange="updatePurchaseTotal()" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Precio Unitario (₲)</label>
+                        <input type="number" class="form-control" id="purchaseUnitPrice" onchange="updatePurchaseTotal()" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Total (₲)</label>
+                    <input type="number" class="form-control" id="purchaseTotal" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Notas (opcional)</label>
+                    <textarea class="form-control" id="purchaseNotes" rows="3" placeholder="Notas sobre la compra, factura, condiciones..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-info">📦 Registrar Compra</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="expenseModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('expenseModal')">&times;</span>
+            <h2>Nuevo Gasto</h2>
+            <form onsubmit="saveExpense(event)">
+                <input type="hidden" id="expenseId">
+                <div class="form-group">
+                    <label>Descripción del Gasto</label>
+                    <input type="text" class="form-control" id="expenseDescription" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Categoría</label>
+                        <select class="form-control" id="expenseCategory">
+                            <option value="marketing">Marketing</option>
+                            <option value="plataforma">Comisiones</option>
+                            <option value="envios">Envíos</option>
+                            <option value="herramientas">Herramientas</option>
+                            <option value="oficina">Oficina</option>
+                            <option value="otros">Otros</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Monto (₲)</label>
+                        <input type="number" class="form-control" id="expenseAmount" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Fecha</label>
+                    <input type="date" class="form-control" id="expenseDate" required>
+                </div>
+                <button type="submit" class="btn btn-danger">💸 Registrar Gasto</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="statusModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('statusModal')">&times;</span>
+            <h2>Cambiar Estado del Pedido</h2>
+            <div class="form-group">
+                <label>Nuevo Estado</label>
+                <select class="form-control" id="newOrderStatus">
+                    <option value="pending">Pendiente</option>
+                    <option value="confirmed">Confirmado</option>
+                    <option value="prepared">Preparado</option>
+                    <option value="shipped">Enviado</option>
+                    <option value="delivered">Entregado</option>
+                    <option value="cancelled">Cancelado</option>
+                </select>
+            </div>
+            <button class="btn btn-primary" onclick="updateOrderStatus()">Actualizar Estado</button>
+        </div>
+    </div>
+
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyD3duRGD2A9csmCnLzSaLj0h2KcH7IiPqk",
@@ -1349,25 +1733,39 @@
             setupMenuNavigation();
             initializeFirebase();
             
-            const today = getTodayString();
+            // SÚPER SIMPLE - fecha de hoy
+            const today = '2025-09-01'; // HARDCODEADO para probar
+            console.log('ASIGNANDO FECHA HARDCODEADA:', today);
+            
             const expenseDateInput = document.getElementById('expenseDate');
             const purchaseDateInput = document.getElementById('purchaseDate');
             
             if (expenseDateInput) {
                 expenseDateInput.value = today;
+                console.log('Expense date input asignado:', expenseDateInput.value);
             }
             
             if (purchaseDateInput) {
                 purchaseDateInput.value = today;
+                console.log('Purchase date input asignado:', purchaseDateInput.value);
             }
         });
 
+        // SISTEMA DE FECHAS COMPLETAMENTE REESCRITO
         function getTodayString() {
+            // Forzar fecha local sin problemas de zona horaria
             const now = new Date();
             const year = now.getFullYear();
             const month = (now.getMonth() + 1).toString().padStart(2, '0');
             const day = now.getDate().toString().padStart(2, '0');
-            return `${year}-${month}-${day}`;
+            const todayString = `${year}-${month}-${day}`;
+            console.log('FECHA DE HOY CALCULADA:', todayString);
+            return todayString;
+        }
+
+        function getCurrentDateTime() {
+            // Para el campo date de los objetos, usar la fecha del input tal como está
+            return new Date().toISOString();
         }
 
         function getCurrentTimestamp() {
@@ -1492,6 +1890,7 @@
             });
             event.target.classList.add('active');
             
+            // SOLO actualizar displays, NO resetear filtros locales
             updateAllDisplays();
         }
 
@@ -1669,16 +2068,29 @@
                     updateProductsTable(); 
                     break;
                 case 'orders': 
+                    // Resetear SOLO el filtro de estado local
                     currentOrderStatusFilter = '';
+                    
+                    // Resetear botones de estado a "Todos"
+                    setTimeout(() => {
+                        const statusButtons = document.querySelectorAll('#orders .compact-filters .filter-chip');
+                        statusButtons.forEach(btn => btn.classList.remove('active'));
+                        if (statusButtons[0]) statusButtons[0].classList.add('active'); // "Todos"
+                    }, 100);
+                    
                     updateOrdersTable(); 
                     break;
                 case 'purchases':
                     currentPurchaseSupplierFilter = '';
                     currentPurchaseDateFilter = '';
+                    document.getElementById('customPurchaseDateFilter').value = '';
                     updatePurchasesTable();
                     break;
                 case 'expenses': 
                     updateExpensesTable(); 
+                    break;
+                case 'delivery':
+                    updateDeliveryPanel();
                     break;
             }
         }
@@ -1701,22 +2113,73 @@
             const totalExpenses = filteredExpenses.reduce((sum, expense) => sum + (expense.amount || 0), 0);
             const totalCosts = filteredOrders.reduce((sum, order) => sum + (order.cost || 0), 0);
             
-            // ========== SOLO CAMBIÉ ESTA LÍNEA: EGRESOS NO AFECTAN ==========
-            // GANANCIA NETA: Ingresos - Costos (egresos NO tocan)
-            const netProfit = totalRevenue - totalCosts;
+            // ========== FÓRMULA DE GANANCIA NETA ==========
+            // SOLO: Ingresos - Costos de productos vendidos - Gastos operativos
+            // NO SE INCLUYEN LAS COMPRAS/INVENTARIO EN ESTE CÁLCULO
+            const netProfit = totalRevenue - totalCosts - totalExpenses;
+            // ============================================
             
-            // SALDO BANCO: Ingresos - Ganancia Neta (egresos NO tocan)  
-            const bankBalance = totalRevenue - netProfit;
-            // ================================================================
+            // ========== FÓRMULA DE SALDO BANCO (según usuario) ==========
+            // NOTA: Esta fórmula puede dar valores negativos inesperados porque
+            // resta la ganancia neta (que ya incluye gastos) y luego vuelve a restar gastos
+            const bankBalance = totalRevenue - netProfit - totalExpenses;
+            // Fórmula alternativa más lógica sería: totalRevenue - totalPurchases - totalExpenses
+            // ============================================================
+            
+            // Debug para verificar las fórmulas
+            console.log('=== CÁLCULO GANANCIA NETA ===');
+            console.log('Ingresos:', formatCurrency(totalRevenue));
+            console.log('Costos de ventas:', formatCurrency(totalCosts));
+            console.log('Gastos:', formatCurrency(totalExpenses));
+            console.log('Inventario (NO se resta):', formatCurrency(totalPurchases));
+            console.log('GANANCIA NETA:', formatCurrency(netProfit));
+            console.log('=== CÁLCULO SALDO BANCO ===');
+            console.log('Fórmula usada: Ingresos - Ganancia Neta - Gastos');
+            console.log('SALDO BANCO:', formatCurrency(bankBalance));
 
             document.getElementById('totalOrders').textContent = filteredOrders.length;
             document.getElementById('totalProducts').textContent = products.length;
             document.getElementById('totalRevenue').textContent = formatCurrency(totalRevenue);
+            
+            // Mostrar inversión en stock pero SIN afectar ganancia
             document.getElementById('totalPurchases').textContent = formatCurrency(totalPurchases);
             document.getElementById('totalExpenses').textContent = formatCurrency(totalExpenses);
             document.getElementById('navbarProfit').textContent = formatCurrency(netProfit);
             document.getElementById('navbarBank').textContent = formatCurrency(bankBalance);
             
+            const navbarProfitElement = document.getElementById('navbarProfit');
+            const navbarProfitParent = navbarProfitElement.parentElement.parentElement;
+            const navbarProfitLabel = navbarProfitParent.querySelector('.stat-label');
+            
+            const navbarBankElement = document.getElementById('navbarBank');
+            const navbarBankParent = navbarBankElement.parentElement.parentElement;
+            const navbarBankLabel = navbarBankParent.querySelector('.stat-label');
+            
+            if (netProfit >= 0) {
+                navbarProfitElement.style.color = '#27ae60';
+                navbarProfitLabel.style.color = '#27ae60';
+                navbarProfitParent.style.background = 'rgba(39, 174, 96, 0.2)';
+                navbarProfitParent.style.border = '1px solid rgba(39, 174, 96, 0.3)';
+            } else {
+                navbarProfitElement.style.color = '#e74c3c';
+                navbarProfitLabel.style.color = '#e74c3c';
+                navbarProfitParent.style.background = 'rgba(231, 76, 60, 0.2)';
+                navbarProfitParent.style.border = '1px solid rgba(231, 76, 60, 0.3)';
+            }
+
+            // Colorear saldo banco según si es positivo o negativo
+            if (bankBalance >= 0) {
+                navbarBankElement.style.color = '#3498db';
+                navbarBankLabel.style.color = '#3498db';
+                navbarBankParent.style.background = 'rgba(52, 152, 219, 0.2)';
+                navbarBankParent.style.border = '1px solid rgba(52, 152, 219, 0.3)';
+            } else {
+                navbarBankElement.style.color = '#e74c3c';
+                navbarBankLabel.style.color = '#e74c3c';
+                navbarBankParent.style.background = 'rgba(231, 76, 60, 0.2)';
+                navbarBankParent.style.border = '1px solid rgba(231, 76, 60, 0.3)';
+            }
+
             // Dashboard - mismo cálculo limpio
             document.getElementById('dashProducts').textContent = products.length;
             document.getElementById('dashOrders').textContent = filteredOrders.length;
@@ -1741,6 +2204,398 @@
             updatePurchasesTable();
             updateExpensesTable();
             updatePurchasesSummary();
+            updateDeliveryPanel();
+        }
+
+        // ============= NUEVAS FUNCIONES PARA PANEL DE ENTREGAS =============
+        function updateDeliveryPanel() {
+            updateDeliveryStats();
+            updateDeliverySections();
+            updateTodaySummary();
+            checkUrgentDeliveries();
+        }
+
+        function updateDeliveryStats() {
+            const pending = orders.filter(order => order.status === 'pending').length;
+            const confirmed = orders.filter(order => order.status === 'confirmed').length;
+            const prepared = orders.filter(order => order.status === 'prepared').length;
+            const shipped = orders.filter(order => order.status === 'shipped').length;
+            const delivered = orders.filter(order => order.status === 'delivered').length;
+
+            document.getElementById('deliveryPending').textContent = pending;
+            document.getElementById('deliveryConfirmed').textContent = confirmed;
+            document.getElementById('deliveryShipped').textContent = shipped;
+            document.getElementById('deliveryDelivered').textContent = delivered;
+
+            // Actualizar contadores en las tarjetas
+            document.getElementById('pendingCount').textContent = pending;
+            document.getElementById('confirmedCount').textContent = confirmed;
+            document.getElementById('preparedCount').textContent = prepared;
+            document.getElementById('shippedCount').textContent = shipped;
+        }
+
+        function updateDeliverySections() {
+            updateOrdersInSection('pending', 'pendingOrders');
+            updateOrdersInSection('confirmed', 'confirmedOrders');
+            updateOrdersInSection('prepared', 'preparedOrders');
+            updateOrdersInSection('shipped', 'shippedOrders');
+        }
+
+        function updateOrdersInSection(status, containerId) {
+            const container = document.getElementById(containerId);
+            let filteredOrders = orders.filter(order => order.status === status);
+
+            // Aplicar filtro de método de entrega si está activo
+            if (currentDeliveryMethodFilter !== 'all') {
+                filteredOrders = filteredOrders.filter(order => 
+                    (order.deliveryMethod || 'delivery') === currentDeliveryMethodFilter
+                );
+            }
+
+            if (filteredOrders.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #666; padding: 2rem;">No hay pedidos en este estado.</p>';
+                return;
+            }
+
+            container.innerHTML = filteredOrders.map(order => {
+                const orderDate = new Date(order.date);
+                const daysDiff = Math.floor((new Date() - orderDate) / (1000 * 60 * 60 * 24));
+                const isUrgent = daysDiff >= 2 && status !== 'delivered';
+                const urgentClass = isUrgent ? 'urgent' : '';
+                
+                const deliveryMethod = order.deliveryMethod || 'delivery';
+                const deliveryPerson = order.deliveryPerson || 'Sin asignar';
+                const deliveryAddress = order.deliveryAddress || 'Sin dirección';
+
+                return `
+                    <div class="delivery-item ${urgentClass}" style="border-left-color: ${getStatusColor(status)}">
+                        <div class="delivery-header">
+                            <div class="delivery-customer">${order.customer}</div>
+                            <div class="delivery-date">${orderDate.toLocaleDateString()} 
+                                ${isUrgent ? '<span style="color: #e74c3c; font-weight: bold;">⚠️ URGENTE</span>' : ''}
+                            </div>
+                        </div>
+                        <div class="delivery-product">${order.productName} (x${order.quantity})</div>
+                        <div class="delivery-total">Total: ${formatCurrency(order.total)}</div>
+                        <div style="font-size: 0.8rem; color: #666; margin: 0.5rem 0;">
+                            Canal: <strong>${order.channel}</strong> • 
+                            ${getDeliveryMethodLabel(deliveryMethod)}: <strong>${deliveryPerson}</strong>
+                        </div>
+                        <div style="font-size: 0.8rem; color: #666; margin: 0.5rem 0;">
+                            📍 ${deliveryAddress}
+                            ${order.comments ? ` • 💬 ${order.comments.substring(0, 50)}${order.comments.length > 50 ? '...' : ''}` : ''}
+                        </div>
+                        <div class="quick-actions">
+                            ${getQuickActionButtons(order, status)}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function getStatusColor(status) {
+            const colors = {
+                'pending': '#f39c12',
+                'confirmed': '#3498db',
+                'prepared': '#17a2b8',
+                'shipped': '#9b59b6',
+                'delivered': '#27ae60',
+                'cancelled': '#e74c3c'
+            };
+            return colors[status] || '#ddd';
+        }
+
+        function getDeliveryMethodLabel(method) {
+            const labels = {
+                'delivery': '🛵 Delivery',
+                'personal': '🚶‍♂️ Nosotros',
+                'pickup': '🏪 Recolección',
+                'shipping': '📮 Envío'
+            };
+            return labels[method] || '🛵 Delivery';
+        }
+
+        function getQuickActionButtons(order, currentStatus) {
+            let buttons = '';
+            
+            switch(currentStatus) {
+                case 'pending':
+                    buttons = `
+                        <button class="quick-btn confirm" onclick="quickUpdateStatus('${order.id}', 'confirmed')">✅ Confirmar</button>
+                        <button class="quick-btn cancel" onclick="quickUpdateStatus('${order.id}', 'cancelled')">❌ Cancelar</button>
+                    `;
+                    break;
+                case 'confirmed':
+                    buttons = `
+                        <button class="quick-btn ship" onclick="quickUpdateStatus('${order.id}', 'shipped')">🚚 Enviar</button>
+                        <button class="quick-btn cancel" onclick="quickUpdateStatus('${order.id}', 'cancelled')">❌ Cancelar</button>
+                    `;
+                    break;
+                case 'shipped':
+                    buttons = `
+                        <button class="quick-btn deliver" onclick="quickUpdateStatus('${order.id}', 'delivered')">✅ Entregado</button>
+                        <button class="quick-btn cancel" onclick="quickUpdateStatus('${order.id}', 'cancelled')">❌ Cancelar</button>
+                    `;
+                    break;
+            }
+            
+            buttons += `<button class="quick-btn" onclick="openOrderModal('${order.id}')" style="background: #6c757d; color: white;">✏️ Editar</button>`;
+            return buttons;
+        }
+
+        function updateTodaySummary() {
+            const today = new Date().toDateString();
+            const todayOrders = orders.filter(order => new Date(order.date).toDateString() === today);
+            const todayDelivered = orders.filter(order => 
+                order.status === 'delivered' && new Date(order.date).toDateString() === today
+            );
+            const todayRevenue = todayDelivered.reduce((sum, order) => sum + (order.total || 0), 0);
+
+            document.getElementById('todayNewOrders').textContent = todayOrders.length;
+            document.getElementById('todayDelivered').textContent = todayDelivered.length;
+            document.getElementById('todayRevenue').textContent = formatCurrency(todayRevenue);
+        }
+
+        function checkUrgentDeliveries() {
+            const urgentOrders = orders.filter(order => {
+                if (order.status === 'delivered' || order.status === 'cancelled') return false;
+                const orderDate = new Date(order.date);
+                const daysDiff = Math.floor((new Date() - orderDate) / (1000 * 60 * 60 * 24));
+                return daysDiff >= 2;
+            });
+
+            const urgentSection = document.getElementById('urgentDeliveries');
+            const urgentGrid = document.getElementById('urgentDeliveriesGrid');
+
+            if (urgentOrders.length > 0) {
+                urgentSection.style.display = 'block';
+                urgentGrid.innerHTML = urgentOrders.map(order => {
+                    const daysDiff = Math.floor((new Date() - new Date(order.date)) / (1000 * 60 * 60 * 24));
+                    return `
+                        <div class="priority-item">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                <strong>${order.customer}</strong>
+                                <span style="background: rgba(255,255,255,0.3); padding: 0.2rem 0.5rem; border-radius: 10px;">
+                                    ${daysDiff} días
+                                </span>
+                            </div>
+                            <div style="margin-bottom: 0.5rem;">${order.productName}</div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span>${formatCurrency(order.total)}</span>
+                                <div style="display: flex; gap: 0.3rem;">
+                                    <button class="quick-btn" onclick="quickUpdateStatus('${order.id}', '${getNextStatus(order.status)}')" style="background: rgba(255,255,255,0.2); color: white; font-size: 0.7rem;">
+                                        ${getNextStatusLabel(order.status)}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } else {
+                urgentSection.style.display = 'none';
+            }
+        }
+
+        function getNextStatus(currentStatus) {
+            const statusFlow = {
+                'pending': 'confirmed',
+                'confirmed': 'shipped',
+                'shipped': 'delivered'
+            };
+            return statusFlow[currentStatus] || currentStatus;
+        }
+
+        function getNextStatusLabel(currentStatus) {
+            const labels = {
+                'pending': '✅ Confirmar',
+                'confirmed': '🚚 Enviar',
+                'shipped': '✅ Entregar'
+            };
+            return labels[currentStatus] || 'Actualizar';
+        }
+
+        async function quickUpdateStatus(orderId, newStatus) {
+            const orderIndex = orders.findIndex(o => o.id === orderId);
+            if (orderIndex !== -1) {
+                const oldStatus = orders[orderIndex].status;
+                orders[orderIndex].status = newStatus;
+                
+                try {
+                    if (isFirebaseConnected) {
+                        await saveToFirebase('orders', orders[orderIndex], orderId);
+                    }
+                    
+                    saveToLocalStorage();
+                    updateAllDisplays();
+                    
+                    showToast(`Pedido ${getStatusLabel(newStatus).toLowerCase()} correctamente`, 'success');
+                    
+                } catch (error) {
+                    orders[orderIndex].status = oldStatus; // Revertir cambio
+                    showToast('Error al actualizar estado', 'error');
+                }
+            }
+        }
+
+        function toggleDeliverySection(sectionId) {
+            const section = document.getElementById(sectionId);
+            const isVisible = section.style.display !== 'none';
+            
+            // Cerrar todas las secciones
+            document.querySelectorAll('#pending-section, #confirmed-section, #prepared-section, #shipped-section').forEach(s => {
+                s.style.display = 'none';
+            });
+            
+            // Abrir la sección solicitada si no estaba visible
+            if (!isVisible) {
+                section.style.display = 'block';
+                section.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+        function filterDeliveryStatus(status) {
+            currentDeliveryStatusFilter = status;
+            
+            // Actualizar botones activos
+            document.querySelectorAll('#delivery .filter-chip').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Por ahora solo actualiza la vista, puedes expandir esta funcionalidad
+            updateDeliveryPanel();
+        }
+
+        function filterDeliveryMethod(method) {
+            currentDeliveryMethodFilter = method;
+            
+            // Actualizar botones activos
+            document.querySelectorAll('#delivery .filter-group:last-child .filter-chip').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            updateDeliveryPanel();
+        }
+
+        // ============= FIN DE FUNCIONES DEL PANEL DE ENTREGAS =============
+
+        function openProductModal(productId = null) {
+            const modal = document.getElementById('productModal');
+            const title = document.getElementById('productModalTitle');
+            
+            document.getElementById('productId').value = '';
+            document.getElementById('productName').value = '';
+            document.getElementById('productSupplier').value = '';
+            document.getElementById('productCategory').value = 'electronica';
+            document.getElementById('productStock').value = '0';
+            document.getElementById('productMinStock').value = '5';
+            document.getElementById('productCost').value = '';
+            document.getElementById('productPrice').value = '';
+            
+            if (productId) {
+                const product = products.find(p => p.id === productId);
+                if (product) {
+                    title.textContent = 'Editar Producto';
+                    document.getElementById('productId').value = product.id;
+                    document.getElementById('productName').value = product.name;
+                    document.getElementById('productSupplier').value = product.supplier;
+                    document.getElementById('productCategory').value = product.category;
+                    document.getElementById('productStock').value = product.stock || 0;
+                    document.getElementById('productMinStock').value = product.minStock || 5;
+                    document.getElementById('productCost').value = product.cost;
+                    document.getElementById('productPrice').value = product.price;
+                }
+            } else {
+                title.textContent = 'Nuevo Producto';
+            }
+            modal.style.display = 'block';
+        }
+
+        async function saveProduct(event) {
+            event.preventDefault();
+            const productId = document.getElementById('productId').value;
+            const isEditing = productId !== '';
+            
+            const productData = {
+                name: document.getElementById('productName').value,
+                supplier: document.getElementById('productSupplier').value,
+                category: document.getElementById('productCategory').value,
+                stock: parseInt(document.getElementById('productStock').value) || 0,
+                minStock: parseInt(document.getElementById('productMinStock').value) || 5,
+                cost: parseFloat(document.getElementById('productCost').value) || 0,
+                price: parseFloat(document.getElementById('productPrice').value) || 0,
+                timestamp: getCurrentTimestamp()
+            };
+
+            try {
+                if (isEditing) {
+                    const index = products.findIndex(p => p.id === productId);
+                    if (index !== -1) {
+                        products[index] = { ...products[index], ...productData };
+                        if (isFirebaseConnected) {
+                            await saveToFirebase('products', products[index], productId);
+                        }
+                        showToast('Producto actualizado correctamente', 'success');
+                    }
+                } else {
+                    let newId;
+                    if (isFirebaseConnected) {
+                        newId = await saveToFirebase('products', productData);
+                    } else {
+                        newId = Date.now().toString();
+                    }
+                    
+                    const newProduct = { id: newId, ...productData };
+                    products.push(newProduct);
+                    showToast('Producto agregado correctamente', 'success');
+                }
+
+                saveToLocalStorage();
+                closeModal('productModal');
+                updateAllDisplays();
+                
+            } catch (error) {
+                showToast('Error al guardar producto', 'error');
+            }
+        }
+
+        async function deleteProduct(id) {
+            if (confirm('¿Estás seguro de eliminar este producto?')) {
+                try {
+                    products = products.filter(p => p.id !== id);
+                    if (isFirebaseConnected) {
+                        await deleteFromFirebase('products', id);
+                    }
+                    saveToLocalStorage();
+                    updateAllDisplays();
+                    showToast('Producto eliminado correctamente', 'success');
+                } catch (error) {
+                    showToast('Error al eliminar producto', 'error');
+                }
+            }
+        }
+
+        function filterByCategory(category) {
+            currentCategoryFilter = category;
+            
+            document.querySelectorAll('.compact-filters .filter-group:first-child .filter-chip').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            updateProductsTable();
+        }
+
+        function filterByStock(stockType) {
+            currentStockFilter = stockType;
+            
+            document.querySelectorAll('.compact-filters .filter-group:last-child .filter-chip').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            updateProductsTable();
         }
 
         function updateProductsTable() {
@@ -1810,15 +2665,265 @@
             }).join('');
         }
 
+        function populateOrderProductSelect() {
+            const select = document.getElementById('orderProduct');
+            if (!select) return;
+            select.innerHTML = '<option value="">Seleccionar producto...</option>';
+            products.forEach(product => {
+                select.innerHTML += `<option value="${product.id}">${product.name} - ${formatCurrency(product.price)}</option>`;
+            });
+        }
+
+        function openOrderModal(orderId = null) {
+            if (products.length === 0 && !orderId) {
+                showToast('Primero debes agregar productos antes de crear pedidos', 'warning');
+                return;
+            }
+            
+            const modal = document.getElementById('orderModal');
+            const title = document.querySelector('#orderModal h2');
+            
+            document.getElementById('orderId').value = '';
+            document.getElementById('orderCustomer').value = '';
+            document.getElementById('orderChannel').value = 'facebook';
+            document.getElementById('orderProduct').value = '';
+            document.getElementById('orderQuantity').value = '1';
+            document.getElementById('orderTotal').value = '';
+            document.getElementById('orderStatus').value = 'pending';
+            document.getElementById('orderDeliveryMethod').value = 'delivery';
+            document.getElementById('orderDeliveryPerson').value = '';
+            document.getElementById('orderDeliveryAddress').value = '';
+            document.getElementById('orderComments').value = '';
+            
+            if (orderId) {
+                const order = orders.find(o => o.id === orderId);
+                if (order) {
+                    title.textContent = 'Editar Pedido';
+                    document.getElementById('orderId').value = order.id;
+                    document.getElementById('orderCustomer').value = order.customer;
+                    document.getElementById('orderChannel').value = order.channel;
+                    document.getElementById('orderProduct').value = order.productId;
+                    document.getElementById('orderQuantity').value = order.quantity;
+                    document.getElementById('orderTotal').value = order.total;
+                    document.getElementById('orderStatus').value = order.status;
+                    document.getElementById('orderDeliveryMethod').value = order.deliveryMethod || 'delivery';
+                    document.getElementById('orderDeliveryPerson').value = order.deliveryPerson || '';
+                    document.getElementById('orderDeliveryAddress').value = order.deliveryAddress || '';
+                    document.getElementById('orderComments').value = order.comments || '';
+                }
+            } else {
+                title.textContent = 'Nuevo Pedido';
+            }
+            
+            modal.style.display = 'block';
+        }
+
+        function openStatusModal(orderId) {
+            currentEditingOrderId = orderId;
+            const order = orders.find(o => o.id === orderId);
+            if (order) {
+                document.getElementById('newOrderStatus').value = order.status;
+                document.getElementById('statusModal').style.display = 'block';
+            }
+        }
+
+        async function updateOrderStatus() {
+            if (currentEditingOrderId) {
+                const newStatus = document.getElementById('newOrderStatus').value;
+                const orderIndex = orders.findIndex(o => o.id === currentEditingOrderId);
+                if (orderIndex !== -1) {
+                    orders[orderIndex].status = newStatus;
+                    
+                    if (isFirebaseConnected) {
+                        try {
+                            await saveToFirebase('orders', orders[orderIndex], currentEditingOrderId);
+                        } catch (error) {
+                            console.error('Error actualizando estado:', error);
+                        }
+                    }
+                    
+                    saveToLocalStorage();
+                    updateAllDisplays();
+                    closeModal('statusModal');
+                    showToast('Estado actualizado correctamente', 'success');
+                }
+                currentEditingOrderId = null;
+            }
+        }
+
+        function updateOrderPrice() {
+            const productId = document.getElementById('orderProduct').value;
+            const quantity = parseInt(document.getElementById('orderQuantity').value) || 1;
+            
+            if (productId) {
+                const product = products.find(p => p.id === productId);
+                if (product) {
+                    document.getElementById('orderTotal').value = product.price * quantity;
+                }
+            }
+        }
+
+        async function saveOrder(event) {
+            event.preventDefault();
+            const orderId = document.getElementById('orderId').value;
+            const isEditing = orderId !== '';
+            
+            const productId = document.getElementById('orderProduct').value;
+            const product = products.find(p => p.id === productId);
+            const newQuantity = parseInt(document.getElementById('orderQuantity').value) || 1;
+            const total = parseFloat(document.getElementById('orderTotal').value) || 0;
+            
+            if (!product) {
+                showToast('Producto no encontrado', 'error');
+                return;
+            }
+            
+            const orderData = {
+                customer: document.getElementById('orderCustomer').value,
+                channel: document.getElementById('orderChannel').value,
+                productId: productId,
+                productName: product.name,
+                quantity: newQuantity,
+                total: total,
+                cost: product.cost * newQuantity,
+                status: document.getElementById('orderStatus').value,
+                deliveryMethod: document.getElementById('orderDeliveryMethod').value,
+                deliveryPerson: document.getElementById('orderDeliveryPerson').value,
+                deliveryAddress: document.getElementById('orderDeliveryAddress').value,
+                comments: document.getElementById('orderComments').value || '',
+                date: isEditing ? orders.find(o => o.id === orderId)?.date : getCurrentTimestamp()
+            };
+
+            try {
+                if (isEditing) {
+                    const oldOrder = orders.find(o => o.id === orderId);
+                    if (oldOrder && oldOrder.productId === productId) {
+                        const stockDifference = oldOrder.quantity - newQuantity;
+                        product.stock = (product.stock || 0) + stockDifference;
+                    } else if (oldOrder) {
+                        const oldProduct = products.find(p => p.id === oldOrder.productId);
+                        if (oldProduct) {
+                            oldProduct.stock = (oldProduct.stock || 0) + oldOrder.quantity;
+                        }
+                        product.stock = (product.stock || 0) - newQuantity;
+                    }
+                    
+                    const index = orders.findIndex(o => o.id === orderId);
+                    if (index !== -1) {
+                        orders[index] = { ...orders[index], ...orderData };
+                        if (isFirebaseConnected) {
+                            await saveToFirebase('orders', orders[index], orderId);
+                        }
+                        showToast('Pedido actualizado correctamente', 'success');
+                    }
+                } else {
+                    if (product.stock < newQuantity) {
+                        showToast(`Stock insuficiente. Disponible: ${product.stock}`, 'warning');
+                        return;
+                    }
+                    
+                    product.stock = (product.stock || 0) - newQuantity;
+                    
+                    let newId;
+                    if (isFirebaseConnected) {
+                        newId = await saveToFirebase('orders', orderData);
+                    } else {
+                        newId = Date.now().toString();
+                    }
+                    
+                    const newOrder = { id: newId, ...orderData };
+                    orders.push(newOrder);
+                    showToast('Pedido creado correctamente', 'success');
+                }
+                
+                if (isFirebaseConnected) {
+                    try {
+                        await saveToFirebase('products', product, product.id);
+                    } catch (error) {
+                        console.error('Error actualizando stock en Firebase:', error);
+                    }
+                }
+                
+                saveToLocalStorage();
+                closeModal('orderModal');
+                updateAllDisplays();
+                
+            } catch (error) {
+                showToast('Error al guardar pedido', 'error');
+            }
+        }
+
         function updateOrdersTable() {
             const tbody = document.getElementById('ordersTable');
-            const filteredOrders = getOrdersByPeriod(currentDatePeriod);
             
-            let ordersToShow = [...filteredOrders];
+            // SISTEMA SIMPLIFICADO - SOLO DOS FILTROS
+            console.log('=== DEBUG FILTROS SIMPLIFICADO ===');
+            console.log('Total orders:', orders.length);
+            console.log('Navbar filter (currentDatePeriod):', currentDatePeriod);
+            console.log('Status filter (currentOrderStatusFilter):', currentOrderStatusFilter);
             
+            let ordersToShow = [...orders]; // Copia del array original
+            
+            // PASO 1: Aplicar filtro de fecha del NAVBAR ÚNICAMENTE
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            switch(currentDatePeriod) {
+                case 'today':
+                    ordersToShow = ordersToShow.filter(order => {
+                        const orderDay = new Date(order.date);
+                        orderDay.setHours(0, 0, 0, 0);
+                        return orderDay.getTime() === today.getTime();
+                    });
+                    break;
+                case 'yesterday':
+                    const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
+                    ordersToShow = ordersToShow.filter(order => {
+                        const orderDay = new Date(order.date);
+                        orderDay.setHours(0, 0, 0, 0);
+                        return orderDay.getTime() === yesterday.getTime();
+                    });
+                    break;
+                case 'week':
+                    const weekStart = new Date(today.getTime() - (today.getDay() * 24 * 60 * 60 * 1000));
+                    ordersToShow = ordersToShow.filter(order => new Date(order.date) >= weekStart);
+                    break;
+                case 'lastWeek':
+                    const lastWeekEnd = new Date(today.getTime() - (today.getDay() * 24 * 60 * 60 * 1000) - 1);
+                    const lastWeekStart = new Date(lastWeekEnd.getTime() - (6 * 24 * 60 * 60 * 1000));
+                    ordersToShow = ordersToShow.filter(order => {
+                        const orderDate = new Date(order.date);
+                        return orderDate >= lastWeekStart && orderDate <= lastWeekEnd;
+                    });
+                    break;
+                case 'month':
+                    const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
+                    ordersToShow = ordersToShow.filter(order => new Date(order.date) >= monthStart);
+                    break;
+                case 'lastMonth':
+                    const lastMonthStart = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+                    const lastMonthEnd = new Date(today.getFullYear(), today.getMonth(), 0);
+                    ordersToShow = ordersToShow.filter(order => {
+                        const orderDate = new Date(order.date);
+                        return orderDate >= lastMonthStart && orderDate <= lastMonthEnd;
+                    });
+                    break;
+                case 'all':
+                default:
+                    // No filtrar por fecha
+                    break;
+            }
+            
+            console.log('Después de filtro de fecha:', ordersToShow.length);
+            
+            // PASO 2: Aplicar filtro de estado
             if (currentOrderStatusFilter && currentOrderStatusFilter !== '') {
                 ordersToShow = ordersToShow.filter(order => order.status === currentOrderStatusFilter);
+                console.log('Después de filtro de estado:', ordersToShow.length);
             }
+            
+            console.log('RESULTADO FINAL:', ordersToShow.length, 'pedidos');
+            console.log('=====================');
             
             if (ordersToShow.length === 0) {
                 const message = (currentOrderStatusFilter || currentDatePeriod !== 'all') ? 
@@ -1829,6 +2934,8 @@
             }
 
             tbody.innerHTML = ordersToShow.map(order => {
+                const profit = order.total - order.cost;
+                const statusClass = getStatusClass(order.status);
                 const comments = order.comments || '';
                 const commentDisplay = comments.length > 30 ? comments.substring(0, 30) + '...' : comments;
                 
@@ -1839,8 +2946,8 @@
                         <td>${order.channel}</td>
                         <td title="${order.productName}">${order.productName}</td>
                         <td>${formatCurrency(order.total)}</td>
-                        <td><span class="status-badge status-completed">${order.status || 'Entregado'}</span></td>
-                        <td title="${comments}" style="max-width: 150px; cursor: pointer;">
+                        <td><span class="status-badge ${statusClass}" onclick="openStatusModal('${order.id}')" title="Click para cambiar estado">${getStatusLabel(order.status)}</span></td>
+                        <td title="${comments}" style="max-width: 150px; cursor: pointer;" onclick="showFullComment('${comments.replace(/'/g, "\\'")}')">
                             ${commentDisplay || '<i style="color: #ccc;">Sin comentarios</i>'}
                         </td>
                         <td>${new Date(order.date).toLocaleDateString()}</td>
@@ -1853,16 +2960,343 @@
             }).join('');
         }
 
+        function showFullComment(comment) {
+            if (comment && comment.trim() !== '') {
+                alert(`Comentario completo:\n\n${comment}`);
+            }
+        }
+
+        function filterOrdersByStatus(status) {
+            currentOrderStatusFilter = status;
+            
+            document.querySelectorAll('.compact-filters .filter-group:first-child .filter-chip').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            updateOrdersTable();
+        }
+
+        function getStatusClass(status) {
+            const classes = {
+                'pending': 'status-pending',
+                'confirmed': 'status-pending',
+                'shipped': 'status-pending',
+                'delivered': 'status-completed',
+                'cancelled': 'status-cancelled'
+            };
+            return classes[status] || 'status-pending';
+        }
+
+        function getStatusLabel(status) {
+            const labels = {
+                'pending': 'Pendiente',
+                'confirmed': 'Confirmado',
+                'prepared': 'Preparado',
+                'shipped': 'Enviado',
+                'delivered': 'Entregado',
+                'cancelled': 'Cancelado'
+            };
+            return labels[status] || status;
+        }
+
+        async function deleteOrder(id) {
+            if (confirm('¿Estás seguro de eliminar este pedido?')) {
+                try {
+                    const orderToDelete = orders.find(o => o.id === id);
+                    if (orderToDelete) {
+                        const product = products.find(p => p.id === orderToDelete.productId);
+                        if (product) {
+                            product.stock = (product.stock || 0) + orderToDelete.quantity;
+                            
+                            if (isFirebaseConnected) {
+                                await saveToFirebase('products', product, product.id);
+                            }
+                        }
+                    }
+                    
+                    orders = orders.filter(o => o.id !== id);
+                    if (isFirebaseConnected) {
+                        await deleteFromFirebase('orders', id);
+                    }
+                    saveToLocalStorage();
+                    updateAllDisplays();
+                    showToast('Pedido eliminado y stock restaurado', 'success');
+                } catch (error) {
+                    showToast('Error al eliminar pedido', 'error');
+                }
+            }
+        }
+
+        // FUNCIONES COMPRAS
+        function populatePurchaseProductSelect() {
+            const select = document.getElementById('purchaseProduct');
+            if (!select) return;
+            select.innerHTML = '<option value="">Seleccionar producto...</option>';
+            products.forEach(product => {
+                select.innerHTML += `<option value="${product.id}" data-supplier="${product.supplier}" data-cost="${product.cost}">${product.name} (${product.supplier})</option>`;
+            });
+        }
+
+        // FUNCIÓN CORREGIDA - usar getTodayString() en lugar de getTodayDateString()
+        function openPurchaseModal(purchaseId = null) {
+            const modal = document.getElementById('purchaseModal');
+            const title = document.getElementById('purchaseModalTitle');
+            
+            // Limpiar formulario
+            document.getElementById('purchaseId').value = '';
+            document.getElementById('purchaseProduct').value = '';
+            document.getElementById('purchaseProductName').value = '';
+            document.getElementById('purchaseSupplier').value = '';
+            document.getElementById('purchaseQuantity').value = '1';
+            document.getElementById('purchaseUnitPrice').value = '';
+            document.getElementById('purchaseTotal').value = '';
+            document.getElementById('purchaseNotes').value = '';
+            
+            // CORRECCIÓN: usar getTodayString() en lugar de getTodayDateString()
+            const todayString = getTodayString();
+            console.log('Asignando fecha de hoy:', todayString);
+            document.getElementById('purchaseDate').value = todayString;
+            
+            if (purchaseId) {
+                const purchase = purchases.find(p => p.id === purchaseId);
+                if (purchase) {
+                    title.textContent = 'Editar Compra';
+                    document.getElementById('purchaseId').value = purchase.id;
+                    // Si es producto existente, seleccionar en dropdown
+                    const existingProduct = products.find(p => p.id === purchase.productId);
+                    if (existingProduct) {
+                        document.getElementById('purchaseProduct').value = purchase.productId;
+                    }
+                    document.getElementById('purchaseProductName').value = purchase.productName;
+                    document.getElementById('purchaseSupplier').value = purchase.supplier;
+                    document.getElementById('purchaseQuantity').value = purchase.quantity;
+                    document.getElementById('purchaseUnitPrice').value = purchase.unitPrice;
+                    document.getElementById('purchaseTotal').value = purchase.total;
+                    document.getElementById('purchaseNotes').value = purchase.notes || '';
+                    document.getElementById('purchaseDate').value = purchase.date;
+                }
+            } else {
+                title.textContent = 'Nueva Compra';
+                // CORRECCIÓN: usar getTodayString() en lugar de getTodayDateString()
+                setTimeout(() => {
+                    document.getElementById('purchaseDate').value = getTodayString();
+                    console.log('Fecha verificada después de timeout:', document.getElementById('purchaseDate').value);
+                }, 100);
+            }
+            
+            modal.style.display = 'block';
+        }
+
+        function updatePurchaseDetails() {
+            const select = document.getElementById('purchaseProduct');
+            const selectedOption = select.options[select.selectedIndex];
+            
+            if (selectedOption.value) {
+                // Auto-completar desde producto existente
+                const supplier = selectedOption.getAttribute('data-supplier');
+                const cost = selectedOption.getAttribute('data-cost');
+                const productName = selectedOption.textContent.split(' (')[0]; // Remover parte del proveedor
+                
+                document.getElementById('purchaseProductName').value = productName;
+                document.getElementById('purchaseSupplier').value = supplier || '';
+                document.getElementById('purchaseUnitPrice').value = cost || '';
+                updatePurchaseTotal();
+            }
+            // Si no selecciona nada, los campos quedan editables para entrada manual
+        }
+
+        function updatePurchaseTotal() {
+            const quantity = parseInt(document.getElementById('purchaseQuantity').value) || 0;
+            const unitPrice = parseFloat(document.getElementById('purchaseUnitPrice').value) || 0;
+            const total = quantity * unitPrice;
+            
+            document.getElementById('purchaseTotal').value = total;
+        }
+
+        async function savePurchase(event) {
+            event.preventDefault();
+            const purchaseId = document.getElementById('purchaseId').value;
+            const isEditing = purchaseId !== '';
+            
+            const selectedProductId = document.getElementById('purchaseProduct').value;
+            const productName = document.getElementById('purchaseProductName').value;
+            const supplier = document.getElementById('purchaseSupplier').value;
+            const quantity = parseInt(document.getElementById('purchaseQuantity').value) || 0;
+            const unitPrice = parseFloat(document.getElementById('purchaseUnitPrice').value) || 0;
+            const total = parseFloat(document.getElementById('purchaseTotal').value) || 0;
+            
+            // DEBUG ESPECÍFICO PARA FECHAS
+            const dateFromInput = document.getElementById('purchaseDate').value;
+            console.log('=== DEBUG FECHA AL GUARDAR ===');
+            console.log('Fecha del input:', dateFromInput);
+            console.log('Fecha actual calculada:', getTodayString());
+            console.log('Timestamp actual:', getCurrentTimestamp());
+            
+            if (!productName || !supplier) {
+                showToast('Debes completar el nombre del producto y proveedor', 'error');
+                return;
+            }
+            
+            const purchaseData = {
+                productId: selectedProductId || null, // Null si es producto nuevo
+                productName: productName,
+                supplier: supplier,
+                quantity: quantity,
+                unitPrice: unitPrice,
+                total: total,
+                notes: document.getElementById('purchaseNotes').value || '',
+                date: dateFromInput, // Usar exactamente lo que está en el input
+                timestamp: getCurrentTimestamp()
+            };
+            
+            console.log('Datos que se van a guardar:', purchaseData);
+            console.log('================================');
+
+            try {
+                // Solo actualizar stock si es un producto existente
+                let productToUpdate = null;
+                if (selectedProductId) {
+                    productToUpdate = products.find(p => p.id === selectedProductId);
+                }
+
+                if (isEditing) {
+                    const oldPurchase = purchases.find(p => p.id === purchaseId);
+                    
+                    // Restaurar stock del producto anterior si era existente
+                    if (oldPurchase && oldPurchase.productId) {
+                        const oldProduct = products.find(p => p.id === oldPurchase.productId);
+                        if (oldProduct) {
+                            oldProduct.stock = (oldProduct.stock || 0) - oldPurchase.quantity;
+                        }
+                    }
+                    
+                    // Agregar stock al producto actual si es existente
+                    if (productToUpdate) {
+                        productToUpdate.stock = (productToUpdate.stock || 0) + quantity;
+                    }
+                    
+                    const index = purchases.findIndex(p => p.id === purchaseId);
+                    if (index !== -1) {
+                        purchases[index] = { ...purchases[index], ...purchaseData };
+                        if (isFirebaseConnected) {
+                            await saveToFirebase('purchases', purchases[index], purchaseId);
+                        }
+                        showToast('Compra actualizada correctamente', 'success');
+                    }
+                } else {
+                    // Nueva compra: solo agregar stock si es producto existente
+                    if (productToUpdate) {
+                        productToUpdate.stock = (productToUpdate.stock || 0) + quantity;
+                    }
+                    
+                    let newId;
+                    if (isFirebaseConnected) {
+                        newId = await saveToFirebase('purchases', purchaseData);
+                    } else {
+                        newId = Date.now().toString();
+                    }
+                    
+                    const newPurchase = { id: newId, ...purchaseData };
+                    purchases.push(newPurchase);
+                    console.log('Nueva compra agregada al array:', newPurchase);
+                    showToast('Compra registrada correctamente', 'success');
+                }
+                
+                // Actualizar producto en Firebase si es existente
+                if (productToUpdate && isFirebaseConnected) {
+                    try {
+                        await saveToFirebase('products', productToUpdate, productToUpdate.id);
+                    } catch (error) {
+                        console.error('Error actualizando stock en Firebase:', error);
+                    }
+                }
+                
+                saveToLocalStorage();
+                closeModal('purchaseModal');
+                updateAllDisplays();
+                
+            } catch (error) {
+                showToast('Error al guardar compra', 'error');
+            }
+        }
+
+        function filterPurchasesBySupplier(supplier) {
+            currentPurchaseSupplierFilter = supplier;
+            
+            document.querySelectorAll('#purchases .compact-filters .filter-group:first-child .filter-chip').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            updatePurchasesTable();
+        }
+
+        function filterPurchasesByDate(dateType) {
+            currentPurchaseDateFilter = dateType;
+            
+            document.querySelectorAll('#purchases .compact-filters .filter-group:last-child .filter-chip').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            if (dateType !== 'custom') {
+                event.target.classList.add('active');
+            } else {
+                const customDateInput = document.getElementById('customPurchaseDateFilter');
+                if (customDateInput.value) {
+                    document.querySelector('#purchases .filter-chip[onclick="filterPurchasesByDate(\'custom\')"]').classList.add('active');
+                }
+            }
+            
+            updatePurchasesTable();
+        }
+
         function updatePurchasesTable() {
             const tbody = document.getElementById('purchasesTable');
-            const filteredPurchases = getPurchasesByPeriod(currentDatePeriod);
             
-            if (filteredPurchases.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="9" style="text-align: center; padding: 2rem; color: #657786;">No hay compras registradas. Registra tu primera compra.</td></tr>';
+            let purchasesToShow = purchases.filter(purchase => {
+                const matchesSupplier = currentPurchaseSupplierFilter === '' || purchase.supplier === currentPurchaseSupplierFilter;
+                
+                let matchesDate = true;
+                if (currentPurchaseDateFilter) {
+                    const purchaseDate = new Date(purchase.date);
+                    const now = new Date();
+                    
+                    switch(currentPurchaseDateFilter) {
+                        case 'today':
+                            matchesDate = purchaseDate.toDateString() === now.toDateString();
+                            break;
+                        case 'week':
+                            const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                            matchesDate = purchaseDate >= weekAgo;
+                            break;
+                        case 'month':
+                            const monthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+                            matchesDate = purchaseDate >= monthAgo;
+                            break;
+                        case 'custom':
+                            const customDate = document.getElementById('customPurchaseDateFilter').value;
+                            if (customDate) {
+                                matchesDate = purchaseDate.toDateString() === new Date(customDate).toDateString();
+                            }
+                            break;
+                        default:
+                            matchesDate = true;
+                    }
+                }
+                
+                return matchesSupplier && matchesDate;
+            });
+            
+            if (purchasesToShow.length === 0) {
+                const message = (currentPurchaseSupplierFilter || currentPurchaseDateFilter) ? 
+                    'No se encontraron compras con los filtros seleccionados.' : 
+                    'No hay compras registradas. Registra tu primera compra.';
+                tbody.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 2rem; color: #657786;">${message}</td></tr>`;
                 return;
             }
 
-            tbody.innerHTML = filteredPurchases.map(purchase => {
+            tbody.innerHTML = purchasesToShow.map(purchase => {
                 const notes = purchase.notes || '';
                 const noteDisplay = notes.length > 30 ? notes.substring(0, 30) + '...' : notes;
                 
@@ -1875,7 +3309,7 @@
                         <td style="text-align: center;"><strong>${purchase.quantity}</strong></td>
                         <td>${formatCurrency(purchase.unitPrice)}</td>
                         <td><strong>${formatCurrency(purchase.total)}</strong></td>
-                        <td title="${notes}" style="max-width: 150px; cursor: pointer;">
+                        <td title="${notes}" style="max-width: 150px; cursor: pointer;" onclick="showFullComment('${notes.replace(/'/g, "\\'")}')">
                             ${noteDisplay || '<i style="color: #ccc;">Sin notas</i>'}
                         </td>
                         <td class="actions">
@@ -1887,16 +3321,132 @@
             }).join('');
         }
 
+        function updatePurchasesSummary() {
+            const filteredPurchases = getPurchasesByPeriod(currentDatePeriod);
+            
+            const totalAmount = filteredPurchases.reduce((sum, purchase) => sum + (purchase.total || 0), 0);
+            const totalCount = filteredPurchases.length;
+            const totalProducts = filteredPurchases.reduce((sum, purchase) => sum + (purchase.quantity || 0), 0);
+            const uniqueSuppliers = [...new Set(filteredPurchases.map(p => p.supplier))].length;
+            
+            document.getElementById('purchasesSummaryTotal').textContent = formatCurrency(totalAmount);
+            document.getElementById('purchasesSummaryCount').textContent = totalCount;
+            document.getElementById('purchasesSummaryProducts').textContent = totalProducts;
+            document.getElementById('purchasesSummarySuppliers').textContent = uniqueSuppliers;
+        }
+
+        async function deletePurchase(id) {
+            if (confirm('¿Estás seguro de eliminar esta compra?')) {
+                try {
+                    const purchaseToDelete = purchases.find(p => p.id === id);
+                    if (purchaseToDelete) {
+                        const product = products.find(p => p.id === purchaseToDelete.productId);
+                        if (product) {
+                            product.stock = (product.stock || 0) - purchaseToDelete.quantity;
+                            
+                            if (isFirebaseConnected) {
+                                await saveToFirebase('products', product, product.id);
+                            }
+                        }
+                    }
+                    
+                    purchases = purchases.filter(p => p.id !== id);
+                    if (isFirebaseConnected) {
+                        await deleteFromFirebase('purchases', id);
+                    }
+                    saveToLocalStorage();
+                    updateAllDisplays();
+                    showToast('Compra eliminada y stock ajustado', 'success');
+                } catch (error) {
+                    showToast('Error al eliminar compra', 'error');
+                }
+            }
+        }
+
+        // FUNCIONES GASTOS
+        // FUNCIÓN CORREGIDA - usar getTodayString() en lugar de getTodayDateString()
+        function openExpenseModal(expenseId = null) {
+            const modal = document.getElementById('expenseModal');
+            const title = document.querySelector('#expenseModal h2');
+            
+            document.getElementById('expenseId').value = '';
+            document.getElementById('expenseDescription').value = '';
+            document.getElementById('expenseCategory').value = 'marketing';
+            document.getElementById('expenseAmount').value = '';
+            // CORRECCIÓN: usar getTodayString() en lugar de getTodayDateString()
+            document.getElementById('expenseDate').value = getTodayString();
+            
+            if (expenseId) {
+                const expense = expenses.find(e => e.id === expenseId);
+                if (expense) {
+                    title.textContent = 'Editar Gasto';
+                    document.getElementById('expenseId').value = expense.id;
+                    document.getElementById('expenseDescription').value = expense.description;
+                    document.getElementById('expenseCategory').value = expense.category;
+                    document.getElementById('expenseAmount').value = expense.amount;
+                    document.getElementById('expenseDate').value = expense.date;
+                }
+            } else {
+                title.textContent = 'Nuevo Gasto';
+            }
+            
+            modal.style.display = 'block';
+        }
+
+        async function saveExpense(event) {
+            event.preventDefault();
+            const expenseId = document.getElementById('expenseId').value;
+            const isEditing = expenseId !== '';
+            
+            const expenseData = {
+                description: document.getElementById('expenseDescription').value,
+                category: document.getElementById('expenseCategory').value,
+                amount: parseFloat(document.getElementById('expenseAmount').value) || 0,
+                date: document.getElementById('expenseDate').value,
+                timestamp: getCurrentTimestamp()
+            };
+
+            try {
+                if (isEditing) {
+                    const index = expenses.findIndex(e => e.id === expenseId);
+                    if (index !== -1) {
+                        expenses[index] = { ...expenses[index], ...expenseData };
+                        if (isFirebaseConnected) {
+                            await saveToFirebase('expenses', expenses[index], expenseId);
+                        }
+                        showToast('Gasto actualizado correctamente', 'success');
+                    }
+                } else {
+                    let newId;
+                    if (isFirebaseConnected) {
+                        newId = await saveToFirebase('expenses', expenseData);
+                    } else {
+                        newId = Date.now().toString();
+                    }
+                    
+                    const newExpense = { id: newId, ...expenseData };
+                    expenses.push(newExpense);
+                    showToast('Gasto registrado correctamente', 'success');
+                }
+                
+                saveToLocalStorage();
+                closeModal('expenseModal');
+                updateAllDisplays();
+                
+            } catch (error) {
+                showToast('Error al procesar gasto', 'error');
+            }
+        }
+
         function updateExpensesTable() {
             const tbody = document.getElementById('expensesTable');
-            const filteredExpenses = getExpensesByPeriod(currentDatePeriod);
             
-            if (filteredExpenses.length === 0) {
+            if (expenses.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 2rem; color: #657786;">No hay gastos registrados. Registra tu primer gasto.</td></tr>';
                 return;
             }
 
-            tbody.innerHTML = filteredExpenses.map(expense => `
+            tbody.innerHTML = expenses.map(expense => `
                 <tr>
                     <td>${new Date(expense.date).toLocaleDateString()}</td>
                     <td>${expense.description}</td>
@@ -1910,64 +3460,162 @@
             `).join('');
         }
 
-        function updatePurchasesSummary() {
-            const filteredPurchases = getPurchasesByPeriod(currentDatePeriod);
-            
-            const totalAmount = filteredPurchases.reduce((sum, purchase) => sum + (purchase.total || 0), 0);
-            const totalCount = filteredPurchases.length;
-            const totalProducts = filteredPurchases.reduce((sum, purchase) => sum + (purchase.quantity || 0), 0);
-            const uniqueSuppliers = [...new Set(filteredPurchases.map(p => p.supplier))].length;
-            
-            const purchasesSummaryTotal = document.getElementById('purchasesSummaryTotal');
-            const purchasesSummaryCount = document.getElementById('purchasesSummaryCount');
-            const purchasesSummaryProducts = document.getElementById('purchasesSummaryProducts');
-            const purchasesSummarySuppliers = document.getElementById('purchasesSummarySuppliers');
-            
-            if (purchasesSummaryTotal) purchasesSummaryTotal.textContent = formatCurrency(totalAmount);
-            if (purchasesSummaryCount) purchasesSummaryCount.textContent = totalCount;
-            if (purchasesSummaryProducts) purchasesSummaryProducts.textContent = totalProducts;
-            if (purchasesSummarySuppliers) purchasesSummarySuppliers.textContent = uniqueSuppliers;
+        async function deleteExpense(id) {
+            if (confirm('¿Estás seguro de eliminar este gasto?')) {
+                try {
+                    expenses = expenses.filter(e => e.id !== id);
+                    if (isFirebaseConnected) {
+                        await deleteFromFirebase('expenses', id);
+                    }
+                    saveToLocalStorage();
+                    updateAllDisplays();
+                    showToast('Gasto eliminado correctamente', 'success');
+                } catch (error) {
+                    showToast('Error al eliminar gasto', 'error');
+                }
+            }
         }
 
-        // Funciones stub para evitar errores
-        function populateOrderProductSelect() { }
-        function populatePurchaseProductSelect() { }
-        function filterByCategory(category) { }
-        function filterOrdersByStatus(status) { }
-        function openProductModal(id) { showToast('Función por implementar', 'info'); }
-        function openOrderModal(id) { showToast('Función por implementar', 'info'); }
-        function openPurchaseModal(id) { showToast('Función por implementar', 'info'); }
-        function openExpenseModal(id) { showToast('Función por implementar', 'info'); }
-        function saveProduct(event) { event.preventDefault(); }
-        function deleteProduct(id) { if (confirm('¿Eliminar producto?')) showToast('Función por implementar', 'info'); }
-        function deleteOrder(id) { if (confirm('¿Eliminar pedido?')) showToast('Función por implementar', 'info'); }
-        function deletePurchase(id) { if (confirm('¿Eliminar compra?')) showToast('Función por implementar', 'info'); }
-        function deleteExpense(id) { if (confirm('¿Eliminar gasto?')) showToast('Función por implementar', 'info'); }
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-        function syncData() { updateAllDisplays(); showToast('Datos actualizados', 'success'); }
-        function calculatePrice() { }
+        // FUNCIONES CALCULADORA
+        function calculatePrice() {
+            const cost = parseFloat(document.getElementById('calcCost').value) || 0;
+            const margin = parseFloat(document.getElementById('calcMargin').value) || 30;
+            const shipping = parseFloat(document.getElementById('calcShipping').value) || 0;
+            const commission = parseFloat(document.getElementById('calcCommission').value) || 10;
 
-        function generateSampleData() {
+            if (cost > 0) {
+                const basePrice = cost * (1 + margin / 100);
+                const totalCosts = cost + shipping;
+                const suggestedPrice = commission > 0 ? basePrice / (1 - commission / 100) : basePrice;
+                const profit = suggestedPrice - totalCosts - (suggestedPrice * commission / 100);
+
+                document.getElementById('suggestedPrice').textContent = formatCurrency(suggestedPrice);
+                document.getElementById('expectedProfit').textContent = formatCurrency(profit);
+            } else {
+                document.getElementById('suggestedPrice').textContent = '₲0';
+                document.getElementById('expectedProfit').textContent = '₲0';
+            }
+        }
+
+        // FUNCIONES DATOS EJEMPLO
+        async function generateSampleData() {
             const sampleProducts = [
-                { id: '1', name: 'Auriculares Bluetooth', supplier: 'TechSupplier', category: 'electronica', stock: 25, cost: 45000, price: 89000 },
-                { id: '2', name: 'Camiseta Deportiva', supplier: 'SportWear Co', category: 'ropa', stock: 50, cost: 25000, price: 55000 },
+                { name: 'Auriculares Bluetooth', supplier: 'TechSupplier', category: 'electronica', stock: 25, minStock: 5, cost: 45000, price: 89000 },
+                { name: 'Camiseta Deportiva', supplier: 'SportWear Co', category: 'ropa', stock: 50, minStock: 10, cost: 25000, price: 55000 },
+                { name: 'Lámpara LED', supplier: 'HomeDecor', category: 'hogar', stock: 15, minStock: 5, cost: 35000, price: 75000 },
+                { name: 'Mochila Táctica', supplier: 'OutdoorGear', category: 'deportes', stock: 8, minStock: 5, cost: 55000, price: 120000 }
             ];
 
-            const sampleOrders = [
-                { id: '1', customer: 'María González', channel: 'facebook', productName: 'Auriculares Bluetooth', quantity: 2, total: 178000, cost: 90000, status: 'delivered', date: getCurrentTimestamp() },
-                { id: '2', customer: 'Carlos Rodríguez', channel: 'instagram', productName: 'Camiseta Deportiva', quantity: 3, total: 165000, cost: 75000, status: 'delivered', date: getCurrentTimestamp() }
+            const sampleExpenses = [
+                { description: 'Facebook Ads - Campaña Octubre', category: 'marketing', amount: 150000, date: getTodayString() },
+                { description: 'Comisión Mercado Libre', category: 'plataforma', amount: 8500, date: getTodayString() },
+                { description: 'Envío Express', category: 'envios', amount: 25000, date: getTodayString() }
             ];
 
-            products = sampleProducts;
-            orders = sampleOrders;
-            purchases = [{ id: '1', productName: 'Stock inicial', supplier: 'Proveedor', quantity: 100, total: 5000000, date: getCurrentTimestamp() }];
-            expenses = [{ id: '1', description: 'Marketing', category: 'marketing', amount: 100000, date: getCurrentTimestamp() }];
-            
-            saveToLocalStorage();
-            updateAllDisplays();
-            showToast('Datos de ejemplo cargados', 'success');
+            try {
+                // Agregar productos
+                for (const productData of sampleProducts) {
+                    let newId;
+                    if (isFirebaseConnected) {
+                        newId = await saveToFirebase('products', productData);
+                    } else {
+                        newId = Date.now().toString() + Math.random();
+                    }
+                    products.push({ id: newId, ...productData });
+                }
+
+                // Agregar compras de ejemplo con fechas relativas correctas
+                const today = new Date();
+                const getDaysAgo = (days) => {
+                    const date = new Date(today);
+                    date.setDate(date.getDate() - days);
+                    const year = date.getFullYear();
+                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                    const day = String(date.getDate()).padStart(2, '0');
+                    return `${year}-${month}-${day}`;
+                };
+
+                const samplePurchases = [
+                    { productId: products[0]?.id, productName: 'Auriculares Bluetooth', supplier: 'TechSupplier', quantity: 15, unitPrice: 45000, total: 675000, type: 'historical', notes: 'Inventario inicial - compra anterior al sistema', date: getDaysAgo(30) },
+                    { productId: products[1]?.id, productName: 'Camiseta Deportiva', supplier: 'SportWear Co', quantity: 30, unitPrice: 25000, total: 750000, type: 'historical', notes: 'Stock inicial previo al sistema', date: getDaysAgo(25) },
+                    { productId: products[2]?.id, productName: 'Lámpara LED', supplier: 'HomeDecor', quantity: 10, unitPrice: 35000, total: 350000, type: 'operational', notes: 'Primera compra operacional', date: getDaysAgo(5) },
+                    { productId: products[3]?.id, productName: 'Mochila Táctica', supplier: 'OutdoorGear', quantity: 5, unitPrice: 55000, total: 275000, type: 'operational', notes: 'Restock operacional', date: getDaysAgo(2) }
+                ];
+
+                // Agregar pedidos de ejemplo con fechas relativas correctas
+                const sampleOrders = [
+                    { customer: 'María González', channel: 'facebook', productId: products[0]?.id, productName: 'Auriculares Bluetooth', quantity: 1, total: 89000, cost: 45000, status: 'delivered', comments: 'Cliente pidió entrega urgente. Completado exitosamente.', date: getCurrentTimestamp() },
+                    { customer: 'Carlos Rodríguez', channel: 'instagram', productId: products[1]?.id, productName: 'Camiseta Deportiva', quantity: 2, total: 110000, cost: 50000, status: 'shipped', comments: 'Envío a sucursal. Número de seguimiento: ABC123', date: getCurrentTimestamp() },
+                    { customer: 'Ana López', channel: 'whatsapp', productId: products[2]?.id, productName: 'Lámpara LED', quantity: 1, total: 75000, cost: 35000, status: 'confirmed', comments: 'Verificar color antes de enviar', date: getCurrentTimestamp() },
+                    { customer: 'Pedro Martínez', channel: 'marketplace', productId: products[3]?.id, productName: 'Mochila Táctica', quantity: 1, total: 120000, cost: 55000, status: 'pending', comments: '', date: getCurrentTimestamp() }
+                ];
+
+                // Guardar compras
+                for (const purchaseData of samplePurchases) {
+                    let newId;
+                    if (isFirebaseConnected) {
+                        newId = await saveToFirebase('purchases', purchaseData);
+                    } else {
+                        newId = Date.now().toString() + Math.random();
+                    }
+                    purchases.push({ id: newId, ...purchaseData });
+                }
+
+                // Guardar pedidos
+                for (const orderData of sampleOrders) {
+                    let newId;
+                    if (isFirebaseConnected) {
+                        newId = await saveToFirebase('orders', orderData);
+                    } else {
+                        newId = Date.now().toString() + Math.random();
+                    }
+                    orders.push({ id: newId, ...orderData });
+                }
+
+                // Guardar gastos
+                for (const expenseData of sampleExpenses) {
+                    let newId;
+                    if (isFirebaseConnected) {
+                        newId = await saveToFirebase('expenses', expenseData);
+                    } else {
+                        newId = Date.now().toString() + Math.random();
+                    }
+                    expenses.push({ id: newId, ...expenseData });
+                }
+
+                saveToLocalStorage();
+                updateAllDisplays();
+                showToast('Datos de ejemplo cargados correctamente', 'success');
+                
+            } catch (error) {
+                showToast('Error cargando datos de ejemplo', 'error');
+            }
         }
 
+        // FUNCIONES UTILIDADES
+        async function syncData() {
+            if (!isFirebaseConnected) {
+                showToast('No hay conexión con Firebase', 'warning');
+                return;
+            }
+
+            showLoading(true);
+            try {
+                await loadAllData();
+                updateAllDisplays();
+                showToast('Datos sincronizados correctamente', 'success');
+            } catch (error) {
+                showToast('Error al sincronizar datos', 'error');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Cerrar modales al hacer clic fuera
         window.onclick = function(event) {
             const modals = document.querySelectorAll('.modal');
             modals.forEach(modal => {
@@ -1976,6 +3624,18 @@
                 }
             });
         }
+
+        // ATAJOS DE TECLADO
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const modals = document.querySelectorAll('.modal');
+                modals.forEach(modal => {
+                    if (modal.style.display === 'block') {
+                        modal.style.display = 'none';
+                    }
+                });
+            }
+        });
     </script>
 </body>
 </html>
