@@ -1153,8 +1153,45 @@
             updateExpensesTable();
         }
 
+        function showSection(sectionName) {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => section.classList.remove('active'));
+            const targetSection = document.getElementById(sectionName);
+            if (targetSection) {
+                targetSection.classList.add('active');
+                
+                // Forzar actualización inmediata de la sección específica
+                setTimeout(() => {
+                    switch(sectionName) {
+                        case 'products':
+                            updateProductsTable();
+                            break;
+                        case 'orders': 
+                            updateOrdersTable();
+                            break;
+                        case 'purchases':
+                            updatePurchasesTable();
+                            break;
+                        case 'expenses':
+                            updateExpensesTable();
+                            break;
+                        case 'dashboard':
+                            updateAllDisplays();
+                            break;
+                    }
+                }, 100);
+            }
+        }
+
         function updateProductsTable() {
             const tbody = document.getElementById('productsTable');
+            if (!tbody) {
+                console.log('productsTable no encontrado');
+                return;
+            }
+            
+            console.log('Actualizando tabla productos, total:', products.length);
+            console.log('Products data:', products);
             
             if (products.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 2rem; color: #657786;">No hay productos registrados.</td></tr>';
@@ -1162,16 +1199,18 @@
             }
 
             tbody.innerHTML = products.map(product => {
-                const margin = product.cost > 0 ? (((product.price - product.cost) / product.cost) * 100) : 0;
+                const cost = product.cost || 0;
+                const price = product.price || 0;
+                const margin = cost > 0 ? (((price - cost) / cost) * 100) : 0;
                 const stock = product.stock || 0;
                 
                 return `
                     <tr>
-                        <td><strong>${product.name}</strong><br><small style="color: #666;">${product.category || 'Sin categoría'}</small></td>
+                        <td><strong>${product.name || 'Sin nombre'}</strong><br><small style="color: #666;">${product.category || 'Sin categoría'}</small></td>
                         <td>${product.supplier || 'N/A'}</td>
                         <td>${stock}</td>
-                        <td>${formatCurrency(product.cost || 0)}</td>
-                        <td>${formatCurrency(product.price || 0)}</td>
+                        <td>${formatCurrency(cost)}</td>
+                        <td>${formatCurrency(price)}</td>
                         <td><span style="color: ${margin > 25 ? '#27ae60' : margin > 10 ? '#f39c12' : '#e74c3c'}; font-weight: bold;">${margin.toFixed(1)}%</span></td>
                         <td>
                             <button class="btn btn-primary btn-sm" onclick="showToast('Función por implementar', 'info')">✏️</button>
@@ -1179,11 +1218,19 @@
                     </tr>
                 `;
             }).join('');
+            
+            console.log('Tabla productos actualizada');
         }
 
         function updateOrdersTable() {
             const tbody = document.getElementById('ordersTable');
+            if (!tbody) {
+                console.log('ordersTable no encontrado');
+                return;
+            }
+            
             const filteredOrders = getOrdersByPeriod(currentDatePeriod);
+            console.log('Actualizando tabla pedidos, filtered:', filteredOrders.length);
             
             if (filteredOrders.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 2rem; color: #657786;">No hay pedidos para el período seleccionado.</td></tr>';
@@ -1193,22 +1240,30 @@
             tbody.innerHTML = filteredOrders.map(order => {
                 return `
                     <tr>
-                        <td>#${order.id.toString().slice(-4)}</td>
+                        <td>#${(order.id || '0000').toString().slice(-4)}</td>
                         <td>${order.customer || 'N/A'}</td>
                         <td>${order.productName || 'N/A'}</td>
                         <td>${order.quantity || 1}</td>
                         <td>${formatCurrency(order.total || order.amount || 0)}</td>
                         <td>${formatCurrency(order.cost || 0)}</td>
                         <td><span class="status-badge status-completed">${order.status || 'Completado'}</span></td>
-                        <td>${new Date(order.date).toLocaleDateString()}</td>
+                        <td>${new Date(order.date || Date.now()).toLocaleDateString()}</td>
                     </tr>
                 `;
             }).join('');
+            
+            console.log('Tabla pedidos actualizada');
         }
 
         function updatePurchasesTable() {
             const tbody = document.getElementById('purchasesTable');
+            if (!tbody) {
+                console.log('purchasesTable no encontrado');
+                return;
+            }
+            
             const filteredPurchases = getPurchasesByPeriod(currentDatePeriod);
+            console.log('Actualizando tabla compras, filtered:', filteredPurchases.length);
             
             if (filteredPurchases.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 2rem; color: #657786;">No hay compras para el período seleccionado.</td></tr>';
@@ -1216,25 +1271,36 @@
             }
 
             tbody.innerHTML = filteredPurchases.map(purchase => {
-                const unitPrice = purchase.unitPrice || (purchase.total && purchase.quantity ? purchase.total / purchase.quantity : 0);
+                const total = purchase.total || purchase.amount || 0;
+                const quantity = purchase.quantity || 1;
+                const unitPrice = purchase.unitPrice || (total / quantity) || 0;
+                
                 return `
                     <tr>
-                        <td>#${purchase.id.toString().slice(-4)}</td>
-                        <td>${new Date(purchase.date).toLocaleDateString()}</td>
+                        <td>#${(purchase.id || '0000').toString().slice(-4)}</td>
+                        <td>${new Date(purchase.date || Date.now()).toLocaleDateString()}</td>
                         <td>${purchase.supplier || 'N/A'}</td>
                         <td>${purchase.productName || 'N/A'}</td>
-                        <td>${purchase.quantity || 1}</td>
+                        <td>${quantity}</td>
                         <td>${formatCurrency(unitPrice)}</td>
-                        <td><strong>${formatCurrency(purchase.total || purchase.amount || 0)}</strong></td>
+                        <td><strong>${formatCurrency(total)}</strong></td>
                         <td>${purchase.notes || 'Sin notas'}</td>
                     </tr>
                 `;
             }).join('');
+            
+            console.log('Tabla compras actualizada');
         }
 
         function updateExpensesTable() {
             const tbody = document.getElementById('expensesTable');
+            if (!tbody) {
+                console.log('expensesTable no encontrado');
+                return;
+            }
+            
             const filteredExpenses = getExpensesByPeriod(currentDatePeriod);
+            console.log('Actualizando tabla gastos, filtered:', filteredExpenses.length);
             
             if (filteredExpenses.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 2rem; color: #657786;">No hay gastos para el período seleccionado.</td></tr>';
@@ -1244,24 +1310,15 @@
             tbody.innerHTML = filteredExpenses.map(expense => {
                 return `
                     <tr>
-                        <td>${new Date(expense.date).toLocaleDateString()}</td>
+                        <td>${new Date(expense.date || Date.now()).toLocaleDateString()}</td>
                         <td>${expense.description || 'N/A'}</td>
                         <td>${expense.category || 'N/A'}</td>
                         <td>${formatCurrency(expense.amount || expense.total || 0)}</td>
                     </tr>
                 `;
             }).join('');
-        }
-
-        function showSection(sectionName) {
-            const sections = document.querySelectorAll('.section');
-            sections.forEach(section => section.classList.remove('active'));
-            const targetSection = document.getElementById(sectionName);
-            if (targetSection) {
-                targetSection.classList.add('active');
-                // Actualizar datos cuando se cambie de sección
-                updateAllDisplays();
-            }
+            
+            console.log('Tabla gastos actualizada');
         }
 
         // Funciones stub para que no haya errores
