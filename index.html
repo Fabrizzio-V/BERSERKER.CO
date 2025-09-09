@@ -2102,29 +2102,38 @@
         }
 
         function updateAllDisplays() {
-            // ========== CÁLCULOS TOTALMENTE SEPARADOS ==========
+            const filteredOrders = getOrdersByPeriod(currentDatePeriod);
+            const filteredPurchases = getPurchasesByPeriod(currentDatePeriod);
+            const filteredExpenses = getExpensesByPeriod(currentDatePeriod);
+            
             const totalRevenue = filteredOrders.reduce((sum, order) => sum + (order.total || 0), 0);
-            const totalCosts = filteredOrders.reduce((sum, order) => sum + (order.cost || 0), 0);
             const totalPurchases = filteredPurchases.reduce((sum, purchase) => sum + (purchase.total || 0), 0);
             const totalExpenses = filteredExpenses.reduce((sum, expense) => sum + (expense.amount || 0), 0);
+            const totalCosts = filteredOrders.reduce((sum, order) => sum + (order.cost || 0), 0);
             
-            // GANANCIA NETA: SOLO ingresos menos costos de productos (SIN TOCAR EXPENSES)
-            const netProfit = totalRevenue - totalCosts;
+            // ========== FÓRMULA DE GANANCIA NETA ==========
+            // SOLO: Ingresos - Costos de productos vendidos - Gastos operativos
+            // NO SE INCLUYEN LAS COMPRAS/INVENTARIO EN ESTE CÁLCULO
+            const netProfit = totalRevenue - totalCosts - totalExpenses;
+            // ============================================
             
-            // SALDO BANCO: SOLO los costos de productos (SIN TOCAR EXPENSES)
-            const bankBalance = totalCosts;
+            // ========== FÓRMULA DE SALDO BANCO (según usuario) ==========
+            // NOTA: Esta fórmula puede dar valores negativos inesperados porque
+            // resta la ganancia neta (que ya incluye gastos) y luego vuelve a restar gastos
+            const bankBalance = totalRevenue - netProfit - totalExpenses;
+            // Fórmula alternativa más lógica sería: totalRevenue - totalPurchases - totalExpenses
+            // ============================================================
             
-            // EXPENSES queda completamente independiente
-            // ===================================================
-            
-            console.log('=== VERIFICACIÓN DE CÁLCULOS ===');
-            console.log('Total Revenue (pedidos):', formatCurrency(totalRevenue));
-            console.log('Total Costs (costos de pedidos):', formatCurrency(totalCosts));  
-            console.log('Total Purchases (compras):', formatCurrency(totalPurchases));
-            console.log('Total Expenses (gastos):', formatCurrency(totalExpenses));
-            console.log('NET PROFIT = Revenue - Costs:', formatCurrency(netProfit));
-            console.log('BANK BALANCE = Costs (sin tocar expenses):', formatCurrency(bankBalance));
-            console.log('=================================');
+            // Debug para verificar las fórmulas
+            console.log('=== CÁLCULO GANANCIA NETA ===');
+            console.log('Ingresos:', formatCurrency(totalRevenue));
+            console.log('Costos de ventas:', formatCurrency(totalCosts));
+            console.log('Gastos:', formatCurrency(totalExpenses));
+            console.log('Inventario (NO se resta):', formatCurrency(totalPurchases));
+            console.log('GANANCIA NETA:', formatCurrency(netProfit));
+            console.log('=== CÁLCULO SALDO BANCO ===');
+            console.log('Fórmula usada: Ingresos - Ganancia Neta - Gastos');
+            console.log('SALDO BANCO:', formatCurrency(bankBalance));
 
             document.getElementById('totalOrders').textContent = filteredOrders.length;
             document.getElementById('totalProducts').textContent = products.length;
