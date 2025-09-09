@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -907,13 +905,13 @@
                 </div>
                 <div class="date-filters">
                     <span style="font-size: 0.8rem; opacity: 0.9;">Período:</span>
-                    <button class="date-filter-btn active" onclick="filterByDatePeriod('all')">Todo</button>
-                    <button class="date-filter-btn" onclick="filterByDatePeriod('today')">Hoy</button>
-                    <button class="date-filter-btn" onclick="filterByDatePeriod('yesterday')">Ayer</button>
-                    <button class="date-filter-btn" onclick="filterByDatePeriod('week')">Esta Semana</button>
-                    <button class="date-filter-btn" onclick="filterByDatePeriod('lastWeek')">Semana Pasada</button>
-                    <button class="date-filter-btn" onclick="filterByDatePeriod('month')">Este Mes</button>
-                    <button class="date-filter-btn" onclick="filterByDatePeriod('lastMonth')">Mes Pasado</button>
+                    <button class="date-filter-btn active" onclick="filterByDatePeriod('all', this)">Todo</button>
+                    <button class="date-filter-btn" onclick="filterByDatePeriod('today', this)">Hoy</button>
+                    <button class="date-filter-btn" onclick="filterByDatePeriod('yesterday', this)">Ayer</button>
+                    <button class="date-filter-btn" onclick="filterByDatePeriod('week', this)">Esta Semana</button>
+                    <button class="date-filter-btn" onclick="filterByDatePeriod('lastWeek', this)">Semana Pasada</button>
+                    <button class="date-filter-btn" onclick="filterByDatePeriod('month', this)">Este Mes</button>
+                    <button class="date-filter-btn" onclick="filterByDatePeriod('lastMonth', this)">Mes Pasado</button>
                 </div>
             </div>
         </div>
@@ -1039,19 +1037,19 @@
                         <div class="compact-filters">
                             <div class="filter-group">
                                 <span class="filter-label">Ver:</span>
-                                <button class="filter-chip active" onclick="filterDeliveryStatus('all')">Todos</button>
-                                <button class="filter-chip" onclick="filterDeliveryStatus('pending')">Pendientes</button>
-                                <button class="filter-chip" onclick="filterDeliveryStatus('confirmed')">Confirmados</button>
-                                <button class="filter-chip" onclick="filterDeliveryStatus('prepared')">Preparados</button>
-                                <button class="filter-chip" onclick="filterDeliveryStatus('shipped')">En Tránsito</button>
+                                <button class="filter-chip active" onclick="filterDeliveryStatus('all', this)">Todos</button>
+                                <button class="filter-chip" onclick="filterDeliveryStatus('pending', this)">Pendientes</button>
+                                <button class="filter-chip" onclick="filterDeliveryStatus('confirmed', this)">Confirmados</button>
+                                <button class="filter-chip" onclick="filterDeliveryStatus('prepared', this)">Preparados</button>
+                                <button class="filter-chip" onclick="filterDeliveryStatus('shipped', this)">En Tránsito</button>
                             </div>
                             <div class="filter-group">
                                 <span class="filter-label">Método:</span>
-                                <button class="filter-chip active" onclick="filterDeliveryMethod('all')">Todos</button>
-                                <button class="filter-chip" onclick="filterDeliveryMethod('personal')">🚶‍♂️ Nosotros</button>
-                                <button class="filter-chip" onclick="filterDeliveryMethod('delivery')">🛵 Delivery</button>
-                                <button class="filter-chip" onclick="filterDeliveryMethod('pickup')">🏪 Recolección</button>
-                                <button class="filter-chip" onclick="filterDeliveryMethod('shipping')">📮 Envío</button>
+                                <button class="filter-chip active" onclick="filterDeliveryMethod('all', this)">Todos</button>
+                                <button class="filter-chip" onclick="filterDeliveryMethod('personal', this)">🚶‍♂️ Nosotros</button>
+                                <button class="filter-chip" onclick="filterDeliveryMethod('delivery', this)">🛵 Delivery</button>
+                                <button class="filter-chip" onclick="filterDeliveryMethod('pickup', this)">🏪 Recolección</button>
+                                <button class="filter-chip" onclick="filterDeliveryMethod('shipping', this)">📮 Envío</button>
                             </div>
                         </div>
 
@@ -1182,20 +1180,20 @@
                         <div class="compact-filters">
                             <div class="filter-group">
                                 <span class="filter-label">Categoría:</span>
-                                <button class="filter-chip active" onclick="filterByCategory('')">Todas</button>
-                                <button class="filter-chip" onclick="filterByCategory('electronica')">Electrónica</button>
-                                <button class="filter-chip" onclick="filterByCategory('ropa')">Ropa</button>
-                                <button class="filter-chip" onclick="filterByCategory('hogar')">Hogar</button>
-                                <button class="filter-chip" onclick="filterByCategory('deportes')">Deportes</button>
-                                <button class="filter-chip" onclick="filterByCategory('belleza')">Belleza</button>
-                                <button class="filter-chip" onclick="filterByCategory('otros')">Otros</button>
+                                <button class="filter-chip active" onclick="filterByCategory('', this)">Todas</button>
+                                <button class="filter-chip" onclick="filterByCategory('electronica', this)">Electrónica</button>
+                                <button class="filter-chip" onclick="filterByCategory('ropa', this)">Ropa</button>
+                                <button class="filter-chip" onclick="filterByCategory('hogar', this)">Hogar</button>
+                                <button class="filter-chip" onclick="filterByCategory('deportes', this)">Deportes</button>
+                                <button class="filter-chip" onclick="filterByCategory('belleza', this)">Belleza</button>
+                                <button class="filter-chip" onclick="filterByCategory('otros', this)">Otros</button>
                             </div>
                             <div class="filter-group">
                                 <span class="filter-label">Stock:</span>
-                                <button class="filter-chip active" onclick="filterByStock('')">Todos</button>
-                                <button class="filter-chip" onclick="filterByStock('available')">Con Stock</button>
-                                <button class="filter-chip" onclick="filterByStock('low')">Poco Stock</button>
-                                <button class="filter-chip" onclick="filterByStock('out')">Sin Stock</button>
+                                <button class="filter-chip active" onclick="filterByStock('', this)">Todos</button>
+                                <button class="filter-chip" onclick="filterByStock('available', this)">Con Stock</button>
+                                <button class="filter-chip" onclick="filterByStock('low', this)">Poco Stock</button>
+                                <button class="filter-chip" onclick="filterByStock('out', this)">Sin Stock</button>
                             </div>
                         </div>
 
@@ -1240,13 +1238,13 @@
                         <div class="compact-filters">
                             <div class="filter-group">
                                 <span class="filter-label">Estado:</span>
-                                <button class="filter-chip active" onclick="filterOrdersByStatus('')">Todos</button>
-                                <button class="filter-chip" onclick="filterOrdersByStatus('pending')">Pendiente</button>
-                                <button class="filter-chip" onclick="filterOrdersByStatus('confirmed')">Confirmado</button>
-                                <button class="filter-chip" onclick="filterOrdersByStatus('prepared')">Preparado</button>
-                                <button class="filter-chip" onclick="filterOrdersByStatus('shipped')">Enviado</button>
-                                <button class="filter-chip" onclick="filterOrdersByStatus('delivered')">Entregado</button>
-                                <button class="filter-chip" onclick="filterOrdersByStatus('cancelled')">Cancelado</button>
+                                <button class="filter-chip active" onclick="filterOrdersByStatus('', this)">Todos</button>
+                                <button class="filter-chip" onclick="filterOrdersByStatus('pending', this)">Pendiente</button>
+                                <button class="filter-chip" onclick="filterOrdersByStatus('confirmed', this)">Confirmado</button>
+                                <button class="filter-chip" onclick="filterOrdersByStatus('prepared', this)">Preparado</button>
+                                <button class="filter-chip" onclick="filterOrdersByStatus('shipped', this)">Enviado</button>
+                                <button class="filter-chip" onclick="filterOrdersByStatus('delivered', this)">Entregado</button>
+                                <button class="filter-chip" onclick="filterOrdersByStatus('cancelled', this)">Cancelado</button>
                             </div>
                         </div>
 
@@ -1293,19 +1291,19 @@
                         <div class="compact-filters">
                             <div class="filter-group">
                                 <span class="filter-label">Proveedor:</span>
-                                <button class="filter-chip active" onclick="filterPurchasesBySupplier('')">Todos</button>
-                                <button class="filter-chip" onclick="filterPurchasesBySupplier('TechSupplier')">TechSupplier</button>
-                                <button class="filter-chip" onclick="filterPurchasesBySupplier('SportWear Co')">SportWear Co</button>
-                                <button class="filter-chip" onclick="filterPurchasesBySupplier('HomeDecor')">HomeDecor</button>
-                                <button class="filter-chip" onclick="filterPurchasesBySupplier('OutdoorGear')">OutdoorGear</button>
+                                <button class="filter-chip active" onclick="filterPurchasesBySupplier('', this)">Todos</button>
+                                <button class="filter-chip" onclick="filterPurchasesBySupplier('TechSupplier', this)">TechSupplier</button>
+                                <button class="filter-chip" onclick="filterPurchasesBySupplier('SportWear Co', this)">SportWear Co</button>
+                                <button class="filter-chip" onclick="filterPurchasesBySupplier('HomeDecor', this)">HomeDecor</button>
+                                <button class="filter-chip" onclick="filterPurchasesBySupplier('OutdoorGear', this)">OutdoorGear</button>
                             </div>
                             <div class="filter-group">
                                 <span class="filter-label">Fecha:</span>
-                                <button class="filter-chip active" onclick="filterPurchasesByDate('')">Todas</button>
-                                <button class="filter-chip" onclick="filterPurchasesByDate('today')">Hoy</button>
-                                <button class="filter-chip" onclick="filterPurchasesByDate('week')">Esta Semana</button>
-                                <button class="filter-chip" onclick="filterPurchasesByDate('month')">Este Mes</button>
-                                <input type="date" class="form-control" id="customPurchaseDateFilter" onchange="filterPurchasesByDate('custom')" style="max-width: 150px; margin-left: 10px;">
+                                <button class="filter-chip active" onclick="filterPurchasesByDate('', this)">Todas</button>
+                                <button class="filter-chip" onclick="filterPurchasesByDate('today', this)">Hoy</button>
+                                <button class="filter-chip" onclick="filterPurchasesByDate('week', this)">Esta Semana</button>
+                                <button class="filter-chip" onclick="filterPurchasesByDate('month', this)">Este Mes</button>
+                                <input type="date" class="form-control" id="customPurchaseDateFilter" onchange="filterPurchasesByDate('custom', this)" style="max-width: 150px; margin-left: 10px;">
                             </div>
                         </div>
 
@@ -1733,38 +1731,31 @@
             setupMenuNavigation();
             initializeFirebase();
             
-            // SÚPER SIMPLE - fecha de hoy
-            const today = '2025-09-01'; // HARDCODEADO para probar
-            console.log('ASIGNANDO FECHA HARDCODEADA:', today);
+            // Configurar fechas en los inputs
+            const today = getTodayString();
             
             const expenseDateInput = document.getElementById('expenseDate');
             const purchaseDateInput = document.getElementById('purchaseDate');
             
             if (expenseDateInput) {
                 expenseDateInput.value = today;
-                console.log('Expense date input asignado:', expenseDateInput.value);
             }
             
             if (purchaseDateInput) {
                 purchaseDateInput.value = today;
-                console.log('Purchase date input asignado:', purchaseDateInput.value);
             }
         });
 
-        // SISTEMA DE FECHAS COMPLETAMENTE REESCRITO
+        // SISTEMA DE FECHAS CORREGIDO
         function getTodayString() {
-            // Forzar fecha local sin problemas de zona horaria
             const now = new Date();
             const year = now.getFullYear();
             const month = (now.getMonth() + 1).toString().padStart(2, '0');
             const day = now.getDate().toString().padStart(2, '0');
-            const todayString = `${year}-${month}-${day}`;
-            console.log('FECHA DE HOY CALCULADA:', todayString);
-            return todayString;
+            return `${year}-${month}-${day}`;
         }
 
         function getCurrentDateTime() {
-            // Para el campo date de los objetos, usar la fecha del input tal como está
             return new Date().toISOString();
         }
 
@@ -1882,16 +1873,123 @@
             saveToLocalStorage();
         }
 
-        function filterByDatePeriod(period) {
+        // FUNCIONES DE FILTRADO CORREGIDAS - ahora reciben el elemento como parámetro
+        function filterByDatePeriod(period, element) {
             currentDatePeriod = period;
             
             document.querySelectorAll('.date-filter-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
-            event.target.classList.add('active');
             
-            // SOLO actualizar displays, NO resetear filtros locales
+            if (element) {
+                element.classList.add('active');
+            }
+            
             updateAllDisplays();
+        }
+
+        function filterByCategory(category, element) {
+            currentCategoryFilter = category;
+            
+            document.querySelectorAll('#products .compact-filters .filter-group:first-child .filter-chip').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            if (element) {
+                element.classList.add('active');
+            }
+            
+            updateProductsTable();
+        }
+
+        function filterByStock(stockType, element) {
+            currentStockFilter = stockType;
+            
+            document.querySelectorAll('#products .compact-filters .filter-group:last-child .filter-chip').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            if (element) {
+                element.classList.add('active');
+            }
+            
+            updateProductsTable();
+        }
+
+        function filterOrdersByStatus(status, element) {
+            currentOrderStatusFilter = status;
+            
+            document.querySelectorAll('#orders .compact-filters .filter-group:first-child .filter-chip').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            if (element) {
+                element.classList.add('active');
+            }
+            
+            updateOrdersTable();
+        }
+
+        function filterPurchasesBySupplier(supplier, element) {
+            currentPurchaseSupplierFilter = supplier;
+            
+            document.querySelectorAll('#purchases .compact-filters .filter-group:first-child .filter-chip').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            if (element) {
+                element.classList.add('active');
+            }
+            
+            updatePurchasesTable();
+        }
+
+        function filterPurchasesByDate(dateType, element) {
+            currentPurchaseDateFilter = dateType;
+            
+            document.querySelectorAll('#purchases .compact-filters .filter-group:last-child .filter-chip').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            if (element && dateType !== 'custom') {
+                element.classList.add('active');
+            } else if (dateType === 'custom') {
+                const customDateInput = document.getElementById('customPurchaseDateFilter');
+                if (customDateInput && customDateInput.value) {
+                    // Marcar como activo el filtro personalizado si tiene fecha
+                    document.querySelector('#purchases .filter-chip[onclick*="custom"]')?.classList.add('active');
+                }
+            }
+            
+            updatePurchasesTable();
+        }
+
+        function filterDeliveryStatus(status, element) {
+            currentDeliveryStatusFilter = status;
+            
+            document.querySelectorAll('#delivery .filter-group:first-child .filter-chip').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            if (element) {
+                element.classList.add('active');
+            }
+            
+            updateDeliveryPanel();
+        }
+
+        function filterDeliveryMethod(method, element) {
+            currentDeliveryMethodFilter = method;
+            
+            document.querySelectorAll('#delivery .filter-group:last-child .filter-chip').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            if (element) {
+                element.classList.add('active');
+            }
+            
+            updateDeliveryPanel();
         }
 
         function getOrdersByPeriod(period) {
@@ -2068,14 +2166,12 @@
                     updateProductsTable(); 
                     break;
                 case 'orders': 
-                    // Resetear SOLO el filtro de estado local
                     currentOrderStatusFilter = '';
                     
-                    // Resetear botones de estado a "Todos"
                     setTimeout(() => {
                         const statusButtons = document.querySelectorAll('#orders .compact-filters .filter-chip');
                         statusButtons.forEach(btn => btn.classList.remove('active'));
-                        if (statusButtons[0]) statusButtons[0].classList.add('active'); // "Todos"
+                        if (statusButtons[0]) statusButtons[0].classList.add('active');
                     }, 100);
                     
                     updateOrdersTable(); 
@@ -2083,7 +2179,8 @@
                 case 'purchases':
                     currentPurchaseSupplierFilter = '';
                     currentPurchaseDateFilter = '';
-                    document.getElementById('customPurchaseDateFilter').value = '';
+                    const customInput = document.getElementById('customPurchaseDateFilter');
+                    if (customInput) customInput.value = '';
                     updatePurchasesTable();
                     break;
                 case 'expenses': 
@@ -2113,35 +2210,13 @@
             const totalExpenses = filteredExpenses.reduce((sum, expense) => sum + (expense.amount || 0), 0);
             const totalCosts = filteredOrders.reduce((sum, order) => sum + (order.cost || 0), 0);
             
-            // ========== FÓRMULA DE GANANCIA NETA ==========
-            // SOLO: Ingresos - Costos de productos vendidos - Gastos operativos
-            // NO SE INCLUYEN LAS COMPRAS/INVENTARIO EN ESTE CÁLCULO
             const netProfit = totalRevenue - totalCosts - totalExpenses;
-            // ============================================
-            
-            // ========== FÓRMULA DE SALDO BANCO (según usuario) ==========
-            // NOTA: Esta fórmula puede dar valores negativos inesperados porque
-            // resta la ganancia neta (que ya incluye gastos) y luego vuelve a restar gastos
             const bankBalance = totalRevenue - netProfit - totalExpenses;
-            // Fórmula alternativa más lógica sería: totalRevenue - totalPurchases - totalExpenses
-            // ============================================================
             
-            // Debug para verificar las fórmulas
-            console.log('=== CÁLCULO GANANCIA NETA ===');
-            console.log('Ingresos:', formatCurrency(totalRevenue));
-            console.log('Costos de ventas:', formatCurrency(totalCosts));
-            console.log('Gastos:', formatCurrency(totalExpenses));
-            console.log('Inventario (NO se resta):', formatCurrency(totalPurchases));
-            console.log('GANANCIA NETA:', formatCurrency(netProfit));
-            console.log('=== CÁLCULO SALDO BANCO ===');
-            console.log('Fórmula usada: Ingresos - Ganancia Neta - Gastos');
-            console.log('SALDO BANCO:', formatCurrency(bankBalance));
-
             document.getElementById('totalOrders').textContent = filteredOrders.length;
             document.getElementById('totalProducts').textContent = products.length;
             document.getElementById('totalRevenue').textContent = formatCurrency(totalRevenue);
             
-            // Mostrar inversión en stock pero SIN afectar ganancia
             document.getElementById('totalPurchases').textContent = formatCurrency(totalPurchases);
             document.getElementById('totalExpenses').textContent = formatCurrency(totalExpenses);
             document.getElementById('navbarProfit').textContent = formatCurrency(netProfit);
@@ -2167,7 +2242,6 @@
                 navbarProfitParent.style.border = '1px solid rgba(231, 76, 60, 0.3)';
             }
 
-            // Colorear saldo banco según si es positivo o negativo
             if (bankBalance >= 0) {
                 navbarBankElement.style.color = '#3498db';
                 navbarBankLabel.style.color = '#3498db';
@@ -2207,7 +2281,7 @@
             updateDeliveryPanel();
         }
 
-        // ============= NUEVAS FUNCIONES PARA PANEL DE ENTREGAS =============
+        // ============= FUNCIONES PARA PANEL DE ENTREGAS =============
         function updateDeliveryPanel() {
             updateDeliveryStats();
             updateDeliverySections();
@@ -2227,7 +2301,6 @@
             document.getElementById('deliveryShipped').textContent = shipped;
             document.getElementById('deliveryDelivered').textContent = delivered;
 
-            // Actualizar contadores en las tarjetas
             document.getElementById('pendingCount').textContent = pending;
             document.getElementById('confirmedCount').textContent = confirmed;
             document.getElementById('preparedCount').textContent = prepared;
@@ -2245,7 +2318,6 @@
             const container = document.getElementById(containerId);
             let filteredOrders = orders.filter(order => order.status === status);
 
-            // Aplicar filtro de método de entrega si está activo
             if (currentDeliveryMethodFilter !== 'all') {
                 filteredOrders = filteredOrders.filter(order => 
                     (order.deliveryMethod || 'delivery') === currentDeliveryMethodFilter
@@ -2431,7 +2503,7 @@
                     showToast(`Pedido ${getStatusLabel(newStatus).toLowerCase()} correctamente`, 'success');
                     
                 } catch (error) {
-                    orders[orderIndex].status = oldStatus; // Revertir cambio
+                    orders[orderIndex].status = oldStatus;
                     showToast('Error al actualizar estado', 'error');
                 }
             }
@@ -2441,45 +2513,17 @@
             const section = document.getElementById(sectionId);
             const isVisible = section.style.display !== 'none';
             
-            // Cerrar todas las secciones
             document.querySelectorAll('#pending-section, #confirmed-section, #prepared-section, #shipped-section').forEach(s => {
                 s.style.display = 'none';
             });
             
-            // Abrir la sección solicitada si no estaba visible
             if (!isVisible) {
                 section.style.display = 'block';
                 section.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             }
         }
 
-        function filterDeliveryStatus(status) {
-            currentDeliveryStatusFilter = status;
-            
-            // Actualizar botones activos
-            document.querySelectorAll('#delivery .filter-chip').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            
-            // Por ahora solo actualiza la vista, puedes expandir esta funcionalidad
-            updateDeliveryPanel();
-        }
-
-        function filterDeliveryMethod(method) {
-            currentDeliveryMethodFilter = method;
-            
-            // Actualizar botones activos
-            document.querySelectorAll('#delivery .filter-group:last-child .filter-chip').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            
-            updateDeliveryPanel();
-        }
-
-        // ============= FIN DE FUNCIONES DEL PANEL DE ENTREGAS =============
-
+        // ============= FUNCIONES DE PRODUCTOS =============
         function openProductModal(productId = null) {
             const modal = document.getElementById('productModal');
             const title = document.getElementById('productModalTitle');
@@ -2576,28 +2620,6 @@
             }
         }
 
-        function filterByCategory(category) {
-            currentCategoryFilter = category;
-            
-            document.querySelectorAll('.compact-filters .filter-group:first-child .filter-chip').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            
-            updateProductsTable();
-        }
-
-        function filterByStock(stockType) {
-            currentStockFilter = stockType;
-            
-            document.querySelectorAll('.compact-filters .filter-group:last-child .filter-chip').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            
-            updateProductsTable();
-        }
-
         function updateProductsTable() {
             const tbody = document.getElementById('productsTable');
             
@@ -2674,6 +2696,7 @@
             });
         }
 
+        // ============= FUNCIONES DE PEDIDOS =============
         function openOrderModal(orderId = null) {
             if (products.length === 0 && !orderId) {
                 showToast('Primero debes agregar productos antes de crear pedidos', 'warning');
@@ -2856,15 +2879,8 @@
         function updateOrdersTable() {
             const tbody = document.getElementById('ordersTable');
             
-            // SISTEMA SIMPLIFICADO - SOLO DOS FILTROS
-            console.log('=== DEBUG FILTROS SIMPLIFICADO ===');
-            console.log('Total orders:', orders.length);
-            console.log('Navbar filter (currentDatePeriod):', currentDatePeriod);
-            console.log('Status filter (currentOrderStatusFilter):', currentOrderStatusFilter);
+            let ordersToShow = [...orders];
             
-            let ordersToShow = [...orders]; // Copia del array original
-            
-            // PASO 1: Aplicar filtro de fecha del NAVBAR ÚNICAMENTE
             const today = new Date();
             today.setHours(0, 0, 0, 0);
             
@@ -2910,20 +2926,12 @@
                     break;
                 case 'all':
                 default:
-                    // No filtrar por fecha
                     break;
             }
             
-            console.log('Después de filtro de fecha:', ordersToShow.length);
-            
-            // PASO 2: Aplicar filtro de estado
             if (currentOrderStatusFilter && currentOrderStatusFilter !== '') {
                 ordersToShow = ordersToShow.filter(order => order.status === currentOrderStatusFilter);
-                console.log('Después de filtro de estado:', ordersToShow.length);
             }
-            
-            console.log('RESULTADO FINAL:', ordersToShow.length, 'pedidos');
-            console.log('=====================');
             
             if (ordersToShow.length === 0) {
                 const message = (currentOrderStatusFilter || currentDatePeriod !== 'all') ? 
@@ -2934,7 +2942,6 @@
             }
 
             tbody.innerHTML = ordersToShow.map(order => {
-                const profit = order.total - order.cost;
                 const statusClass = getStatusClass(order.status);
                 const comments = order.comments || '';
                 const commentDisplay = comments.length > 30 ? comments.substring(0, 30) + '...' : comments;
@@ -2964,17 +2971,6 @@
             if (comment && comment.trim() !== '') {
                 alert(`Comentario completo:\n\n${comment}`);
             }
-        }
-
-        function filterOrdersByStatus(status) {
-            currentOrderStatusFilter = status;
-            
-            document.querySelectorAll('.compact-filters .filter-group:first-child .filter-chip').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            
-            updateOrdersTable();
         }
 
         function getStatusClass(status) {
@@ -3028,7 +3024,7 @@
             }
         }
 
-        // FUNCIONES COMPRAS
+        // ============= FUNCIONES DE COMPRAS =============
         function populatePurchaseProductSelect() {
             const select = document.getElementById('purchaseProduct');
             if (!select) return;
@@ -3038,12 +3034,10 @@
             });
         }
 
-        // FUNCIÓN CORREGIDA - usar getTodayString() en lugar de getTodayDateString()
         function openPurchaseModal(purchaseId = null) {
             const modal = document.getElementById('purchaseModal');
             const title = document.getElementById('purchaseModalTitle');
             
-            // Limpiar formulario
             document.getElementById('purchaseId').value = '';
             document.getElementById('purchaseProduct').value = '';
             document.getElementById('purchaseProductName').value = '';
@@ -3053,9 +3047,7 @@
             document.getElementById('purchaseTotal').value = '';
             document.getElementById('purchaseNotes').value = '';
             
-            // CORRECCIÓN: usar getTodayString() en lugar de getTodayDateString()
             const todayString = getTodayString();
-            console.log('Asignando fecha de hoy:', todayString);
             document.getElementById('purchaseDate').value = todayString;
             
             if (purchaseId) {
@@ -3063,7 +3055,6 @@
                 if (purchase) {
                     title.textContent = 'Editar Compra';
                     document.getElementById('purchaseId').value = purchase.id;
-                    // Si es producto existente, seleccionar en dropdown
                     const existingProduct = products.find(p => p.id === purchase.productId);
                     if (existingProduct) {
                         document.getElementById('purchaseProduct').value = purchase.productId;
@@ -3078,10 +3069,8 @@
                 }
             } else {
                 title.textContent = 'Nueva Compra';
-                // CORRECCIÓN: usar getTodayString() en lugar de getTodayDateString()
                 setTimeout(() => {
                     document.getElementById('purchaseDate').value = getTodayString();
-                    console.log('Fecha verificada después de timeout:', document.getElementById('purchaseDate').value);
                 }, 100);
             }
             
@@ -3093,17 +3082,15 @@
             const selectedOption = select.options[select.selectedIndex];
             
             if (selectedOption.value) {
-                // Auto-completar desde producto existente
                 const supplier = selectedOption.getAttribute('data-supplier');
                 const cost = selectedOption.getAttribute('data-cost');
-                const productName = selectedOption.textContent.split(' (')[0]; // Remover parte del proveedor
+                const productName = selectedOption.textContent.split(' (')[0];
                 
                 document.getElementById('purchaseProductName').value = productName;
                 document.getElementById('purchaseSupplier').value = supplier || '';
                 document.getElementById('purchaseUnitPrice').value = cost || '';
                 updatePurchaseTotal();
             }
-            // Si no selecciona nada, los campos quedan editables para entrada manual
         }
 
         function updatePurchaseTotal() {
@@ -3126,12 +3113,7 @@
             const unitPrice = parseFloat(document.getElementById('purchaseUnitPrice').value) || 0;
             const total = parseFloat(document.getElementById('purchaseTotal').value) || 0;
             
-            // DEBUG ESPECÍFICO PARA FECHAS
             const dateFromInput = document.getElementById('purchaseDate').value;
-            console.log('=== DEBUG FECHA AL GUARDAR ===');
-            console.log('Fecha del input:', dateFromInput);
-            console.log('Fecha actual calculada:', getTodayString());
-            console.log('Timestamp actual:', getCurrentTimestamp());
             
             if (!productName || !supplier) {
                 showToast('Debes completar el nombre del producto y proveedor', 'error');
@@ -3139,22 +3121,18 @@
             }
             
             const purchaseData = {
-                productId: selectedProductId || null, // Null si es producto nuevo
+                productId: selectedProductId || null,
                 productName: productName,
                 supplier: supplier,
                 quantity: quantity,
                 unitPrice: unitPrice,
                 total: total,
                 notes: document.getElementById('purchaseNotes').value || '',
-                date: dateFromInput, // Usar exactamente lo que está en el input
+                date: dateFromInput,
                 timestamp: getCurrentTimestamp()
             };
-            
-            console.log('Datos que se van a guardar:', purchaseData);
-            console.log('================================');
 
             try {
-                // Solo actualizar stock si es un producto existente
                 let productToUpdate = null;
                 if (selectedProductId) {
                     productToUpdate = products.find(p => p.id === selectedProductId);
@@ -3163,7 +3141,6 @@
                 if (isEditing) {
                     const oldPurchase = purchases.find(p => p.id === purchaseId);
                     
-                    // Restaurar stock del producto anterior si era existente
                     if (oldPurchase && oldPurchase.productId) {
                         const oldProduct = products.find(p => p.id === oldPurchase.productId);
                         if (oldProduct) {
@@ -3171,7 +3148,6 @@
                         }
                     }
                     
-                    // Agregar stock al producto actual si es existente
                     if (productToUpdate) {
                         productToUpdate.stock = (productToUpdate.stock || 0) + quantity;
                     }
@@ -3185,7 +3161,6 @@
                         showToast('Compra actualizada correctamente', 'success');
                     }
                 } else {
-                    // Nueva compra: solo agregar stock si es producto existente
                     if (productToUpdate) {
                         productToUpdate.stock = (productToUpdate.stock || 0) + quantity;
                     }
@@ -3199,11 +3174,9 @@
                     
                     const newPurchase = { id: newId, ...purchaseData };
                     purchases.push(newPurchase);
-                    console.log('Nueva compra agregada al array:', newPurchase);
                     showToast('Compra registrada correctamente', 'success');
                 }
                 
-                // Actualizar producto en Firebase si es existente
                 if (productToUpdate && isFirebaseConnected) {
                     try {
                         await saveToFirebase('products', productToUpdate, productToUpdate.id);
@@ -3219,36 +3192,6 @@
             } catch (error) {
                 showToast('Error al guardar compra', 'error');
             }
-        }
-
-        function filterPurchasesBySupplier(supplier) {
-            currentPurchaseSupplierFilter = supplier;
-            
-            document.querySelectorAll('#purchases .compact-filters .filter-group:first-child .filter-chip').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            
-            updatePurchasesTable();
-        }
-
-        function filterPurchasesByDate(dateType) {
-            currentPurchaseDateFilter = dateType;
-            
-            document.querySelectorAll('#purchases .compact-filters .filter-group:last-child .filter-chip').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            if (dateType !== 'custom') {
-                event.target.classList.add('active');
-            } else {
-                const customDateInput = document.getElementById('customPurchaseDateFilter');
-                if (customDateInput.value) {
-                    document.querySelector('#purchases .filter-chip[onclick="filterPurchasesByDate(\'custom\')"]').classList.add('active');
-                }
-            }
-            
-            updatePurchasesTable();
         }
 
         function updatePurchasesTable() {
@@ -3363,8 +3306,7 @@
             }
         }
 
-        // FUNCIONES GASTOS
-        // FUNCIÓN CORREGIDA - usar getTodayString() en lugar de getTodayDateString()
+        // ============= FUNCIONES DE GASTOS =============
         function openExpenseModal(expenseId = null) {
             const modal = document.getElementById('expenseModal');
             const title = document.querySelector('#expenseModal h2');
@@ -3373,7 +3315,6 @@
             document.getElementById('expenseDescription').value = '';
             document.getElementById('expenseCategory').value = 'marketing';
             document.getElementById('expenseAmount').value = '';
-            // CORRECCIÓN: usar getTodayString() en lugar de getTodayDateString()
             document.getElementById('expenseDate').value = getTodayString();
             
             if (expenseId) {
@@ -3476,7 +3417,7 @@
             }
         }
 
-        // FUNCIONES CALCULADORA
+        // ============= FUNCIONES DE CALCULADORA =============
         function calculatePrice() {
             const cost = parseFloat(document.getElementById('calcCost').value) || 0;
             const margin = parseFloat(document.getElementById('calcMargin').value) || 30;
@@ -3497,7 +3438,7 @@
             }
         }
 
-        // FUNCIONES DATOS EJEMPLO
+        // ============= FUNCIONES DE DATOS DE EJEMPLO =============
         async function generateSampleData() {
             const sampleProducts = [
                 { name: 'Auriculares Bluetooth', supplier: 'TechSupplier', category: 'electronica', stock: 25, minStock: 5, cost: 45000, price: 89000 },
@@ -3513,7 +3454,6 @@
             ];
 
             try {
-                // Agregar productos
                 for (const productData of sampleProducts) {
                     let newId;
                     if (isFirebaseConnected) {
@@ -3524,7 +3464,6 @@
                     products.push({ id: newId, ...productData });
                 }
 
-                // Agregar compras de ejemplo con fechas relativas correctas
                 const today = new Date();
                 const getDaysAgo = (days) => {
                     const date = new Date(today);
@@ -3542,7 +3481,6 @@
                     { productId: products[3]?.id, productName: 'Mochila Táctica', supplier: 'OutdoorGear', quantity: 5, unitPrice: 55000, total: 275000, type: 'operational', notes: 'Restock operacional', date: getDaysAgo(2) }
                 ];
 
-                // Agregar pedidos de ejemplo con fechas relativas correctas
                 const sampleOrders = [
                     { customer: 'María González', channel: 'facebook', productId: products[0]?.id, productName: 'Auriculares Bluetooth', quantity: 1, total: 89000, cost: 45000, status: 'delivered', comments: 'Cliente pidió entrega urgente. Completado exitosamente.', date: getCurrentTimestamp() },
                     { customer: 'Carlos Rodríguez', channel: 'instagram', productId: products[1]?.id, productName: 'Camiseta Deportiva', quantity: 2, total: 110000, cost: 50000, status: 'shipped', comments: 'Envío a sucursal. Número de seguimiento: ABC123', date: getCurrentTimestamp() },
@@ -3550,7 +3488,6 @@
                     { customer: 'Pedro Martínez', channel: 'marketplace', productId: products[3]?.id, productName: 'Mochila Táctica', quantity: 1, total: 120000, cost: 55000, status: 'pending', comments: '', date: getCurrentTimestamp() }
                 ];
 
-                // Guardar compras
                 for (const purchaseData of samplePurchases) {
                     let newId;
                     if (isFirebaseConnected) {
@@ -3561,7 +3498,6 @@
                     purchases.push({ id: newId, ...purchaseData });
                 }
 
-                // Guardar pedidos
                 for (const orderData of sampleOrders) {
                     let newId;
                     if (isFirebaseConnected) {
@@ -3572,7 +3508,6 @@
                     orders.push({ id: newId, ...orderData });
                 }
 
-                // Guardar gastos
                 for (const expenseData of sampleExpenses) {
                     let newId;
                     if (isFirebaseConnected) {
@@ -3592,7 +3527,7 @@
             }
         }
 
-        // FUNCIONES UTILIDADES
+        // ============= FUNCIONES UTILIDADES =============
         async function syncData() {
             if (!isFirebaseConnected) {
                 showToast('No hay conexión con Firebase', 'warning');
@@ -3615,7 +3550,6 @@
             document.getElementById(modalId).style.display = 'none';
         }
 
-        // Cerrar modales al hacer clic fuera
         window.onclick = function(event) {
             const modals = document.querySelectorAll('.modal');
             modals.forEach(modal => {
@@ -3625,7 +3559,6 @@
             });
         }
 
-        // ATAJOS DE TECLADO
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 const modals = document.querySelectorAll('.modal');
