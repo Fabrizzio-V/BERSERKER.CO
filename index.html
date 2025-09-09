@@ -1069,14 +1069,52 @@
 
         // ============ FUNCIÓN PRINCIPAL CON TU CAMBIO ESPECÍFICO ============
         function updateAllDisplays() {
+            // DEBUGGING: Verificar datos cargados
+            console.log('=== DEBUG DATOS ===');
+            console.log('Products:', products.length, products);
+            console.log('Orders:', orders.length, orders);
+            console.log('Purchases:', purchases.length, purchases);
+            console.log('Expenses:', expenses.length, expenses);
+            console.log('Current period:', currentDatePeriod);
+            
             const filteredOrders = getOrdersByPeriod(currentDatePeriod);
             const filteredPurchases = getPurchasesByPeriod(currentDatePeriod);
             const filteredExpenses = getExpensesByPeriod(currentDatePeriod);
             
-            const totalRevenue = filteredOrders.reduce((sum, order) => sum + (order.total || 0), 0);
-            const totalPurchases = filteredPurchases.reduce((sum, purchase) => sum + (purchase.total || 0), 0);
-            const totalExpenses = filteredExpenses.reduce((sum, expense) => sum + (expense.amount || 0), 0);
-            const totalCosts = filteredOrders.reduce((sum, order) => sum + (order.cost || 0), 0);
+            console.log('Filtered Orders:', filteredOrders.length, filteredOrders);
+            console.log('Filtered Purchases:', filteredPurchases.length, filteredPurchases);
+            console.log('Filtered Expenses:', filteredExpenses.length, filteredExpenses);
+            
+            // Calcular totales con múltiples intentos para asegurar compatibilidad
+            const totalRevenue = filteredOrders.reduce((sum, order) => {
+                const value = order.total || order.amount || order.price || 0;
+                console.log('Order revenue:', order.customer, value);
+                return sum + value;
+            }, 0);
+            
+            const totalPurchases = filteredPurchases.reduce((sum, purchase) => {
+                const value = purchase.total || purchase.amount || purchase.price || 0;
+                console.log('Purchase total:', purchase.productName, value);
+                return sum + value;
+            }, 0);
+            
+            const totalExpenses = filteredExpenses.reduce((sum, expense) => {
+                const value = expense.amount || expense.total || expense.price || 0;
+                console.log('Expense amount:', expense.description, value);
+                return sum + value;
+            }, 0);
+            
+            const totalCosts = filteredOrders.reduce((sum, order) => {
+                const value = order.cost || order.costPrice || 0;
+                console.log('Order cost:', order.customer, value);
+                return sum + value;
+            }, 0);
+            
+            console.log('=== TOTALES CALCULADOS ===');
+            console.log('Total Revenue:', totalRevenue);
+            console.log('Total Purchases:', totalPurchases);
+            console.log('Total Expenses:', totalExpenses);
+            console.log('Total Costs:', totalCosts);
             
             // ========== TU CAMBIO: EGRESOS NO AFECTAN NADA ==========
             // GANANCIA NETA: Ingresos - Costos (egresos NO tocan)
@@ -1085,6 +1123,10 @@
             // SALDO BANCO: Ingresos - Ganancia Neta (egresos NO tocan)
             const bankBalance = totalRevenue - netProfit;
             // ======================================================
+            
+            console.log('Net Profit:', netProfit);
+            console.log('Bank Balance:', bankBalance);
+            console.log('======================');
 
             document.getElementById('totalOrders').textContent = filteredOrders.length;
             document.getElementById('totalProducts').textContent = products.length;
@@ -1103,6 +1145,123 @@
             document.getElementById('dashProfit').textContent = formatCurrency(netProfit);
             document.getElementById('dashBank').textContent = formatCurrency(bankBalance);
             document.getElementById('dashMargin').textContent = totalRevenue > 0 ? ((netProfit / totalRevenue) * 100).toFixed(1) + '%' : '0%';
+            
+            // Actualizar tablas
+            updateProductsTable();
+            updateOrdersTable();
+            updatePurchasesTable();
+            updateExpensesTable();
+        }
+
+        function updateProductsTable() {
+            const tbody = document.getElementById('productsTable');
+            
+            if (products.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 2rem; color: #657786;">No hay productos registrados.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = products.map(product => {
+                const margin = product.cost > 0 ? (((product.price - product.cost) / product.cost) * 100) : 0;
+                const stock = product.stock || 0;
+                
+                return `
+                    <tr>
+                        <td><strong>${product.name}</strong><br><small style="color: #666;">${product.category || 'Sin categoría'}</small></td>
+                        <td>${product.supplier || 'N/A'}</td>
+                        <td>${stock}</td>
+                        <td>${formatCurrency(product.cost || 0)}</td>
+                        <td>${formatCurrency(product.price || 0)}</td>
+                        <td><span style="color: ${margin > 25 ? '#27ae60' : margin > 10 ? '#f39c12' : '#e74c3c'}; font-weight: bold;">${margin.toFixed(1)}%</span></td>
+                        <td>
+                            <button class="btn btn-primary btn-sm" onclick="showToast('Función por implementar', 'info')">✏️</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function updateOrdersTable() {
+            const tbody = document.getElementById('ordersTable');
+            const filteredOrders = getOrdersByPeriod(currentDatePeriod);
+            
+            if (filteredOrders.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 2rem; color: #657786;">No hay pedidos para el período seleccionado.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = filteredOrders.map(order => {
+                return `
+                    <tr>
+                        <td>#${order.id.toString().slice(-4)}</td>
+                        <td>${order.customer || 'N/A'}</td>
+                        <td>${order.productName || 'N/A'}</td>
+                        <td>${order.quantity || 1}</td>
+                        <td>${formatCurrency(order.total || order.amount || 0)}</td>
+                        <td>${formatCurrency(order.cost || 0)}</td>
+                        <td><span class="status-badge status-completed">${order.status || 'Completado'}</span></td>
+                        <td>${new Date(order.date).toLocaleDateString()}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function updatePurchasesTable() {
+            const tbody = document.getElementById('purchasesTable');
+            const filteredPurchases = getPurchasesByPeriod(currentDatePeriod);
+            
+            if (filteredPurchases.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 2rem; color: #657786;">No hay compras para el período seleccionado.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = filteredPurchases.map(purchase => {
+                const unitPrice = purchase.unitPrice || (purchase.total && purchase.quantity ? purchase.total / purchase.quantity : 0);
+                return `
+                    <tr>
+                        <td>#${purchase.id.toString().slice(-4)}</td>
+                        <td>${new Date(purchase.date).toLocaleDateString()}</td>
+                        <td>${purchase.supplier || 'N/A'}</td>
+                        <td>${purchase.productName || 'N/A'}</td>
+                        <td>${purchase.quantity || 1}</td>
+                        <td>${formatCurrency(unitPrice)}</td>
+                        <td><strong>${formatCurrency(purchase.total || purchase.amount || 0)}</strong></td>
+                        <td>${purchase.notes || 'Sin notas'}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function updateExpensesTable() {
+            const tbody = document.getElementById('expensesTable');
+            const filteredExpenses = getExpensesByPeriod(currentDatePeriod);
+            
+            if (filteredExpenses.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 2rem; color: #657786;">No hay gastos para el período seleccionado.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = filteredExpenses.map(expense => {
+                return `
+                    <tr>
+                        <td>${new Date(expense.date).toLocaleDateString()}</td>
+                        <td>${expense.description || 'N/A'}</td>
+                        <td>${expense.category || 'N/A'}</td>
+                        <td>${formatCurrency(expense.amount || expense.total || 0)}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function showSection(sectionName) {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => section.classList.remove('active'));
+            const targetSection = document.getElementById(sectionName);
+            if (targetSection) {
+                targetSection.classList.add('active');
+                // Actualizar datos cuando se cambie de sección
+                updateAllDisplays();
+            }
         }
 
         // Funciones stub para que no haya errores
