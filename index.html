@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -578,12 +579,300 @@
         .toast.error {
             border-left-color: #e74c3c;
         }
+
+        /* NUEVOS ESTILOS PARA PANEL DE ENTREGAS */
+        .delivery-status-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.2rem;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border-left: 4px solid #ddd;
+            cursor: pointer;
+        }
+
+        .delivery-status-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .delivery-status-card.pending {
+            border-left-color: #f39c12;
+            background: linear-gradient(135deg, #fef9e7 0%, #ffffff 100%);
+        }
+
+        .delivery-status-card.confirmed {
+            border-left-color: #3498db;
+            background: linear-gradient(135deg, #e3f2fd 0%, #ffffff 100%);
+        }
+
+        .delivery-status-card.shipped {
+            border-left-color: #9b59b6;
+            background: linear-gradient(135deg, #f3e5f5 0%, #ffffff 100%);
+        }
+
+        .delivery-status-card.urgent {
+            border-left-color: #e74c3c;
+            background: linear-gradient(135deg, #ffebee 0%, #ffffff 100%);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(231, 76, 60, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
+        }
+
+        .delivery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .delivery-item {
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+            border-left: 4px solid #ddd;
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .delivery-item:hover {
+            background: #f8fafc;
+        }
+
+        .delivery-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .delivery-customer {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .delivery-date {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .delivery-product {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .delivery-total {
+            font-weight: 700;
+            color: var(--success);
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .quick-btn {
+            padding: 0.25rem 0.75rem;
+            border: none;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .quick-btn.confirm {
+            background: #3498db;
+            color: white;
+        }
+
+        .quick-btn.ship {
+            background: #9b59b6;
+            color: white;
+        }
+
+        .quick-btn.deliver {
+            background: #27ae60;
+            color: white;
+        }
+
+        .quick-btn.cancel {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .priority-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .priority-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .priority-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .priority-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 768px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                position: static;
+                margin-bottom: 1rem;
+            }
+
+            .sidebar-menu {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+                gap: 0.5rem;
+            }
+
+            .sidebar-menu a {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.8rem;
+                justify-content: center;
+                text-align: center;
+                transform: none;
+            }
+
+            .sidebar-menu a:hover, .sidebar-menu a.active {
+                transform: none;
+            }
+            
+            .navbar-content {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 0 1rem;
+            }
+
+            .navbar h1 {
+                font-size: 1.4rem;
+            }
+
+            .navbar-stats {
+                width: 100%;
+            }
+
+            .stats-row {
+                flex-wrap: wrap;
+                gap: 0.3rem;
+                justify-content: center;
+            }
+
+            .stat-item {
+                min-width: 80px;
+                max-width: 100px;
+                font-size: 0.7rem;
+            }
+
+            .stat-value {
+                font-size: 0.65rem;
+            }
+
+            .stat-label {
+                font-size: 0.45rem;
+            }
+
+            .date-filters {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 0.3rem;
+            }
+
+            .date-filter-btn {
+                padding: 0.25rem 0.6rem;
+                font-size: 0.7rem;
+            }
+
+            .content-body {
+                padding: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 1rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .toolbar {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+                padding: 1.5rem;
+            }
+
+            .table {
+                font-size: 0.75rem;
+                min-width: 800px;
+            }
+
+            .table th, .table td {
+                padding: 0.5rem 0.25rem;
+            }
+
+            .compact-filters {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .filter-group {
+                justify-content: center;
+            }
+
+            .delivery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .priority-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 <body>
     <nav class="navbar">
         <div class="navbar-content">
-            <h1>⚔️ BERSERKER.CO</h1>
+            <h1>âš”ï¸ BERSERKER.CO</h1>
             <div class="navbar-stats">
                 <div class="stats-row">
                     <div class="stat-item">
@@ -595,28 +884,28 @@
                         <div class="stat-label">Productos</div>
                     </div>
                     <div class="stat-item">
-                        <div class="stat-value" id="totalRevenue">₲0</div>
+                        <div class="stat-value" id="totalRevenue">â‚²0</div>
                         <div class="stat-label">Ingresos</div>
                     </div>
                     <div class="stat-item" style="background: rgba(23, 162, 184, 0.2); border: 1px solid rgba(23, 162, 184, 0.3);">
-                        <div class="stat-value" id="totalPurchases" style="color: #17a2b8;">₲0</div>
+                        <div class="stat-value" id="totalPurchases" style="color: #17a2b8;">â‚²0</div>
                         <div class="stat-label" style="color: #17a2b8;">Inventario</div>
                     </div>
                     <div class="stat-item" style="background: rgba(231, 76, 60, 0.2); border: 1px solid rgba(231, 76, 60, 0.3);">
-                        <div class="stat-value" id="totalExpenses" style="color: #e74c3c;">₲0</div>
+                        <div class="stat-value" id="totalExpenses" style="color: #e74c3c;">â‚²0</div>
                         <div class="stat-label" style="color: #e74c3c;">Egresos</div>
                     </div>
                     <div class="stat-item" style="background: rgba(39, 174, 96, 0.2); border: 1px solid rgba(39, 174, 96, 0.3);">
-                        <div class="stat-value" id="navbarProfit" style="color: #27ae60;">₲0</div>
+                        <div class="stat-value" id="navbarProfit" style="color: #27ae60;">â‚²0</div>
                         <div class="stat-label" style="color: #27ae60;">Ganancia Neta</div>
                     </div>
                     <div class="stat-item" style="background: rgba(52, 152, 219, 0.2); border: 1px solid rgba(52, 152, 219, 0.3);">
-                        <div class="stat-value" id="navbarBank" style="color: #3498db;">₲0</div>
+                        <div class="stat-value" id="navbarBank" style="color: #3498db;">â‚²0</div>
                         <div class="stat-label" style="color: #3498db;">Saldo Banco</div>
                     </div>
                 </div>
                 <div class="date-filters">
-                    <span style="font-size: 0.8rem; opacity: 0.9;">Período:</span>
+                    <span style="font-size: 0.8rem; opacity: 0.9;">PerÃ­odo:</span>
                     <button class="date-filter-btn active" onclick="filterByDatePeriod('all')">Todo</button>
                     <button class="date-filter-btn" onclick="filterByDatePeriod('today')">Hoy</button>
                     <button class="date-filter-btn" onclick="filterByDatePeriod('yesterday')">Ayer</button>
@@ -636,14 +925,14 @@
         <div class="main-grid">
             <aside class="sidebar">
                 <ul class="sidebar-menu">
-                    <li><a href="#" class="menu-item active" data-section="dashboard">📊 Dashboard</a></li>
-                    <li><a href="#" class="menu-item" data-section="delivery">🚚 Panel Entregas</a></li>
-                    <li><a href="#" class="menu-item" data-section="products">🛍️ Productos</a></li>
-                    <li><a href="#" class="menu-item" data-section="orders">🛒 Pedidos</a></li>
-                    <li><a href="#" class="menu-item" data-section="purchases">📦 Compras</a></li>
-                    <li><a href="#" class="menu-item" data-section="expenses">💸 Gastos</a></li>
-                    <li><a href="#" class="menu-item" data-section="calculator">🧮 Calculadora</a></li>
-                    <li><a href="#" class="menu-item" data-section="reports">📈 Reportes</a></li>
+                    <li><a href="#" class="menu-item active" data-section="dashboard">ðŸ“Š Dashboard</a></li>
+                    <li><a href="#" class="menu-item" data-section="delivery">ðŸšš Panel Entregas</a></li>
+                    <li><a href="#" class="menu-item" data-section="products">ðŸ›ï¸ Productos</a></li>
+                    <li><a href="#" class="menu-item" data-section="orders">ðŸ›’ Pedidos</a></li>
+                    <li><a href="#" class="menu-item" data-section="purchases">ðŸ“¦ Compras</a></li>
+                    <li><a href="#" class="menu-item" data-section="expenses">ðŸ’¸ Gastos</a></li>
+                    <li><a href="#" class="menu-item" data-section="calculator">ðŸ§® Calculadora</a></li>
+                    <li><a href="#" class="menu-item" data-section="reports">ðŸ“ˆ Reportes</a></li>
                 </ul>
             </aside>
 
@@ -655,7 +944,7 @@
                     </div>
                     <div class="content-body">
                         <div class="loading" id="loadingIndicator">
-                            <p>🔄 Cargando datos...</p>
+                            <p>ðŸ”„ Cargando datos...</p>
                         </div>
 
                         <div class="stats-grid">
@@ -668,19 +957,19 @@
                                 <div class="stat-label">Pedidos</div>
                             </div>
                             <div class="stat-card">
-                                <div class="stat-value" id="dashRevenue">₲0</div>
+                                <div class="stat-value" id="dashRevenue">â‚²0</div>
                                 <div class="stat-label">Ingresos</div>
                             </div>
                             <div class="stat-card" style="background: var(--gradient-info); color: white;">
-                                <div class="stat-value" id="dashPurchases">₲0</div>
+                                <div class="stat-value" id="dashPurchases">â‚²0</div>
                                 <div class="stat-label">Compras</div>
                             </div>
                             <div class="stat-card">
-                                <div class="stat-value" id="dashExpenses">₲0</div>
+                                <div class="stat-value" id="dashExpenses">â‚²0</div>
                                 <div class="stat-label">Gastos</div>
                             </div>
                             <div class="stat-card" style="background: var(--gradient-success); color: white;">
-                                <div class="stat-value" id="dashProfit">₲0</div>
+                                <div class="stat-value" id="dashProfit">â‚²0</div>
                                 <div class="stat-label">Ganancia Neta</div>
                             </div>
                             <div class="stat-card" style="background: var(--gradient-primary); color: white;">
@@ -688,90 +977,727 @@
                                 <div class="stat-label">Margen Promedio</div>
                             </div>
                             <div class="stat-card" style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); color: white;">
-                                <div class="stat-value" id="dashBank">₲0</div>
+                                <div class="stat-value" id="dashBank">â‚²0</div>
                                 <div class="stat-label">Saldo Banco</div>
                             </div>
                         </div>
 
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">🚀 Acciones Rápidas</h3>
+                                <h3 class="card-title">ðŸš€ Acciones RÃ¡pidas</h3>
                             </div>
                             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
-                                <button class="btn btn-success" onclick="openProductModal()">➕ Nuevo Producto</button>
-                                <button class="btn btn-primary" onclick="openOrderModal()">🛒 Nuevo Pedido</button>
-                                <button class="btn btn-info" onclick="openPurchaseModal()">📦 Nueva Compra</button>
-                                <button class="btn btn-danger" onclick="openExpenseModal()">💸 Registrar Gasto</button>
-                                <button class="btn btn-secondary" onclick="generateSampleData()">📊 Datos de Prueba</button>
+                                <button class="btn btn-success" onclick="openProductModal()">âž• Nuevo Producto</button>
+                                <button class="btn btn-primary" onclick="openOrderModal()">ðŸ›’ Nuevo Pedido</button>
+                                <button class="btn btn-info" onclick="openPurchaseModal()">ðŸ“¦ Nueva Compra</button>
+                                <button class="btn btn-danger" onclick="openExpenseModal()">ðŸ’¸ Registrar Gasto</button>
+                                <button class="btn btn-secondary" onclick="generateSampleData()">ðŸ“Š Datos de Prueba</button>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Otras secciones - contenido mínimo para que funcione -->
+                <!-- Panel de Entregas -->
                 <div id="delivery" class="section">
                     <div class="content-header">
-                        <h2>Panel de Entregas</h2>
+                        <h2>ðŸšš Panel de Control de Entregas</h2>
+                        <p>Controla en tiempo real el estado de todos tus pedidos y entregas</p>
                     </div>
                     <div class="content-body">
-                        <p>Panel de entregas...</p>
+                        <!-- Resumen de Estados -->
+                        <div class="stats-grid">
+                            <div class="stat-card" style="background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); color: white;">
+                                <div class="stat-value" id="deliveryPending">0</div>
+                                <div class="stat-label">Pendientes</div>
+                            </div>
+                            <div class="stat-card" style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); color: white;">
+                                <div class="stat-value" id="deliveryConfirmed">0</div>
+                                <div class="stat-label">Confirmados</div>
+                            </div>
+                            <div class="stat-card" style="background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%); color: white;">
+                                <div class="stat-value" id="deliveryShipped">0</div>
+                                <div class="stat-label">En TrÃ¡nsito</div>
+                            </div>
+                            <div class="stat-card" style="background: linear-gradient(135deg, #27ae60 0%, #229954 100%); color: white;">
+                                <div class="stat-value" id="deliveryDelivered">0</div>
+                                <div class="stat-label">Entregados</div>
+                            </div>
+                        </div>
+
+                        <!-- SecciÃ³n Prioritaria - Pedidos Urgentes -->
+                        <div class="priority-section" id="urgentDeliveries" style="display: none;">
+                            <div class="priority-title">
+                                ðŸš¨ ATENCIÃ“N - Pedidos que requieren acciÃ³n inmediata
+                            </div>
+                            <div class="priority-grid" id="urgentDeliveriesGrid">
+                                <!-- Se llena dinÃ¡micamente -->
+                            </div>
+                        </div>
+
+                        <!-- Filtros -->
+                        <div class="compact-filters">
+                            <div class="filter-group">
+                                <span class="filter-label">Ver:</span>
+                                <button class="filter-chip active" onclick="filterDeliveryStatus('all')">Todos</button>
+                                <button class="filter-chip" onclick="filterDeliveryStatus('pending')">Pendientes</button>
+                                <button class="filter-chip" onclick="filterDeliveryStatus('confirmed')">Confirmados</button>
+                                <button class="filter-chip" onclick="filterDeliveryStatus('prepared')">Preparados</button>
+                                <button class="filter-chip" onclick="filterDeliveryStatus('shipped')">En TrÃ¡nsito</button>
+                            </div>
+                            <div class="filter-group">
+                                <span class="filter-label">MÃ©todo:</span>
+                                <button class="filter-chip active" onclick="filterDeliveryMethod('all')">Todos</button>
+                                <button class="filter-chip" onclick="filterDeliveryMethod('personal')">ðŸš¶â€â™‚ï¸ Nosotros</button>
+                                <button class="filter-chip" onclick="filterDeliveryMethod('delivery')">ðŸ›µ Delivery</button>
+                                <button class="filter-chip" onclick="filterDeliveryMethod('pickup')">ðŸª RecolecciÃ³n</button>
+                                <button class="filter-chip" onclick="filterDeliveryMethod('shipping')">ðŸ“® EnvÃ­o</button>
+                            </div>
+                        </div>
+
+                        <!-- Panel Principal de Estados -->
+                        <div class="delivery-grid">
+                            <!-- PENDIENTES -->
+                            <div class="delivery-status-card pending" onclick="toggleDeliverySection('pending-section')">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <h3>â³ PENDIENTES</h3>
+                                        <p>Esperando confirmaciÃ³n del cliente</p>
+                                    </div>
+                                    <div style="font-size: 2rem; font-weight: bold;" id="pendingCount">0</div>
+                                </div>
+                            </div>
+
+                            <!-- CONFIRMADOS -->
+                            <div class="delivery-status-card confirmed" onclick="toggleDeliverySection('confirmed-section')">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <h3>âœ… CONFIRMADOS</h3>
+                                        <p>Listos para preparar</p>
+                                    </div>
+                                    <div style="font-size: 2rem; font-weight: bold;" id="confirmedCount">0</div>
+                                </div>
+                            </div>
+
+                            <!-- PREPARADOS -->
+                            <div class="delivery-status-card" style="border-left-color: #17a2b8; background: linear-gradient(135deg, #d1ecf1 0%, #ffffff 100%);" onclick="toggleDeliverySection('prepared-section')">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <h3>ðŸ“¦ PREPARADOS</h3>
+                                        <p>Listos para entregar/enviar</p>
+                                    </div>
+                                    <div style="font-size: 2rem; font-weight: bold;" id="preparedCount">0</div>
+                                </div>
+                            </div>
+
+                            <!-- EN TRÃNSITO -->
+                            <div class="delivery-status-card shipped" onclick="toggleDeliverySection('shipped-section')">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <h3>ðŸšš EN TRÃNSITO</h3>
+                                        <p>En camino al cliente</p>
+                                    </div>
+                                    <div style="font-size: 2rem; font-weight: bold;" id="shippedCount">0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Secciones Expandibles -->
+                        <div id="pending-section" class="card" style="display: none;">
+                            <div class="card-header">
+                                <h3>â³ Pedidos Pendientes</h3>
+                                <button class="btn btn-secondary btn-sm" onclick="toggleDeliverySection('pending-section')">Cerrar</button>
+                            </div>
+                            <div id="pendingOrders">
+                                <!-- Se llena dinÃ¡micamente -->
+                            </div>
+                        </div>
+
+                        <div id="confirmed-section" class="card" style="display: none;">
+                            <div class="card-header">
+                                <h3>âœ… Pedidos Confirmados - Por Preparar</h3>
+                                <button class="btn btn-secondary btn-sm" onclick="toggleDeliverySection('confirmed-section')">Cerrar</button>
+                            </div>
+                            <div id="confirmedOrders">
+                                <!-- Se llena dinÃ¡micamente -->
+                            </div>
+                        </div>
+
+                        <div id="prepared-section" class="card" style="display: none;">
+                            <div class="card-header">
+                                <h3>ðŸ“¦ Pedidos Preparados - Asignar Entrega</h3>
+                                <button class="btn btn-secondary btn-sm" onclick="toggleDeliverySection('prepared-section')">Cerrar</button>
+                            </div>
+                            <div id="preparedOrders">
+                                <!-- Se llena dinÃ¡micamente -->
+                            </div>
+                        </div>
+
+                        <div id="shipped-section" class="card" style="display: none;">
+                            <div class="card-header">
+                                <h3>ðŸšš Pedidos en TrÃ¡nsito - Por Confirmar Entrega</h3>
+                                <button class="btn btn-secondary btn-sm" onclick="toggleDeliverySection('shipped-section')">Cerrar</button>
+                            </div>
+                            <div id="shippedOrders">
+                                <!-- Se llena dinÃ¡micamente -->
+                            </div>
+                        </div>
+
+                        <!-- Resumen de Hoy -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3>ðŸ“… Resumen de Hoy</h3>
+                            </div>
+                            <div class="stats-grid">
+                                <div class="stat-card">
+                                    <div class="stat-value" id="todayNewOrders">0</div>
+                                    <div class="stat-label">Pedidos Nuevos</div>
+                                </div>
+                                <div class="stat-card" style="background: var(--gradient-success); color: white;">
+                                    <div class="stat-value" id="todayDelivered">0</div>
+                                    <div class="stat-label">Entregados Hoy</div>
+                                </div>
+                                <div class="stat-card" style="background: var(--gradient-info); color: white;">
+                                    <div class="stat-value" id="todayRevenue">â‚²0</div>
+                                    <div class="stat-label">Ingresos del DÃ­a</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
+                <!-- Productos -->
                 <div id="products" class="section">
                     <div class="content-header">
-                        <h2>Gestión de Productos</h2>
+                        <h2>GestiÃ³n de Productos</h2>
                     </div>
                     <div class="content-body">
-                        <p>Gestión de productos...</p>
+                        <div class="action-buttons">
+                            <button class="btn btn-success" onclick="openProductModal()">+ Nuevo Producto</button>
+                            <div class="toolbar">
+                                <button class="btn btn-secondary" onclick="syncData()">Sincronizar</button>
+                            </div>
+                        </div>
+
+                        <div class="compact-filters">
+                            <div class="filter-group">
+                                <span class="filter-label">CategorÃ­a:</span>
+                                <button class="filter-chip active" onclick="filterByCategory('')">Todas</button>
+                                <button class="filter-chip" onclick="filterByCategory('electronica')">ElectrÃ³nica</button>
+                                <button class="filter-chip" onclick="filterByCategory('ropa')">Ropa</button>
+                                <button class="filter-chip" onclick="filterByCategory('hogar')">Hogar</button>
+                                <button class="filter-chip" onclick="filterByCategory('deportes')">Deportes</button>
+                                <button class="filter-chip" onclick="filterByCategory('belleza')">Belleza</button>
+                                <button class="filter-chip" onclick="filterByCategory('otros')">Otros</button>
+                            </div>
+                            <div class="filter-group">
+                                <span class="filter-label">Stock:</span>
+                                <button class="filter-chip active" onclick="filterByStock('')">Todos</button>
+                                <button class="filter-chip" onclick="filterByStock('available')">Con Stock</button>
+                                <button class="filter-chip" onclick="filterByStock('low')">Poco Stock</button>
+                                <button class="filter-chip" onclick="filterByStock('out')">Sin Stock</button>
+                            </div>
+                        </div>
+
+                        <div class="table-container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th>Proveedor</th>
+                                        <th>Stock Actual</th>
+                                        <th>Stock Vendido</th>
+                                        <th>Costo</th>
+                                        <th>Precio</th>
+                                        <th>Margen</th>
+                                        <th>Ventas</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="productsTable">
+                                    <tr>
+                                        <td colspan="10" style="text-align: center; padding: 2rem; color: #657786;">
+                                            No hay productos registrados. Agrega tu primer producto.
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
+                <!-- Pedidos -->
                 <div id="orders" class="section">
                     <div class="content-header">
-                        <h2>Gestión de Pedidos</h2>
+                        <h2>GestiÃ³n de Pedidos</h2>
                     </div>
                     <div class="content-body">
-                        <p>Gestión de pedidos...</p>
+                        <div class="action-buttons">
+                            <button class="btn btn-success" onclick="openOrderModal()">+ Nuevo Pedido</button>
+                        </div>
+
+                        <div class="compact-filters">
+                            <div class="filter-group">
+                                <span class="filter-label">Estado:</span>
+                                <button class="filter-chip active" onclick="filterOrdersByStatus('')">Todos</button>
+                                <button class="filter-chip" onclick="filterOrdersByStatus('pending')">Pendiente</button>
+                                <button class="filter-chip" onclick="filterOrdersByStatus('confirmed')">Confirmado</button>
+                                <button class="filter-chip" onclick="filterOrdersByStatus('prepared')">Preparado</button>
+                                <button class="filter-chip" onclick="filterOrdersByStatus('shipped')">Enviado</button>
+                                <button class="filter-chip" onclick="filterOrdersByStatus('delivered')">Entregado</button>
+                                <button class="filter-chip" onclick="filterOrdersByStatus('cancelled')">Cancelado</button>
+                            </div>
+                        </div>
+
+                        <div class="table-container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Cliente</th>
+                                        <th>Canal</th>
+                                        <th>Producto</th>
+                                        <th>Total</th>
+                                        <th>Estado</th>
+                                        <th>Comentarios</th>
+                                        <th>Fecha</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ordersTable">
+                                    <tr>
+                                        <td colspan="9" style="text-align: center; padding: 2rem; color: #657786;">
+                                            No hay pedidos registrados. Crea tu primer pedido.
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
+                <!-- Compras -->
                 <div id="purchases" class="section">
                     <div class="content-header">
-                        <h2>Gestión de Compras</h2>
+                        <h2>GestiÃ³n de Compras</h2>
                     </div>
                     <div class="content-body">
-                        <p>Gestión de compras...</p>
+                        <div class="action-buttons">
+                            <button class="btn btn-info" onclick="openPurchaseModal()">ðŸ“¦ Nueva Compra</button>
+                            <div class="toolbar">
+                                <button class="btn btn-secondary" onclick="syncData()">Sincronizar</button>
+                            </div>
+                        </div>
+
+                        <div class="compact-filters">
+                            <div class="filter-group">
+                                <span class="filter-label">Proveedor:</span>
+                                <button class="filter-chip active" onclick="filterPurchasesBySupplier('')">Todos</button>
+                                <button class="filter-chip" onclick="filterPurchasesBySupplier('TechSupplier')">TechSupplier</button>
+                                <button class="filter-chip" onclick="filterPurchasesBySupplier('SportWear Co')">SportWear Co</button>
+                                <button class="filter-chip" onclick="filterPurchasesBySupplier('HomeDecor')">HomeDecor</button>
+                                <button class="filter-chip" onclick="filterPurchasesBySupplier('OutdoorGear')">OutdoorGear</button>
+                            </div>
+                            <div class="filter-group">
+                                <span class="filter-label">Fecha:</span>
+                                <button class="filter-chip active" onclick="filterPurchasesByDate('')">Todas</button>
+                                <button class="filter-chip" onclick="filterPurchasesByDate('today')">Hoy</button>
+                                <button class="filter-chip" onclick="filterPurchasesByDate('week')">Esta Semana</button>
+                                <button class="filter-chip" onclick="filterPurchasesByDate('month')">Este Mes</button>
+                                <input type="date" class="form-control" id="customPurchaseDateFilter" onchange="filterPurchasesByDate('custom')" style="max-width: 150px; margin-left: 10px;">
+                            </div>
+                        </div>
+
+                        <div class="stats-grid" style="margin-bottom: 2rem;">
+                            <div class="stat-card" style="background: var(--gradient-info); color: white;">
+                                <div class="stat-value" id="purchasesSummaryTotal">â‚²0</div>
+                                <div class="stat-label">Total Compras</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="purchasesSummaryCount">0</div>
+                                <div class="stat-label">NÃºmero de Compras</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="purchasesSummaryProducts">0</div>
+                                <div class="stat-label">Productos Comprados</div>
+                            </div>
+                            <div class="stat-card" style="background: var(--gradient-primary); color: white;">
+                                <div class="stat-value" id="purchasesSummarySuppliers">0</div>
+                                <div class="stat-label">Proveedores Activos</div>
+                            </div>
+                        </div>
+
+                        <div class="table-container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Fecha</th>
+                                        <th>Proveedor</th>
+                                        <th>Producto</th>
+                                        <th>Cantidad</th>
+                                        <th>Precio Unitario</th>
+                                        <th>Total</th>
+                                        <th>Notas</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="purchasesTable">
+                                    <tr>
+                                        <td colspan="9" style="text-align: center; padding: 2rem; color: #657786;">
+                                            No hay compras registradas. Registra tu primera compra.
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
+                <!-- Gastos -->
                 <div id="expenses" class="section">
                     <div class="content-header">
-                        <h2>Gestión de Gastos</h2>
+                        <h2>GestiÃ³n de Gastos</h2>
                     </div>
                     <div class="content-body">
-                        <p>Gestión de gastos...</p>
+                        <div class="action-buttons">
+                            <button class="btn btn-danger" onclick="openExpenseModal()">ðŸ’¸ Nuevo Gasto</button>
+                        </div>
+
+                        <div class="table-container">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>DescripciÃ³n</th>
+                                        <th>CategorÃ­a</th>
+                                        <th>Monto</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="expensesTable">
+                                    <tr>
+                                        <td colspan="5" style="text-align: center; padding: 2rem; color: #657786;">
+                                            No hay gastos registrados. Registra tu primer gasto.
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
+                <!-- Calculadora -->
                 <div id="calculator" class="section">
                     <div class="content-header">
-                        <h2>Calculadora</h2>
+                        <h2>Calculadora de Precios</h2>
                     </div>
                     <div class="content-body">
-                        <p>Calculadora...</p>
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">ðŸ’° Calculadora de Precios</h3>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Costo del Producto (â‚²)</label>
+                                    <input type="number" class="form-control" id="calcCost" onchange="calculatePrice()">
+                                </div>
+                                <div class="form-group">
+                                    <label>Margen Deseado (%)</label>
+                                    <input type="number" class="form-control" id="calcMargin" value="30" onchange="calculatePrice()">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Costo de EnvÃ­o (â‚²)</label>
+                                    <input type="number" class="form-control" id="calcShipping" onchange="calculatePrice()">
+                                </div>
+                                <div class="form-group">
+                                    <label>ComisiÃ³n Plataforma (%)</label>
+                                    <input type="number" class="form-control" id="calcCommission" value="10" onchange="calculatePrice()">
+                                </div>
+                            </div>
+
+                            <div class="stats-grid">
+                                <div class="stat-card" style="background: var(--gradient-primary); color: white;">
+                                    <div class="stat-value" id="suggestedPrice">â‚²0</div>
+                                    <div class="stat-label">Precio Sugerido</div>
+                                </div>
+                                <div class="stat-card" style="background: var(--gradient-success); color: white;">
+                                    <div class="stat-value" id="expectedProfit">â‚²0</div>
+                                    <div class="stat-label">Ganancia Esperada</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
+                <!-- Reportes -->
                 <div id="reports" class="section">
                     <div class="content-header">
                         <h2>Reportes</h2>
                     </div>
                     <div class="content-body">
-                        <p>Reportes...</p>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-value" id="reportRevenue">â‚²0</div>
+                                <div class="stat-label">Ingresos Totales</div>
+                            </div>
+                            <div class="stat-card" style="background: var(--gradient-info); color: white;">
+                                <div class="stat-value" id="reportPurchases">â‚²0</div>
+                                <div class="stat-label">Compras Totales</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="reportExpenses">â‚²0</div>
+                                <div class="stat-label">Gastos Totales</div>
+                            </div>
+                            <div class="stat-card" style="background: var(--gradient-success); color: white;">
+                                <div class="stat-value" id="reportProfit">â‚²0</div>
+                                <div class="stat-label">Ganancia Neta</div>
+                            </div>
+                            <div class="stat-card" style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); color: white;">
+                                <div class="stat-value" id="reportBank">â‚²0</div>
+                                <div class="stat-label">Saldo Banco</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </main>
+        </div>
+    </div>
+
+    <!-- Modales -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('productModal')">&times;</span>
+            <h2 id="productModalTitle">Nuevo Producto</h2>
+            <form onsubmit="saveProduct(event)">
+                <input type="hidden" id="productId">
+                <div class="form-group">
+                    <label>Nombre del Producto</label>
+                    <input type="text" class="form-control" id="productName" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Proveedor</label>
+                        <input type="text" class="form-control" id="productSupplier" required>
+                    </div>
+                    <div class="form-group">
+                        <label>CategorÃ­a</label>
+                        <select class="form-control" id="productCategory">
+                            <option value="electronica">ElectrÃ³nica</option>
+                            <option value="ropa">Ropa</option>
+                            <option value="hogar">Hogar</option>
+                            <option value="deportes">Deportes</option>
+                            <option value="belleza">Belleza</option>
+                            <option value="otros">Otros</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Stock</label>
+                        <input type="number" class="form-control" id="productStock" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Stock MÃ­nimo</label>
+                        <input type="number" class="form-control" id="productMinStock" value="5">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Costo (â‚²)</label>
+                        <input type="number" class="form-control" id="productCost" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Precio de Venta (â‚²)</label>
+                        <input type="number" class="form-control" id="productPrice" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success">ðŸ’¾ Guardar Producto</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="orderModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('orderModal')">&times;</span>
+            <h2>Nuevo Pedido</h2>
+            <form onsubmit="saveOrder(event)">
+                <input type="hidden" id="orderId">
+                <div class="form-group">
+                    <label>Cliente</label>
+                    <input type="text" class="form-control" id="orderCustomer" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Canal de Venta</label>
+                        <select class="form-control" id="orderChannel">
+                            <option value="facebook">Facebook</option>
+                            <option value="instagram">Instagram</option>
+                            <option value="whatsapp">WhatsApp</option>
+                            <option value="marketplace">Marketplace</option>
+                            <option value="web">Sitio Web</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Estado</label>
+                        <select class="form-control" id="orderStatus">
+                            <option value="pending">Pendiente</option>
+                            <option value="confirmed">Confirmado</option>
+                            <option value="prepared">Preparado</option>
+                            <option value="shipped">En TrÃ¡nsito</option>
+                            <option value="delivered">Entregado</option>
+                            <option value="cancelled">Cancelado</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>MÃ©todo de Entrega</label>
+                        <select class="form-control" id="orderDeliveryMethod">
+                            <option value="delivery">Delivery Tercerizado</option>
+                            <option value="personal">Entrega Personal (Nosotros)</option>
+                            <option value="pickup">RecolecciÃ³n en Punto</option>
+                            <option value="shipping">EnvÃ­o Postal</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Responsable de Entrega</label>
+                        <input type="text" class="form-control" id="orderDeliveryPerson" placeholder="Ej: Juan, Delivery Express, Cliente">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>DirecciÃ³n de Entrega</label>
+                    <input type="text" class="form-control" id="orderDeliveryAddress" placeholder="DirecciÃ³n completa para entrega">
+                </div>
+                <div class="form-group">
+                    <label>Producto</label>
+                    <select class="form-control" id="orderProduct" onchange="updateOrderPrice()" required>
+                        <option value="">Seleccionar producto...</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Cantidad</label>
+                        <input type="number" class="form-control" id="orderQuantity" value="1" min="1" onchange="updateOrderPrice()">
+                    </div>
+                    <div class="form-group">
+                        <label>Total (â‚²)</label>
+                        <input type="number" class="form-control" id="orderTotal" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Comentarios (opcional)</label>
+                    <textarea class="form-control" id="orderComments" rows="3" placeholder="Notas sobre el pedido, instrucciones especiales, seguimiento..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-success">ðŸ’¾ Crear Pedido</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="purchaseModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('purchaseModal')">&times;</span>
+            <h2 id="purchaseModalTitle">Nueva Compra</h2>
+            <form onsubmit="savePurchase(event)">
+                <input type="hidden" id="purchaseId">
+                <div class="form-group">
+                    <label>Producto</label>
+                    <select class="form-control" id="purchaseProduct" onchange="updatePurchaseDetails()">
+                        <option value="">Seleccionar producto existente (opcional)</option>
+                    </select>
+                    <input type="text" class="form-control" id="purchaseProductName" placeholder="O escribir nombre del producto" style="margin-top: 0.5rem;" required>
+                    <small class="text-muted">Selecciona un producto existente o escribe el nombre de uno nuevo</small>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Proveedor</label>
+                        <input type="text" class="form-control" id="purchaseSupplier" placeholder="Nombre del proveedor" required>
+                        <small class="text-muted">Puedes escribir cualquier proveedor, nuevo o existente</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Fecha de Compra</label>
+                        <input type="date" class="form-control" id="purchaseDate" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Cantidad</label>
+                        <input type="number" class="form-control" id="purchaseQuantity" value="1" min="1" onchange="updatePurchaseTotal()" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Precio Unitario (â‚²)</label>
+                        <input type="number" class="form-control" id="purchaseUnitPrice" onchange="updatePurchaseTotal()" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Total (â‚²)</label>
+                    <input type="number" class="form-control" id="purchaseTotal" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Notas (opcional)</label>
+                    <textarea class="form-control" id="purchaseNotes" rows="3" placeholder="Notas sobre la compra, factura, condiciones..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-info">ðŸ“¦ Registrar Compra</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="expenseModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('expenseModal')">&times;</span>
+            <h2>Nuevo Gasto</h2>
+            <form onsubmit="saveExpense(event)">
+                <input type="hidden" id="expenseId">
+                <div class="form-group">
+                    <label>DescripciÃ³n del Gasto</label>
+                    <input type="text" class="form-control" id="expenseDescription" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>CategorÃ­a</label>
+                        <select class="form-control" id="expenseCategory">
+                            <option value="marketing">Marketing</option>
+                            <option value="plataforma">Comisiones</option>
+                            <option value="envios">EnvÃ­os</option>
+                            <option value="herramientas">Herramientas</option>
+                            <option value="oficina">Oficina</option>
+                            <option value="otros">Otros</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Monto (â‚²)</label>
+                        <input type="number" class="form-control" id="expenseAmount" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Fecha</label>
+                    <input type="date" class="form-control" id="expenseDate" required>
+                </div>
+                <button type="submit" class="btn btn-danger">ðŸ’¸ Registrar Gasto</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="statusModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('statusModal')">&times;</span>
+            <h2>Cambiar Estado del Pedido</h2>
+            <div class="form-group">
+                <label>Nuevo Estado</label>
+                <select class="form-control" id="newOrderStatus">
+                    <option value="pending">Pendiente</option>
+                    <option value="confirmed">Confirmado</option>
+                    <option value="prepared">Preparado</option>
+                    <option value="shipped">Enviado</option>
+                    <option value="delivered">Entregado</option>
+                    <option value="cancelled">Cancelado</option>
+                </select>
+            </div>
+            <button class="btn btn-primary" onclick="updateOrderStatus()">Actualizar Estado</button>
         </div>
     </div>
 
@@ -792,19 +1718,53 @@
         let purchases = [];
         let expenses = [];
         let isFirebaseConnected = false;
+        let currentEditingOrderId = null;
+        let currentCategoryFilter = '';
+        let currentStockFilter = '';
+        let currentOrderStatusFilter = '';
+        let currentPurchaseSupplierFilter = '';
+        let currentPurchaseDateFilter = '';
         let currentDatePeriod = 'all';
+        let currentDeliveryStatusFilter = 'all';
+        let currentDeliveryMethodFilter = 'all';
 
         document.addEventListener('DOMContentLoaded', function() {
             setupMenuNavigation();
             initializeFirebase();
+            
+            // SÃšPER SIMPLE - fecha de hoy
+            const today = '2025-09-01'; // HARDCODEADO para probar
+            console.log('ASIGNANDO FECHA HARDCODEADA:', today);
+            
+            const expenseDateInput = document.getElementById('expenseDate');
+            const purchaseDateInput = document.getElementById('purchaseDate');
+            
+            if (expenseDateInput) {
+                expenseDateInput.value = today;
+                console.log('Expense date input asignado:', expenseDateInput.value);
+            }
+            
+            if (purchaseDateInput) {
+                purchaseDateInput.value = today;
+                console.log('Purchase date input asignado:', purchaseDateInput.value);
+            }
         });
 
+        // SISTEMA DE FECHAS COMPLETAMENTE REESCRITO
         function getTodayString() {
+            // Forzar fecha local sin problemas de zona horaria
             const now = new Date();
             const year = now.getFullYear();
             const month = (now.getMonth() + 1).toString().padStart(2, '0');
             const day = now.getDate().toString().padStart(2, '0');
-            return `${year}-${month}-${day}`;
+            const todayString = `${year}-${month}-${day}`;
+            console.log('FECHA DE HOY CALCULADA:', todayString);
+            return todayString;
+        }
+
+        function getCurrentDateTime() {
+            // Para el campo date de los objetos, usar la fecha del input tal como estÃ¡
+            return new Date().toISOString();
         }
 
         function getCurrentTimestamp() {
@@ -817,7 +1777,7 @@
 
             try {
                 if (typeof firebase === 'undefined') {
-                    throw new Error('Firebase no está cargado');
+                    throw new Error('Firebase no estÃ¡ cargado');
                 }
 
                 app = firebase.initializeApp(firebaseConfig);
@@ -827,7 +1787,7 @@
                 
                 isFirebaseConnected = true;
                 await loadAllData();
-                showSyncStatus('Conectado a Firebase ✓', false);
+                showSyncStatus('Conectado a Firebase âœ“', false);
                 
             } catch (error) {
                 console.error('Error conectando a Firebase:', error);
@@ -841,14 +1801,24 @@
             updateAllDisplays();
         }
 
-        async function loadAllData() {
-            if (isFirebaseConnected) {
-                products = await loadFromFirebase('products');
-                orders = await loadFromFirebase('orders');
-                purchases = await loadFromFirebase('purchases');
-                expenses = await loadFromFirebase('expenses');
-            } else {
-                loadFromLocalStorage();
+        async function saveToFirebase(collection, data, docId = null) {
+            if (!isFirebaseConnected) {
+                return saveToLocalStorage();
+            }
+
+            try {
+                if (docId) {
+                    await db.collection(collection).doc(docId).set(data);
+                    return docId;
+                } else {
+                    const docRef = await db.collection(collection).add(data);
+                    return docRef.id;
+                }
+            } catch (error) {
+                console.error(`Error guardando en ${collection}:`, error);
+                showSyncStatus('Error al guardar âœ—', true);
+                saveToLocalStorage();
+                throw error;
             }
         }
 
@@ -869,6 +1839,30 @@
             }
         }
 
+        async function deleteFromFirebase(collection, docId) {
+            if (!isFirebaseConnected) {
+                return deleteFromLocalStorage();
+            }
+
+            try {
+                await db.collection(collection).doc(docId).delete();
+            } catch (error) {
+                console.error(`Error eliminando de ${collection}:`, error);
+                showSyncStatus('Error al eliminar âœ—', true);
+            }
+        }
+
+        async function loadAllData() {
+            if (isFirebaseConnected) {
+                products = await loadFromFirebase('products');
+                orders = await loadFromFirebase('orders');
+                purchases = await loadFromFirebase('purchases');
+                expenses = await loadFromFirebase('expenses');
+            } else {
+                loadFromLocalStorage();
+            }
+        }
+
         function saveToLocalStorage() {
             localStorage.setItem('berserker_products', JSON.stringify(products));
             localStorage.setItem('berserker_orders', JSON.stringify(orders));
@@ -883,6 +1877,10 @@
             expenses = JSON.parse(localStorage.getItem('berserker_expenses') || '[]');
         }
 
+        function deleteFromLocalStorage() {
+            saveToLocalStorage();
+        }
+
         function filterByDatePeriod(period) {
             currentDatePeriod = period;
             
@@ -891,6 +1889,7 @@
             });
             event.target.classList.add('active');
             
+            // SOLO actualizar displays, NO resetear filtros locales
             updateAllDisplays();
         }
 
@@ -957,7 +1956,7 @@
                     case 'lastMonth':
                         const lastMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
                         const lastMonthEnd = new Date(now.getFullYear(), now.getMonth(), 0);
-                        return purchaseDate >= lastMonthStart && orderDate <= lastMonthEnd;
+                        return purchaseDate >= lastMonthStart && purchaseDate <= lastMonthEnd;
                     default:
                         return true;
                 }
@@ -1056,6 +2055,42 @@
             const targetSection = document.getElementById(sectionName);
             if (targetSection) {
                 targetSection.classList.add('active');
+                updateSectionData(sectionName);
+            }
+        }
+
+        function updateSectionData(sectionName) {
+            switch(sectionName) {
+                case 'products': 
+                    currentCategoryFilter = '';
+                    currentStockFilter = '';
+                    updateProductsTable(); 
+                    break;
+                case 'orders': 
+                    // Resetear SOLO el filtro de estado local
+                    currentOrderStatusFilter = '';
+                    
+                    // Resetear botones de estado a "Todos"
+                    setTimeout(() => {
+                        const statusButtons = document.querySelectorAll('#orders .compact-filters .filter-chip');
+                        statusButtons.forEach(btn => btn.classList.remove('active'));
+                        if (statusButtons[0]) statusButtons[0].classList.add('active'); // "Todos"
+                    }, 100);
+                    
+                    updateOrdersTable(); 
+                    break;
+                case 'purchases':
+                    currentPurchaseSupplierFilter = '';
+                    currentPurchaseDateFilter = '';
+                    document.getElementById('customPurchaseDateFilter').value = '';
+                    updatePurchasesTable();
+                    break;
+                case 'expenses': 
+                    updateExpensesTable(); 
+                    break;
+                case 'delivery':
+                    updateDeliveryPanel();
+                    break;
             }
         }
 
@@ -1064,79 +2099,87 @@
                 style: 'currency',
                 currency: 'PYG',
                 minimumFractionDigits: 0
-            }).format(amount || 0).replace('PYG', '₲');
+            }).format(amount || 0).replace('PYG', 'â‚²');
         }
 
-        // ============ FUNCIÓN PRINCIPAL CON TU CAMBIO ESPECÍFICO ============
         function updateAllDisplays() {
-            // DEBUGGING: Verificar datos cargados
-            console.log('=== DEBUG DATOS ===');
-            console.log('Products:', products.length, products);
-            console.log('Orders:', orders.length, orders);
-            console.log('Purchases:', purchases.length, purchases);
-            console.log('Expenses:', expenses.length, expenses);
-            console.log('Current period:', currentDatePeriod);
-            
             const filteredOrders = getOrdersByPeriod(currentDatePeriod);
             const filteredPurchases = getPurchasesByPeriod(currentDatePeriod);
             const filteredExpenses = getExpensesByPeriod(currentDatePeriod);
             
-            console.log('Filtered Orders:', filteredOrders.length, filteredOrders);
-            console.log('Filtered Purchases:', filteredPurchases.length, filteredPurchases);
-            console.log('Filtered Expenses:', filteredExpenses.length, filteredExpenses);
+            const totalRevenue = filteredOrders.reduce((sum, order) => sum + (order.total || 0), 0);
+            const totalPurchases = filteredPurchases.reduce((sum, purchase) => sum + (purchase.total || 0), 0);
+            const totalExpenses = filteredExpenses.reduce((sum, expense) => sum + (expense.amount || 0), 0);
+            const totalCosts = filteredOrders.reduce((sum, order) => sum + (order.cost || 0), 0);
             
-            // Calcular totales con múltiples intentos para asegurar compatibilidad
-            const totalRevenue = filteredOrders.reduce((sum, order) => {
-                const value = order.total || order.amount || order.price || 0;
-                console.log('Order revenue:', order.customer, value);
-                return sum + value;
-            }, 0);
+            // ========== FÃ“RMULA DE GANANCIA NETA ==========
+            // SOLO: Ingresos - Costos de productos vendidos - Gastos operativos
+            // NO SE INCLUYEN LAS COMPRAS/INVENTARIO EN ESTE CÃLCULO
+            const netProfit = totalRevenue - totalCosts - totalExpenses;
+            // ============================================
             
-            const totalPurchases = filteredPurchases.reduce((sum, purchase) => {
-                const value = purchase.total || purchase.amount || purchase.price || 0;
-                console.log('Purchase total:', purchase.productName, value);
-                return sum + value;
-            }, 0);
+            // ========== FÃ“RMULA DE SALDO BANCO (segÃºn usuario) ==========
+            // NOTA: Esta fÃ³rmula puede dar valores negativos inesperados porque
+            // resta la ganancia neta (que ya incluye gastos) y luego vuelve a restar gastos
+            const bankBalance = totalRevenue - netProfit - totalExpenses;
+            // FÃ³rmula alternativa mÃ¡s lÃ³gica serÃ­a: totalRevenue - totalPurchases - totalExpenses
+            // ============================================================
             
-            const totalExpenses = filteredExpenses.reduce((sum, expense) => {
-                const value = expense.amount || expense.total || expense.price || 0;
-                console.log('Expense amount:', expense.description, value);
-                return sum + value;
-            }, 0);
-            
-            const totalCosts = filteredOrders.reduce((sum, order) => {
-                const value = order.cost || order.costPrice || 0;
-                console.log('Order cost:', order.customer, value);
-                return sum + value;
-            }, 0);
-            
-            console.log('=== TOTALES CALCULADOS ===');
-            console.log('Total Revenue:', totalRevenue);
-            console.log('Total Purchases:', totalPurchases);
-            console.log('Total Expenses:', totalExpenses);
-            console.log('Total Costs:', totalCosts);
-            
-            // ========== TU CAMBIO: EGRESOS NO AFECTAN NADA ==========
-            // GANANCIA NETA: Ingresos - Costos (egresos NO tocan)
-            const netProfit = totalRevenue - totalCosts;
-            
-            // SALDO BANCO: Ingresos - Ganancia Neta (egresos NO tocan)
-            const bankBalance = totalRevenue - netProfit;
-            // ======================================================
-            
-            console.log('Net Profit:', netProfit);
-            console.log('Bank Balance:', bankBalance);
-            console.log('======================');
+            // Debug para verificar las fÃ³rmulas
+            console.log('=== CÃLCULO GANANCIA NETA ===');
+            console.log('Ingresos:', formatCurrency(totalRevenue));
+            console.log('Costos de ventas:', formatCurrency(totalCosts));
+            console.log('Gastos:', formatCurrency(totalExpenses));
+            console.log('Inventario (NO se resta):', formatCurrency(totalPurchases));
+            console.log('GANANCIA NETA:', formatCurrency(netProfit));
+            console.log('=== CÃLCULO SALDO BANCO ===');
+            console.log('FÃ³rmula usada: Ingresos - Ganancia Neta - Gastos');
+            console.log('SALDO BANCO:', formatCurrency(bankBalance));
 
             document.getElementById('totalOrders').textContent = filteredOrders.length;
             document.getElementById('totalProducts').textContent = products.length;
             document.getElementById('totalRevenue').textContent = formatCurrency(totalRevenue);
+            
+            // Mostrar inversiÃ³n en stock pero SIN afectar ganancia
             document.getElementById('totalPurchases').textContent = formatCurrency(totalPurchases);
             document.getElementById('totalExpenses').textContent = formatCurrency(totalExpenses);
             document.getElementById('navbarProfit').textContent = formatCurrency(netProfit);
             document.getElementById('navbarBank').textContent = formatCurrency(bankBalance);
             
-            // Dashboard
+            const navbarProfitElement = document.getElementById('navbarProfit');
+            const navbarProfitParent = navbarProfitElement.parentElement.parentElement;
+            const navbarProfitLabel = navbarProfitParent.querySelector('.stat-label');
+            
+            const navbarBankElement = document.getElementById('navbarBank');
+            const navbarBankParent = navbarBankElement.parentElement.parentElement;
+            const navbarBankLabel = navbarBankParent.querySelector('.stat-label');
+            
+            if (netProfit >= 0) {
+                navbarProfitElement.style.color = '#27ae60';
+                navbarProfitLabel.style.color = '#27ae60';
+                navbarProfitParent.style.background = 'rgba(39, 174, 96, 0.2)';
+                navbarProfitParent.style.border = '1px solid rgba(39, 174, 96, 0.3)';
+            } else {
+                navbarProfitElement.style.color = '#e74c3c';
+                navbarProfitLabel.style.color = '#e74c3c';
+                navbarProfitParent.style.background = 'rgba(231, 76, 60, 0.2)';
+                navbarProfitParent.style.border = '1px solid rgba(231, 76, 60, 0.3)';
+            }
+
+            // Colorear saldo banco segÃºn si es positivo o negativo
+            if (bankBalance >= 0) {
+                navbarBankElement.style.color = '#3498db';
+                navbarBankLabel.style.color = '#3498db';
+                navbarBankParent.style.background = 'rgba(52, 152, 219, 0.2)';
+                navbarBankParent.style.border = '1px solid rgba(52, 152, 219, 0.3)';
+            } else {
+                navbarBankElement.style.color = '#e74c3c';
+                navbarBankLabel.style.color = '#e74c3c';
+                navbarBankParent.style.background = 'rgba(231, 76, 60, 0.2)';
+                navbarBankParent.style.border = '1px solid rgba(231, 76, 60, 0.3)';
+            }
+
+            // Dashboard - mismo cÃ¡lculo limpio
             document.getElementById('dashProducts').textContent = products.length;
             document.getElementById('dashOrders').textContent = filteredOrders.length;
             document.getElementById('dashRevenue').textContent = formatCurrency(totalRevenue);
@@ -1145,207 +2188,768 @@
             document.getElementById('dashProfit').textContent = formatCurrency(netProfit);
             document.getElementById('dashBank').textContent = formatCurrency(bankBalance);
             document.getElementById('dashMargin').textContent = totalRevenue > 0 ? ((netProfit / totalRevenue) * 100).toFixed(1) + '%' : '0%';
-            
-            // Actualizar tablas
+
+            // Reports - mismo cÃ¡lculo limpio
+            document.getElementById('reportRevenue').textContent = formatCurrency(totalRevenue);
+            document.getElementById('reportPurchases').textContent = formatCurrency(totalPurchases);
+            document.getElementById('reportExpenses').textContent = formatCurrency(totalExpenses);
+            document.getElementById('reportProfit').textContent = formatCurrency(netProfit);
+            document.getElementById('reportBank').textContent = formatCurrency(bankBalance);
+
+            populateOrderProductSelect();
+            populatePurchaseProductSelect();
             updateProductsTable();
             updateOrdersTable();
             updatePurchasesTable();
             updateExpensesTable();
+            updatePurchasesSummary();
+            updateDeliveryPanel();
         }
 
-        function showSection(sectionName) {
-            const sections = document.querySelectorAll('.section');
-            sections.forEach(section => section.classList.remove('active'));
-            const targetSection = document.getElementById(sectionName);
-            if (targetSection) {
-                targetSection.classList.add('active');
-                
-                // Forzar actualización inmediata de la sección específica
-                setTimeout(() => {
-                    switch(sectionName) {
-                        case 'products':
-                            updateProductsTable();
-                            break;
-                        case 'orders': 
-                            updateOrdersTable();
-                            break;
-                        case 'purchases':
-                            updatePurchasesTable();
-                            break;
-                        case 'expenses':
-                            updateExpensesTable();
-                            break;
-                        case 'dashboard':
-                            updateAllDisplays();
-                            break;
-                    }
-                }, 100);
+        // ============= NUEVAS FUNCIONES PARA PANEL DE ENTREGAS =============
+        function updateDeliveryPanel() {
+            updateDeliveryStats();
+            updateDeliverySections();
+            updateTodaySummary();
+            checkUrgentDeliveries();
+        }
+
+        function updateDeliveryStats() {
+            const pending = orders.filter(order => order.status === 'pending').length;
+            const confirmed = orders.filter(order => order.status === 'confirmed').length;
+            const prepared = orders.filter(order => order.status === 'prepared').length;
+            const shipped = orders.filter(order => order.status === 'shipped').length;
+            const delivered = orders.filter(order => order.status === 'delivered').length;
+
+            document.getElementById('deliveryPending').textContent = pending;
+            document.getElementById('deliveryConfirmed').textContent = confirmed;
+            document.getElementById('deliveryShipped').textContent = shipped;
+            document.getElementById('deliveryDelivered').textContent = delivered;
+
+            // Actualizar contadores en las tarjetas
+            document.getElementById('pendingCount').textContent = pending;
+            document.getElementById('confirmedCount').textContent = confirmed;
+            document.getElementById('preparedCount').textContent = prepared;
+            document.getElementById('shippedCount').textContent = shipped;
+        }
+
+        function updateDeliverySections() {
+            updateOrdersInSection('pending', 'pendingOrders');
+            updateOrdersInSection('confirmed', 'confirmedOrders');
+            updateOrdersInSection('prepared', 'preparedOrders');
+            updateOrdersInSection('shipped', 'shippedOrders');
+        }
+
+        function updateOrdersInSection(status, containerId) {
+            const container = document.getElementById(containerId);
+            let filteredOrders = orders.filter(order => order.status === status);
+
+            // Aplicar filtro de mÃ©todo de entrega si estÃ¡ activo
+            if (currentDeliveryMethodFilter !== 'all') {
+                filteredOrders = filteredOrders.filter(order => 
+                    (order.deliveryMethod || 'delivery') === currentDeliveryMethodFilter
+                );
             }
+
+            if (filteredOrders.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #666; padding: 2rem;">No hay pedidos en este estado.</p>';
+                return;
+            }
+
+            container.innerHTML = filteredOrders.map(order => {
+                const orderDate = new Date(order.date);
+                const daysDiff = Math.floor((new Date() - orderDate) / (1000 * 60 * 60 * 24));
+                const isUrgent = daysDiff >= 2 && status !== 'delivered';
+                const urgentClass = isUrgent ? 'urgent' : '';
+                
+                const deliveryMethod = order.deliveryMethod || 'delivery';
+                const deliveryPerson = order.deliveryPerson || 'Sin asignar';
+                const deliveryAddress = order.deliveryAddress || 'Sin direcciÃ³n';
+
+                return `
+                    <div class="delivery-item ${urgentClass}" style="border-left-color: ${getStatusColor(status)}">
+                        <div class="delivery-header">
+                            <div class="delivery-customer">${order.customer}</div>
+                            <div class="delivery-date">${orderDate.toLocaleDateString()} 
+                                ${isUrgent ? '<span style="color: #e74c3c; font-weight: bold;">âš ï¸ URGENTE</span>' : ''}
+                            </div>
+                        </div>
+                        <div class="delivery-product">${order.productName} (x${order.quantity})</div>
+                        <div class="delivery-total">Total: ${formatCurrency(order.total)}</div>
+                        <div style="font-size: 0.8rem; color: #666; margin: 0.5rem 0;">
+                            Canal: <strong>${order.channel}</strong> â€¢ 
+                            ${getDeliveryMethodLabel(deliveryMethod)}: <strong>${deliveryPerson}</strong>
+                        </div>
+                        <div style="font-size: 0.8rem; color: #666; margin: 0.5rem 0;">
+                            ðŸ“ ${deliveryAddress}
+                            ${order.comments ? ` â€¢ ðŸ’¬ ${order.comments.substring(0, 50)}${order.comments.length > 50 ? '...' : ''}` : ''}
+                        </div>
+                        <div class="quick-actions">
+                            ${getQuickActionButtons(order, status)}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function getStatusColor(status) {
+            const colors = {
+                'pending': '#f39c12',
+                'confirmed': '#3498db',
+                'prepared': '#17a2b8',
+                'shipped': '#9b59b6',
+                'delivered': '#27ae60',
+                'cancelled': '#e74c3c'
+            };
+            return colors[status] || '#ddd';
+        }
+
+        function getDeliveryMethodLabel(method) {
+            const labels = {
+                'delivery': 'ðŸ›µ Delivery',
+                'personal': 'ðŸš¶â€â™‚ï¸ Nosotros',
+                'pickup': 'ðŸª RecolecciÃ³n',
+                'shipping': 'ðŸ“® EnvÃ­o'
+            };
+            return labels[method] || 'ðŸ›µ Delivery';
+        }
+
+        function getQuickActionButtons(order, currentStatus) {
+            let buttons = '';
+            
+            switch(currentStatus) {
+                case 'pending':
+                    buttons = `
+                        <button class="quick-btn confirm" onclick="quickUpdateStatus('${order.id}', 'confirmed')">âœ… Confirmar</button>
+                        <button class="quick-btn cancel" onclick="quickUpdateStatus('${order.id}', 'cancelled')">âŒ Cancelar</button>
+                    `;
+                    break;
+                case 'confirmed':
+                    buttons = `
+                        <button class="quick-btn ship" onclick="quickUpdateStatus('${order.id}', 'shipped')">ðŸšš Enviar</button>
+                        <button class="quick-btn cancel" onclick="quickUpdateStatus('${order.id}', 'cancelled')">âŒ Cancelar</button>
+                    `;
+                    break;
+                case 'shipped':
+                    buttons = `
+                        <button class="quick-btn deliver" onclick="quickUpdateStatus('${order.id}', 'delivered')">âœ… Entregado</button>
+                        <button class="quick-btn cancel" onclick="quickUpdateStatus('${order.id}', 'cancelled')">âŒ Cancelar</button>
+                    `;
+                    break;
+            }
+            
+            buttons += `<button class="quick-btn" onclick="openOrderModal('${order.id}')" style="background: #6c757d; color: white;">âœï¸ Editar</button>`;
+            return buttons;
+        }
+
+        function updateTodaySummary() {
+            const today = new Date().toDateString();
+            const todayOrders = orders.filter(order => new Date(order.date).toDateString() === today);
+            const todayDelivered = orders.filter(order => 
+                order.status === 'delivered' && new Date(order.date).toDateString() === today
+            );
+            const todayRevenue = todayDelivered.reduce((sum, order) => sum + (order.total || 0), 0);
+
+            document.getElementById('todayNewOrders').textContent = todayOrders.length;
+            document.getElementById('todayDelivered').textContent = todayDelivered.length;
+            document.getElementById('todayRevenue').textContent = formatCurrency(todayRevenue);
+        }
+
+        function checkUrgentDeliveries() {
+            const urgentOrders = orders.filter(order => {
+                if (order.status === 'delivered' || order.status === 'cancelled') return false;
+                const orderDate = new Date(order.date);
+                const daysDiff = Math.floor((new Date() - orderDate) / (1000 * 60 * 60 * 24));
+                return daysDiff >= 2;
+            });
+
+            const urgentSection = document.getElementById('urgentDeliveries');
+            const urgentGrid = document.getElementById('urgentDeliveriesGrid');
+
+            if (urgentOrders.length > 0) {
+                urgentSection.style.display = 'block';
+                urgentGrid.innerHTML = urgentOrders.map(order => {
+                    const daysDiff = Math.floor((new Date() - new Date(order.date)) / (1000 * 60 * 60 * 24));
+                    return `
+                        <div class="priority-item">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                <strong>${order.customer}</strong>
+                                <span style="background: rgba(255,255,255,0.3); padding: 0.2rem 0.5rem; border-radius: 10px;">
+                                    ${daysDiff} dÃ­as
+                                </span>
+                            </div>
+                            <div style="margin-bottom: 0.5rem;">${order.productName}</div>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <span>${formatCurrency(order.total)}</span>
+                                <div style="display: flex; gap: 0.3rem;">
+                                    <button class="quick-btn" onclick="quickUpdateStatus('${order.id}', '${getNextStatus(order.status)}')" style="background: rgba(255,255,255,0.2); color: white; font-size: 0.7rem;">
+                                        ${getNextStatusLabel(order.status)}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } else {
+                urgentSection.style.display = 'none';
+            }
+        }
+
+        function getNextStatus(currentStatus) {
+            const statusFlow = {
+                'pending': 'confirmed',
+                'confirmed': 'shipped',
+                'shipped': 'delivered'
+            };
+            return statusFlow[currentStatus] || currentStatus;
+        }
+
+        function getNextStatusLabel(currentStatus) {
+            const labels = {
+                'pending': 'âœ… Confirmar',
+                'confirmed': 'ðŸšš Enviar',
+                'shipped': 'âœ… Entregar'
+            };
+            return labels[currentStatus] || 'Actualizar';
+        }
+
+        async function quickUpdateStatus(orderId, newStatus) {
+            const orderIndex = orders.findIndex(o => o.id === orderId);
+            if (orderIndex !== -1) {
+                const oldStatus = orders[orderIndex].status;
+                orders[orderIndex].status = newStatus;
+                
+                try {
+                    if (isFirebaseConnected) {
+                        await saveToFirebase('orders', orders[orderIndex], orderId);
+                    }
+                    
+                    saveToLocalStorage();
+                    updateAllDisplays();
+                    
+                    showToast(`Pedido ${getStatusLabel(newStatus).toLowerCase()} correctamente`, 'success');
+                    
+                } catch (error) {
+                    orders[orderIndex].status = oldStatus; // Revertir cambio
+                    showToast('Error al actualizar estado', 'error');
+                }
+            }
+        }
+
+        function toggleDeliverySection(sectionId) {
+            const section = document.getElementById(sectionId);
+            const isVisible = section.style.display !== 'none';
+            
+            // Cerrar todas las secciones
+            document.querySelectorAll('#pending-section, #confirmed-section, #prepared-section, #shipped-section').forEach(s => {
+                s.style.display = 'none';
+            });
+            
+            // Abrir la secciÃ³n solicitada si no estaba visible
+            if (!isVisible) {
+                section.style.display = 'block';
+                section.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+
+        function filterDeliveryStatus(status) {
+            currentDeliveryStatusFilter = status;
+            
+            // Actualizar botones activos
+            document.querySelectorAll('#delivery .filter-chip').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Por ahora solo actualiza la vista, puedes expandir esta funcionalidad
+            updateDeliveryPanel();
+        }
+
+        function filterDeliveryMethod(method) {
+            currentDeliveryMethodFilter = method;
+            
+            // Actualizar botones activos
+            document.querySelectorAll('#delivery .filter-group:last-child .filter-chip').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            updateDeliveryPanel();
+        }
+
+        // ============= FIN DE FUNCIONES DEL PANEL DE ENTREGAS =============
+
+        function openProductModal(productId = null) {
+            const modal = document.getElementById('productModal');
+            const title = document.getElementById('productModalTitle');
+            
+            document.getElementById('productId').value = '';
+            document.getElementById('productName').value = '';
+            document.getElementById('productSupplier').value = '';
+            document.getElementById('productCategory').value = 'electronica';
+            document.getElementById('productStock').value = '0';
+            document.getElementById('productMinStock').value = '5';
+            document.getElementById('productCost').value = '';
+            document.getElementById('productPrice').value = '';
+            
+            if (productId) {
+                const product = products.find(p => p.id === productId);
+                if (product) {
+                    title.textContent = 'Editar Producto';
+                    document.getElementById('productId').value = product.id;
+                    document.getElementById('productName').value = product.name;
+                    document.getElementById('productSupplier').value = product.supplier;
+                    document.getElementById('productCategory').value = product.category;
+                    document.getElementById('productStock').value = product.stock || 0;
+                    document.getElementById('productMinStock').value = product.minStock || 5;
+                    document.getElementById('productCost').value = product.cost;
+                    document.getElementById('productPrice').value = product.price;
+                }
+            } else {
+                title.textContent = 'Nuevo Producto';
+            }
+            modal.style.display = 'block';
+        }
+
+        async function saveProduct(event) {
+            event.preventDefault();
+            const productId = document.getElementById('productId').value;
+            const isEditing = productId !== '';
+            
+            const productData = {
+                name: document.getElementById('productName').value,
+                supplier: document.getElementById('productSupplier').value,
+                category: document.getElementById('productCategory').value,
+                stock: parseInt(document.getElementById('productStock').value) || 0,
+                minStock: parseInt(document.getElementById('productMinStock').value) || 5,
+                cost: parseFloat(document.getElementById('productCost').value) || 0,
+                price: parseFloat(document.getElementById('productPrice').value) || 0,
+                timestamp: getCurrentTimestamp()
+            };
+
+            try {
+                if (isEditing) {
+                    const index = products.findIndex(p => p.id === productId);
+                    if (index !== -1) {
+                        products[index] = { ...products[index], ...productData };
+                        if (isFirebaseConnected) {
+                            await saveToFirebase('products', products[index], productId);
+                        }
+                        showToast('Producto actualizado correctamente', 'success');
+                    }
+                } else {
+                    let newId;
+                    if (isFirebaseConnected) {
+                        newId = await saveToFirebase('products', productData);
+                    } else {
+                        newId = Date.now().toString();
+                    }
+                    
+                    const newProduct = { id: newId, ...productData };
+                    products.push(newProduct);
+                    showToast('Producto agregado correctamente', 'success');
+                }
+
+                saveToLocalStorage();
+                closeModal('productModal');
+                updateAllDisplays();
+                
+            } catch (error) {
+                showToast('Error al guardar producto', 'error');
+            }
+        }
+
+        async function deleteProduct(id) {
+            if (confirm('Â¿EstÃ¡s seguro de eliminar este producto?')) {
+                try {
+                    products = products.filter(p => p.id !== id);
+                    if (isFirebaseConnected) {
+                        await deleteFromFirebase('products', id);
+                    }
+                    saveToLocalStorage();
+                    updateAllDisplays();
+                    showToast('Producto eliminado correctamente', 'success');
+                } catch (error) {
+                    showToast('Error al eliminar producto', 'error');
+                }
+            }
+        }
+
+        function filterByCategory(category) {
+            currentCategoryFilter = category;
+            
+            document.querySelectorAll('.compact-filters .filter-group:first-child .filter-chip').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            updateProductsTable();
+        }
+
+        function filterByStock(stockType) {
+            currentStockFilter = stockType;
+            
+            document.querySelectorAll('.compact-filters .filter-group:last-child .filter-chip').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            updateProductsTable();
         }
 
         function updateProductsTable() {
             const tbody = document.getElementById('productsTable');
-            if (!tbody) {
-                console.log('productsTable no encontrado');
-                return;
-            }
             
-            console.log('Actualizando tabla productos, total:', products.length);
-            console.log('Products data:', products);
+            let productsToShow = products.filter(product => {
+                const matchesCategory = currentCategoryFilter === '' || product.category === currentCategoryFilter;
+                
+                let matchesStock = true;
+                if (currentStockFilter) {
+                    const stock = product.stock || 0;
+                    const minStock = product.minStock || 5;
+                    
+                    switch(currentStockFilter) {
+                        case 'available':
+                            matchesStock = stock > minStock;
+                            break;
+                        case 'low':
+                            matchesStock = stock > 0 && stock <= minStock;
+                            break;
+                        case 'out':
+                            matchesStock = stock === 0;
+                            break;
+                        default:
+                            matchesStock = true;
+                    }
+                }
+                
+                return matchesCategory && matchesStock;
+            });
             
-            if (products.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; padding: 2rem; color: #657786;">No hay productos registrados.</td></tr>';
+            if (productsToShow.length === 0) {
+                const message = (currentCategoryFilter || currentStockFilter) ? 
+                    'No se encontraron productos con los filtros seleccionados.' : 
+                    'No hay productos registrados. Agrega tu primer producto.';
+                tbody.innerHTML = `<tr><td colspan="10" style="text-align: center; padding: 2rem; color: #657786;">${message}</td></tr>`;
                 return;
             }
 
-            tbody.innerHTML = products.map(product => {
-                const cost = product.cost || 0;
-                const price = product.price || 0;
-                const margin = cost > 0 ? (((price - cost) / cost) * 100) : 0;
+            tbody.innerHTML = productsToShow.map(product => {
+                const margin = product.cost > 0 ? (((product.price - product.cost) / product.cost) * 100) : 0;
+                const sales = orders.filter(order => order.productId === product.id).length;
+                const stockSold = orders.filter(order => order.productId === product.id).reduce((sum, order) => sum + order.quantity, 0);
                 const stock = product.stock || 0;
+                const minStock = product.minStock || 5;
+                const stockStatus = stock <= 0 ? 'Sin Stock' : stock <= minStock ? 'Stock Bajo' : 'Disponible';
+                const stockStatusColor = stock <= 0 ? '#e74c3c' : stock <= minStock ? '#f39c12' : '#27ae60';
+                const stockColor = stock <= minStock ? 'style="color: #e74c3c; font-weight: bold;"' : '';
                 
                 return `
                     <tr>
-                        <td><strong>${product.name || 'Sin nombre'}</strong><br><small style="color: #666;">${product.category || 'Sin categoría'}</small></td>
-                        <td>${product.supplier || 'N/A'}</td>
-                        <td>${stock}</td>
-                        <td>${formatCurrency(cost)}</td>
-                        <td>${formatCurrency(price)}</td>
+                        <td title="${product.name}"><strong>${product.name}</strong><br><small style="color: #666;">${product.category}</small></td>
+                        <td title="${product.supplier}">${product.supplier}</td>
+                        <td ${stockColor}><strong>${stock}</strong></td>
+                        <td style="color: #2c3e50;"><strong>${stockSold}</strong> unidades</td>
+                        <td>${formatCurrency(product.cost)}</td>
+                        <td>${formatCurrency(product.price)}</td>
                         <td><span style="color: ${margin > 25 ? '#27ae60' : margin > 10 ? '#f39c12' : '#e74c3c'}; font-weight: bold;">${margin.toFixed(1)}%</span></td>
-                        <td>
-                            <button class="btn btn-primary btn-sm" onclick="showToast('Función por implementar', 'info')">✏️</button>
+                        <td style="text-align: center;"><span style="background: #3498db; color: white; padding: 0.2rem 0.5rem; border-radius: 12px; font-size: 0.8rem;">${sales}</span></td>
+                        <td><span style="color: ${stockStatusColor}; font-weight: bold; font-size: 0.8rem;">${stockStatus}</span></td>
+                        <td class="actions">
+                            <button class="btn btn-primary btn-sm" onclick="openProductModal('${product.id}')" title="Editar producto">âœï¸</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteProduct('${product.id}')" title="Eliminar producto">ðŸ—‘ï¸</button>
                         </td>
                     </tr>
                 `;
             }).join('');
+        }
+
+        function populateOrderProductSelect() {
+            const select = document.getElementById('orderProduct');
+            if (!select) return;
+            select.innerHTML = '<option value="">Seleccionar producto...</option>';
+            products.forEach(product => {
+                select.innerHTML += `<option value="${product.id}">${product.name} - ${formatCurrency(product.price)}</option>`;
+            });
+        }
+
+        function openOrderModal(orderId = null) {
+            if (products.length === 0 && !orderId) {
+                showToast('Primero debes agregar productos antes de crear pedidos', 'warning');
+                return;
+            }
             
-            console.log('Tabla productos actualizada');
+            const modal = document.getElementById('orderModal');
+            const title = document.querySelector('#orderModal h2');
+            
+            document.getElementById('orderId').value = '';
+            document.getElementById('orderCustomer').value = '';
+            document.getElementById('orderChannel').value = 'facebook';
+            document.getElementById('orderProduct').value = '';
+            document.getElementById('orderQuantity').value = '1';
+            document.getElementById('orderTotal').value = '';
+            document.getElementById('orderStatus').value = 'pending';
+            document.getElementById('orderDeliveryMethod').value = 'delivery';
+            document.getElementById('orderDeliveryPerson').value = '';
+            document.getElementById('orderDeliveryAddress').value = '';
+            document.getElementById('orderComments').value = '';
+            
+            if (orderId) {
+                const order = orders.find(o => o.id === orderId);
+                if (order) {
+                    title.textContent = 'Editar Pedido';
+                    document.getElementById('orderId').value = order.id;
+                    document.getElementById('orderCustomer').value = order.customer;
+                    document.getElementById('orderChannel').value = order.channel;
+                    document.getElementById('orderProduct').value = order.productId;
+                    document.getElementById('orderQuantity').value = order.quantity;
+                    document.getElementById('orderTotal').value = order.total;
+                    document.getElementById('orderStatus').value = order.status;
+                    document.getElementById('orderDeliveryMethod').value = order.deliveryMethod || 'delivery';
+                    document.getElementById('orderDeliveryPerson').value = order.deliveryPerson || '';
+                    document.getElementById('orderDeliveryAddress').value = order.deliveryAddress || '';
+                    document.getElementById('orderComments').value = order.comments || '';
+                }
+            } else {
+                title.textContent = 'Nuevo Pedido';
+            }
+            
+            modal.style.display = 'block';
+        }
+
+        function openStatusModal(orderId) {
+            currentEditingOrderId = orderId;
+            const order = orders.find(o => o.id === orderId);
+            if (order) {
+                document.getElementById('newOrderStatus').value = order.status;
+                document.getElementById('statusModal').style.display = 'block';
+            }
+        }
+
+        async function updateOrderStatus() {
+            if (currentEditingOrderId) {
+                const newStatus = document.getElementById('newOrderStatus').value;
+                const orderIndex = orders.findIndex(o => o.id === currentEditingOrderId);
+                if (orderIndex !== -1) {
+                    orders[orderIndex].status = newStatus;
+                    
+                    if (isFirebaseConnected) {
+                        try {
+                            await saveToFirebase('orders', orders[orderIndex], currentEditingOrderId);
+                        } catch (error) {
+                            console.error('Error actualizando estado:', error);
+                        }
+                    }
+                    
+                    saveToLocalStorage();
+                    updateAllDisplays();
+                    closeModal('statusModal');
+                    showToast('Estado actualizado correctamente', 'success');
+                }
+                currentEditingOrderId = null;
+            }
+        }
+
+        function updateOrderPrice() {
+            const productId = document.getElementById('orderProduct').value;
+            const quantity = parseInt(document.getElementById('orderQuantity').value) || 1;
+            
+            if (productId) {
+                const product = products.find(p => p.id === productId);
+                if (product) {
+                    document.getElementById('orderTotal').value = product.price * quantity;
+                }
+            }
+        }
+
+        async function saveOrder(event) {
+            event.preventDefault();
+            const orderId = document.getElementById('orderId').value;
+            const isEditing = orderId !== '';
+            
+            const productId = document.getElementById('orderProduct').value;
+            const product = products.find(p => p.id === productId);
+            const newQuantity = parseInt(document.getElementById('orderQuantity').value) || 1;
+            const total = parseFloat(document.getElementById('orderTotal').value) || 0;
+            
+            if (!product) {
+                showToast('Producto no encontrado', 'error');
+                return;
+            }
+            
+            const orderData = {
+                customer: document.getElementById('orderCustomer').value,
+                channel: document.getElementById('orderChannel').value,
+                productId: productId,
+                productName: product.name,
+                quantity: newQuantity,
+                total: total,
+                cost: product.cost * newQuantity,
+                status: document.getElementById('orderStatus').value,
+                deliveryMethod: document.getElementById('orderDeliveryMethod').value,
+                deliveryPerson: document.getElementById('orderDeliveryPerson').value,
+                deliveryAddress: document.getElementById('orderDeliveryAddress').value,
+                comments: document.getElementById('orderComments').value || '',
+                date: isEditing ? orders.find(o => o.id === orderId)?.date : getCurrentTimestamp()
+            };
+
+            try {
+                if (isEditing) {
+                    const oldOrder = orders.find(o => o.id === orderId);
+                    if (oldOrder && oldOrder.productId === productId) {
+                        const stockDifference = oldOrder.quantity - newQuantity;
+                        product.stock = (product.stock || 0) + stockDifference;
+                    } else if (oldOrder) {
+                        const oldProduct = products.find(p => p.id === oldOrder.productId);
+                        if (oldProduct) {
+                            oldProduct.stock = (oldProduct.stock || 0) + oldOrder.quantity;
+                        }
+                        product.stock = (product.stock || 0) - newQuantity;
+                    }
+                    
+                    const index = orders.findIndex(o => o.id === orderId);
+                    if (index !== -1) {
+                        orders[index] = { ...orders[index], ...orderData };
+                        if (isFirebaseConnected) {
+                            await saveToFirebase('orders', orders[index], orderId);
+                        }
+                        showToast('Pedido actualizado correctamente', 'success');
+                    }
+                } else {
+                    if (product.stock < newQuantity) {
+                        showToast(`Stock insuficiente. Disponible: ${product.stock}`, 'warning');
+                        return;
+                    }
+                    
+                    product.stock = (product.stock || 0) - newQuantity;
+                    
+                    let newId;
+                    if (isFirebaseConnected) {
+                        newId = await saveToFirebase('orders', orderData);
+                    } else {
+                        newId = Date.now().toString();
+                    }
+                    
+                    const newOrder = { id: newId, ...orderData };
+                    orders.push(newOrder);
+                    showToast('Pedido creado correctamente', 'success');
+                }
+                
+                if (isFirebaseConnected) {
+                    try {
+                        await saveToFirebase('products', product, product.id);
+                    } catch (error) {
+                        console.error('Error actualizando stock en Firebase:', error);
+                    }
+                }
+                
+                saveToLocalStorage();
+                closeModal('orderModal');
+                updateAllDisplays();
+                
+            } catch (error) {
+                showToast('Error al guardar pedido', 'error');
+            }
         }
 
         function updateOrdersTable() {
             const tbody = document.getElementById('ordersTable');
-            if (!tbody) {
-                console.log('ordersTable no encontrado');
-                return;
+            
+            // SISTEMA SIMPLIFICADO - SOLO DOS FILTROS
+            console.log('=== DEBUG FILTROS SIMPLIFICADO ===');
+            console.log('Total orders:', orders.length);
+            console.log('Navbar filter (currentDatePeriod):', currentDatePeriod);
+            console.log('Status filter (currentOrderStatusFilter):', currentOrderStatusFilter);
+            
+            let ordersToShow = [...orders]; // Copia del array original
+            
+            // PASO 1: Aplicar filtro de fecha del NAVBAR ÃšNICAMENTE
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            switch(currentDatePeriod) {
+                case 'today':
+                    ordersToShow = ordersToShow.filter(order => {
+                        const orderDay = new Date(order.date);
+                        orderDay.setHours(0, 0, 0, 0);
+                        return orderDay.getTime() === today.getTime();
+                    });
+                    break;
+                case 'yesterday':
+                    const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
+                    ordersToShow = ordersToShow.filter(order => {
+                        const orderDay = new Date(order.date);
+                        orderDay.setHours(0, 0, 0, 0);
+                        return orderDay.getTime() === yesterday.getTime();
+                    });
+                    break;
+                case 'week':
+                    const weekStart = new Date(today.getTime() - (today.getDay() * 24 * 60 * 60 * 1000));
+                    ordersToShow = ordersToShow.filter(order => new Date(order.date) >= weekStart);
+                    break;
+                case 'lastWeek':
+                    const lastWeekEnd = new Date(today.getTime() - (today.getDay() * 24 * 60 * 60 * 1000) - 1);
+                    const lastWeekStart = new Date(lastWeekEnd.getTime() - (6 * 24 * 60 * 60 * 1000));
+                    ordersToShow = ordersToShow.filter(order => {
+                        const orderDate = new Date(order.date);
+                        return orderDate >= lastWeekStart && orderDate <= lastWeekEnd;
+                    });
+                    break;
+                case 'month':
+                    const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
+                    ordersToShow = ordersToShow.filter(order => new Date(order.date) >= monthStart);
+                    break;
+                case 'lastMonth':
+                    const lastMonthStart = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+                    const lastMonthEnd = new Date(today.getFullYear(), today.getMonth(), 0);
+                    ordersToShow = ordersToShow.filter(order => {
+                        const orderDate = new Date(order.date);
+                        return orderDate >= lastMonthStart && orderDate <= lastMonthEnd;
+                    });
+                    break;
+                case 'all':
+                default:
+                    // No filtrar por fecha
+                    break;
             }
             
-            const filteredOrders = getOrdersByPeriod(currentDatePeriod);
-            console.log('Actualizando tabla pedidos, filtered:', filteredOrders.length);
+            console.log('DespuÃ©s de filtro de fecha:', ordersToShow.length);
             
-            if (filteredOrders.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 2rem; color: #657786;">No hay pedidos para el período seleccionado.</td></tr>';
+            // PASO 2: Aplicar filtro de estado
+            if (currentOrderStatusFilter && currentOrderStatusFilter !== '') {
+                ordersToShow = ordersToShow.filter(order => order.status === currentOrderStatusFilter);
+                console.log('DespuÃ©s de filtro de estado:', ordersToShow.length);
+            }
+            
+            console.log('RESULTADO FINAL:', ordersToShow.length, 'pedidos');
+            console.log('=====================');
+            
+            if (ordersToShow.length === 0) {
+                const message = (currentOrderStatusFilter || currentDatePeriod !== 'all') ? 
+                    'No se encontraron pedidos con los filtros seleccionados.' : 
+                    'No hay pedidos registrados. Crea tu primer pedido.';
+                tbody.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 2rem; color: #657786;">${message}</td></tr>`;
                 return;
             }
 
-            tbody.innerHTML = filteredOrders.map(order => {
-                return `
-                    <tr>
-                        <td>#${(order.id || '0000').toString().slice(-4)}</td>
-                        <td>${order.customer || 'N/A'}</td>
-                        <td>${order.productName || 'N/A'}</td>
-                        <td>${order.quantity || 1}</td>
-                        <td>${formatCurrency(order.total || order.amount || 0)}</td>
-                        <td>${formatCurrency(order.cost || 0)}</td>
-                        <td><span class="status-badge status-completed">${order.status || 'Completado'}</span></td>
-                        <td>${new Date(order.date || Date.now()).toLocaleDateString()}</td>
-                    </tr>
-                `;
-            }).join('');
-            
-            console.log('Tabla pedidos actualizada');
-        }
-
-        function updatePurchasesTable() {
-            const tbody = document.getElementById('purchasesTable');
-            if (!tbody) {
-                console.log('purchasesTable no encontrado');
-                return;
-            }
-            
-            const filteredPurchases = getPurchasesByPeriod(currentDatePeriod);
-            console.log('Actualizando tabla compras, filtered:', filteredPurchases.length);
-            
-            if (filteredPurchases.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 2rem; color: #657786;">No hay compras para el período seleccionado.</td></tr>';
-                return;
-            }
-
-            tbody.innerHTML = filteredPurchases.map(purchase => {
-                const total = purchase.total || purchase.amount || 0;
-                const quantity = purchase.quantity || 1;
-                const unitPrice = purchase.unitPrice || (total / quantity) || 0;
+            tbody.innerHTML = ordersToShow.map(order => {
+                const profit = order.total - order.cost;
+                const statusClass = getStatusClass(order.status);
+                const comments = order.comments || '';
+                const commentDisplay = comments.length > 30 ? comments.substring(0, 30) + '...' : comments;
                 
                 return `
                     <tr>
-                        <td>#${(purchase.id || '0000').toString().slice(-4)}</td>
-                        <td>${new Date(purchase.date || Date.now()).toLocaleDateString()}</td>
-                        <td>${purchase.supplier || 'N/A'}</td>
-                        <td>${purchase.productName || 'N/A'}</td>
-                        <td>${quantity}</td>
-                        <td>${formatCurrency(unitPrice)}</td>
-                        <td><strong>${formatCurrency(total)}</strong></td>
-                        <td>${purchase.notes || 'Sin notas'}</td>
-                    </tr>
-                `;
-            }).join('');
-            
-            console.log('Tabla compras actualizada');
-        }
-
-        function updateExpensesTable() {
-            const tbody = document.getElementById('expensesTable');
-            if (!tbody) {
-                console.log('expensesTable no encontrado');
-                return;
-            }
-            
-            const filteredExpenses = getExpensesByPeriod(currentDatePeriod);
-            console.log('Actualizando tabla gastos, filtered:', filteredExpenses.length);
-            
-            if (filteredExpenses.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 2rem; color: #657786;">No hay gastos para el período seleccionado.</td></tr>';
-                return;
-            }
-
-            tbody.innerHTML = filteredExpenses.map(expense => {
-                return `
-                    <tr>
-                        <td>${new Date(expense.date || Date.now()).toLocaleDateString()}</td>
-                        <td>${expense.description || 'N/A'}</td>
-                        <td>${expense.category || 'N/A'}</td>
-                        <td>${formatCurrency(expense.amount || expense.total || 0)}</td>
-                    </tr>
-                `;
-            }).join('');
-            
-            console.log('Tabla gastos actualizada');
-        }
-
-        // Funciones stub para que no haya errores
-        function openProductModal() { console.log('Abrir modal producto'); }
-        function openOrderModal() { console.log('Abrir modal pedido'); }
-        function openPurchaseModal() { console.log('Abrir modal compra'); }
-        function openExpenseModal() { console.log('Abrir modal gasto'); }
-
-        function generateSampleData() {
-            // Generar algunos datos de ejemplo para probar
-            orders = [
-                { id: '1', customer: 'Test Cliente', productName: 'Test Producto', total: 16908000, cost: 10129360, date: new Date().toISOString() }
-            ];
-            purchases = [
-                { id: '1', productName: 'Stock Test', total: 10913040, date: new Date().toISOString() }
-            ];
-            expenses = [
-                { id: '1', description: 'Gasto Test', amount: 0, date: new Date().toISOString() }
-            ];
-            products = [
-                { id: '1', name: 'Producto Test' }
-            ];
-            
-            saveToLocalStorage();
-            updateAllDisplays();
-            showToast('Datos de ejemplo cargados', 'success');
-        }
-    </script>
-</body>
-</html>
+                        <td>#${order.id.toString().slice(-4)}</td>
+                        <td title="${order.customer}">${order.customer}</td>
+                        <td>${order.channel}</td>
+                        <td title="${order.productName}">${order.productName}</td>
+                        <td>${formatCurrency(order.total)}</td>
+                        <td><span class="status-badge ${statusClass}" onclick="openStatusModal('${order.id}')" title="Click para cambiar estado">${getStatusLabel(order.status)}</span></td>
+                        <td title="${comments}" style="max-width: 150px; cursor: pointer;" onclick="showFullComment('${comments.replace(/'/g, "\\'")}')">
+                            ${commentDisplay || '<i style="color: #ccc;">Sin comentarios</i>'}
+                        </td>
+                        <td>${new Date(order.date).toLocaleDateString()}</td>
+                        <td class="actions">
+                            <button class="btn btn-primary btn-sm" onclick="openOrderModal('${order.id}')" title="Editar pedido">âœï¸</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteOrder('${order.id}')" title=
