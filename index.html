@@ -2111,25 +2111,24 @@
             const totalExpenses = filteredExpenses.reduce((sum, expense) => sum + (expense.amount || 0), 0);
             const totalCosts = filteredOrders.reduce((sum, order) => sum + (order.cost || 0), 0);
             
-            // ========== FÓRMULAS SIMPLIFICADAS ==========
-            // GANANCIA NETA: Solo ingresos menos costos de productos vendidos
+            // ========== FÓRMULAS SEGÚN ESPECIFICACIÓN DEL USUARIO ==========
+            // GANANCIA NETA: Ingresos menos costos de productos vendidos
             const netProfit = totalRevenue - totalCosts;
             
-            // SALDO BANCO: Ingresos menos inversión en inventario (SIN egresos)
-            const bankBalance = totalRevenue - totalPurchases;
+            // SALDO BANCO: Ingresos menos ganancia neta menos egresos (= costos - egresos)
+            const bankBalance = totalRevenue - netProfit - totalExpenses;
             
-            // EGRESOS: Solo se acumulan y muestran como información separada
-            // ==========================================
+            // EGRESOS: Se acumulan pero solo afectan saldo banco, no ganancia neta
+            // ================================================================
             
-            // Debug para verificar las fórmulas simplificadas
-            console.log('=== CÁLCULOS SIMPLIFICADOS ===');
+            // Debug para verificar la lógica específica del usuario
+            console.log('=== CÁLCULOS SEGÚN ESPECIFICACIÓN ===');
             console.log('Ingresos:', formatCurrency(totalRevenue));
             console.log('Costos de ventas:', formatCurrency(totalCosts));
             console.log('GANANCIA NETA:', formatCurrency(netProfit));
-            console.log('Inventario:', formatCurrency(totalPurchases));
-            console.log('SALDO BANCO (sin egresos):', formatCurrency(bankBalance));
-            console.log('Egresos (solo informativo):', formatCurrency(totalExpenses));
-            console.log('===============================');
+            console.log('SALDO BANCO (costos - egresos):', formatCurrency(bankBalance));
+            console.log('Egresos:', formatCurrency(totalExpenses));
+            console.log('====================================');
 
             document.getElementById('totalOrders').textContent = filteredOrders.length;
             document.getElementById('totalProducts').textContent = products.length;
