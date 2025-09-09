@@ -2238,7 +2238,7 @@
             const bankExpenses = bankAffectingExpenses.reduce((sum, expense) => sum + (expense.amount || 0), 0);
             const totalCosts = filteredOrders.reduce((sum, order) => sum + (order.cost || 0), 0);
             
-            const netProfit = totalRevenue - totalCosts - totalExpenses;
+            const netProfit = totalRevenue - totalCosts;
             const bankBalance = 10129360 - bankExpenses;
             
             document.getElementById('totalOrders').textContent = filteredOrders.length;
