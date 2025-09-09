@@ -2239,7 +2239,7 @@
             const totalCosts = filteredOrders.reduce((sum, order) => sum + (order.cost || 0), 0);
             
             const netProfit = totalRevenue - totalCosts;
-            const bankBalance = 10129360 - bankExpenses;
+            const bankBalance = 10129360 + totalRevenue - bankExpenses;
             
             document.getElementById('totalOrders').textContent = filteredOrders.length;
             document.getElementById('totalProducts').textContent = products.length;
