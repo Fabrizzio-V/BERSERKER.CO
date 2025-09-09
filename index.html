@@ -255,6 +255,21 @@
             margin-bottom: 1.5rem;
         }
 
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f1f5f9;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
         .btn {
             padding: 0.75rem 1.5rem;
             border: none;
@@ -305,6 +320,223 @@
             border: 2px solid #bdc3c7;
         }
 
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            overflow-x: auto;
+            margin-top: 1.5rem;
+        }
+
+        .table {
+            width: 100%;
+            min-width: 1000px;
+            border-collapse: collapse;
+        }
+
+        .table th {
+            background: var(--primary);
+            color: white;
+            padding: 0.75rem 0.5rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .table td {
+            padding: 0.75rem 0.5rem;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.9rem;
+            max-width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .table td.actions {
+            white-space: nowrap;
+            min-width: 120px;
+        }
+
+        .table tr:hover {
+            background: #f8fafc;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-completed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-cancelled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .compact-filters {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 8px;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            color: var(--primary);
+            white-space: nowrap;
+        }
+
+        .filter-chip {
+            background: white;
+            border: 2px solid #e1e8ed;
+            color: var(--dark);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-chip:hover, .filter-chip.active {
+            background: var(--secondary);
+            color: white;
+            border-color: var(--secondary);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 12px;
+            width: 80%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: var(--danger);
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--secondary);
+            outline: none;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+            color: var(--secondary);
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .sync-status {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            display: none;
+            z-index: 1000;
+        }
+
+        .sync-status.error {
+            background: var(--danger);
+        }
+
         .toast-container {
             position: fixed;
             top: 20px;
@@ -313,6 +545,7 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
+            pointer-events: none;
         }
 
         .toast {
@@ -325,6 +558,8 @@
             transform: translateX(100%);
             opacity: 0;
             transition: all 0.3s ease;
+            pointer-events: auto;
+            font-weight: 500;
         }
 
         .toast.show {
@@ -384,24 +619,31 @@
                     <span style="font-size: 0.8rem; opacity: 0.9;">Período:</span>
                     <button class="date-filter-btn active" onclick="filterByDatePeriod('all')">Todo</button>
                     <button class="date-filter-btn" onclick="filterByDatePeriod('today')">Hoy</button>
+                    <button class="date-filter-btn" onclick="filterByDatePeriod('yesterday')">Ayer</button>
                     <button class="date-filter-btn" onclick="filterByDatePeriod('week')">Esta Semana</button>
+                    <button class="date-filter-btn" onclick="filterByDatePeriod('lastWeek')">Semana Pasada</button>
                     <button class="date-filter-btn" onclick="filterByDatePeriod('month')">Este Mes</button>
+                    <button class="date-filter-btn" onclick="filterByDatePeriod('lastMonth')">Mes Pasado</button>
                 </div>
             </div>
         </div>
     </nav>
 
     <div class="toast-container" id="toastContainer"></div>
+    <div class="sync-status" id="syncStatus">Conectando...</div>
 
     <div class="container">
         <div class="main-grid">
             <aside class="sidebar">
                 <ul class="sidebar-menu">
                     <li><a href="#" class="menu-item active" data-section="dashboard">📊 Dashboard</a></li>
+                    <li><a href="#" class="menu-item" data-section="delivery">🚚 Panel Entregas</a></li>
                     <li><a href="#" class="menu-item" data-section="products">🛍️ Productos</a></li>
                     <li><a href="#" class="menu-item" data-section="orders">🛒 Pedidos</a></li>
                     <li><a href="#" class="menu-item" data-section="purchases">📦 Compras</a></li>
                     <li><a href="#" class="menu-item" data-section="expenses">💸 Gastos</a></li>
+                    <li><a href="#" class="menu-item" data-section="calculator">🧮 Calculadora</a></li>
+                    <li><a href="#" class="menu-item" data-section="reports">📈 Reportes</a></li>
                 </ul>
             </aside>
 
@@ -412,6 +654,10 @@
                         <h2>Dashboard</h2>
                     </div>
                     <div class="content-body">
+                        <div class="loading" id="loadingIndicator">
+                            <p>🔄 Cargando datos...</p>
+                        </div>
+
                         <div class="stats-grid">
                             <div class="stat-card">
                                 <div class="stat-value" id="dashProducts">0</div>
@@ -437,6 +683,10 @@
                                 <div class="stat-value" id="dashProfit">₲0</div>
                                 <div class="stat-label">Ganancia Neta</div>
                             </div>
+                            <div class="stat-card" style="background: var(--gradient-primary); color: white;">
+                                <div class="stat-value" id="dashMargin">0%</div>
+                                <div class="stat-label">Margen Promedio</div>
+                            </div>
                             <div class="stat-card" style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); color: white;">
                                 <div class="stat-value" id="dashBank">₲0</div>
                                 <div class="stat-label">Saldo Banco</div>
@@ -444,60 +694,81 @@
                         </div>
 
                         <div class="card">
-                            <h3>Acciones Rápidas</h3>
-                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
-                                <button class="btn btn-success" onclick="generateSampleData()">📊 Cargar Datos de Prueba</button>
-                                <button class="btn btn-primary" onclick="clearAllData()">🗑️ Limpiar Datos</button>
+                            <div class="card-header">
+                                <h3 class="card-title">🚀 Acciones Rápidas</h3>
+                            </div>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                                <button class="btn btn-success" onclick="openProductModal()">➕ Nuevo Producto</button>
+                                <button class="btn btn-primary" onclick="openOrderModal()">🛒 Nuevo Pedido</button>
+                                <button class="btn btn-info" onclick="openPurchaseModal()">📦 Nueva Compra</button>
+                                <button class="btn btn-danger" onclick="openExpenseModal()">💸 Registrar Gasto</button>
+                                <button class="btn btn-secondary" onclick="generateSampleData()">📊 Datos de Prueba</button>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Productos -->
+                <!-- Otras secciones - contenido mínimo para que funcione -->
+                <div id="delivery" class="section">
+                    <div class="content-header">
+                        <h2>Panel de Entregas</h2>
+                    </div>
+                    <div class="content-body">
+                        <p>Panel de entregas...</p>
+                    </div>
+                </div>
+
                 <div id="products" class="section">
                     <div class="content-header">
                         <h2>Gestión de Productos</h2>
                     </div>
                     <div class="content-body">
-                        <div id="productsContent">
-                            <p>Contenido de productos...</p>
-                        </div>
+                        <p>Gestión de productos...</p>
                     </div>
                 </div>
 
-                <!-- Pedidos -->
                 <div id="orders" class="section">
                     <div class="content-header">
                         <h2>Gestión de Pedidos</h2>
                     </div>
                     <div class="content-body">
-                        <div id="ordersContent">
-                            <p>Contenido de pedidos...</p>
-                        </div>
+                        <p>Gestión de pedidos...</p>
                     </div>
                 </div>
 
-                <!-- Compras -->
                 <div id="purchases" class="section">
                     <div class="content-header">
                         <h2>Gestión de Compras</h2>
                     </div>
                     <div class="content-body">
-                        <div id="purchasesContent">
-                            <p>Contenido de compras...</p>
-                        </div>
+                        <p>Gestión de compras...</p>
                     </div>
                 </div>
 
-                <!-- Gastos -->
                 <div id="expenses" class="section">
                     <div class="content-header">
                         <h2>Gestión de Gastos</h2>
                     </div>
                     <div class="content-body">
-                        <div id="expensesContent">
-                            <p>Contenido de gastos...</p>
-                        </div>
+                        <p>Gestión de gastos...</p>
+                    </div>
+                </div>
+
+                <div id="calculator" class="section">
+                    <div class="content-header">
+                        <h2>Calculadora</h2>
+                    </div>
+                    <div class="content-body">
+                        <p>Calculadora...</p>
+                    </div>
+                </div>
+
+                <div id="reports" class="section">
+                    <div class="content-header">
+                        <h2>Reportes</h2>
+                    </div>
+                    <div class="content-body">
+                        <p>Reportes...</p>
                     </div>
                 </div>
             </main>
@@ -505,63 +776,96 @@
     </div>
 
     <script>
-        // Variables globales
+        const firebaseConfig = {
+            apiKey: "AIzaSyD3duRGD2A9csmCnLzSaLj0h2KcH7IiPqk",
+            authDomain: "berserker-co.firebaseapp.com",
+            projectId: "berserker-co",
+            storageBucket: "berserker-co.firebasestorage.app",
+            messagingSenderId: "290412388495",
+            appId: "1:290412388495:web:6b0ea995ec5914858dd0fa",
+            measurementId: "G-GQ2PRPJKRN"
+        };
+
+        let app, db;
         let products = [];
         let orders = [];
         let purchases = [];
         let expenses = [];
+        let isFirebaseConnected = false;
         let currentDatePeriod = 'all';
 
-        // Inicialización
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('Iniciando aplicación...');
             setupMenuNavigation();
-            loadFromLocalStorage();
-            updateAllDisplays();
+            initializeFirebase();
         });
 
-        // Navegación del menú
-        function setupMenuNavigation() {
-            const menuItems = document.querySelectorAll('.menu-item');
-            menuItems.forEach(item => {
-                item.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const section = this.getAttribute('data-section');
-                    showSection(section);
-                    menuItems.forEach(mi => mi.classList.remove('active'));
-                    this.classList.add('active');
-                });
-            });
+        function getTodayString() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = (now.getMonth() + 1).toString().padStart(2, '0');
+            const day = now.getDate().toString().padStart(2, '0');
+            return `${year}-${month}-${day}`;
         }
 
-        function showSection(sectionName) {
-            const sections = document.querySelectorAll('.section');
-            sections.forEach(section => section.classList.remove('active'));
-            const targetSection = document.getElementById(sectionName);
-            if (targetSection) {
-                targetSection.classList.add('active');
+        function getCurrentTimestamp() {
+            return new Date().toISOString();
+        }
+
+        async function initializeFirebase() {
+            showSyncStatus('Conectando a Firebase...', false);
+            showLoading(true);
+
+            try {
+                if (typeof firebase === 'undefined') {
+                    throw new Error('Firebase no está cargado');
+                }
+
+                app = firebase.initializeApp(firebaseConfig);
+                db = firebase.firestore();
+                
+                await db.collection('test').limit(1).get();
+                
+                isFirebaseConnected = true;
+                await loadAllData();
+                showSyncStatus('Conectado a Firebase ✓', false);
+                
+            } catch (error) {
+                console.error('Error conectando a Firebase:', error);
+                isFirebaseConnected = false;
+                showSyncStatus('Modo offline - usando localStorage', true);
+                loadFromLocalStorage();
+            } finally {
+                showLoading(false);
+            }
+
+            updateAllDisplays();
+        }
+
+        async function loadAllData() {
+            if (isFirebaseConnected) {
+                products = await loadFromFirebase('products');
+                orders = await loadFromFirebase('orders');
+                purchases = await loadFromFirebase('purchases');
+                expenses = await loadFromFirebase('expenses');
+            } else {
+                loadFromLocalStorage();
             }
         }
 
-        // Funciones de datos
-        function loadFromLocalStorage() {
+        async function loadFromFirebase(collection) {
+            if (!isFirebaseConnected) {
+                return [];
+            }
+
             try {
-                products = JSON.parse(localStorage.getItem('berserker_products') || '[]');
-                orders = JSON.parse(localStorage.getItem('berserker_orders') || '[]');
-                purchases = JSON.parse(localStorage.getItem('berserker_purchases') || '[]');
-                expenses = JSON.parse(localStorage.getItem('berserker_expenses') || '[]');
-                console.log('Datos cargados desde localStorage:', {
-                    products: products.length,
-                    orders: orders.length,
-                    purchases: purchases.length,
-                    expenses: expenses.length
-                });
+                const snapshot = await db.collection(collection).get();
+                return snapshot.docs.map(doc => ({ 
+                    id: doc.id, 
+                    ...doc.data() 
+                }));
             } catch (error) {
-                console.error('Error cargando datos:', error);
-                products = [];
-                orders = [];
-                purchases = [];
-                expenses = [];
+                console.error(`Error cargando ${collection}:`, error);
+                return [];
             }
         }
 
@@ -570,10 +874,15 @@
             localStorage.setItem('berserker_orders', JSON.stringify(orders));
             localStorage.setItem('berserker_purchases', JSON.stringify(purchases));
             localStorage.setItem('berserker_expenses', JSON.stringify(expenses));
-            console.log('Datos guardados en localStorage');
         }
 
-        // Filtros de fecha
+        function loadFromLocalStorage() {
+            products = JSON.parse(localStorage.getItem('berserker_products') || '[]');
+            orders = JSON.parse(localStorage.getItem('berserker_orders') || '[]');
+            purchases = JSON.parse(localStorage.getItem('berserker_purchases') || '[]');
+            expenses = JSON.parse(localStorage.getItem('berserker_expenses') || '[]');
+        }
+
         function filterByDatePeriod(period) {
             currentDatePeriod = period;
             
@@ -597,12 +906,23 @@
                 switch(period) {
                     case 'today':
                         return orderDate.toDateString() === today.toDateString();
+                    case 'yesterday':
+                        const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
+                        return orderDate.toDateString() === yesterday.toDateString();
                     case 'week':
                         const weekStart = new Date(today.getTime() - (today.getDay() * 24 * 60 * 60 * 1000));
                         return orderDate >= weekStart && orderDate <= now;
+                    case 'lastWeek':
+                        const lastWeekEnd = new Date(today.getTime() - (today.getDay() * 24 * 60 * 60 * 1000) - 1);
+                        const lastWeekStart = new Date(lastWeekEnd.getTime() - (6 * 24 * 60 * 60 * 1000));
+                        return orderDate >= lastWeekStart && orderDate <= lastWeekEnd;
                     case 'month':
                         const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
                         return orderDate >= monthStart && orderDate <= now;
+                    case 'lastMonth':
+                        const lastMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+                        const lastMonthEnd = new Date(now.getFullYear(), now.getMonth(), 0);
+                        return orderDate >= lastMonthStart && orderDate <= lastMonthEnd;
                     default:
                         return true;
                 }
@@ -621,12 +941,23 @@
                 switch(period) {
                     case 'today':
                         return purchaseDate.toDateString() === today.toDateString();
+                    case 'yesterday':
+                        const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
+                        return purchaseDate.toDateString() === yesterday.toDateString();
                     case 'week':
                         const weekStart = new Date(today.getTime() - (today.getDay() * 24 * 60 * 60 * 1000));
                         return purchaseDate >= weekStart && purchaseDate <= now;
+                    case 'lastWeek':
+                        const lastWeekEnd = new Date(today.getTime() - (today.getDay() * 24 * 60 * 60 * 1000) - 1);
+                        const lastWeekStart = new Date(lastWeekEnd.getTime() - (6 * 24 * 60 * 60 * 1000));
+                        return purchaseDate >= lastWeekStart && purchaseDate <= lastWeekEnd;
                     case 'month':
                         const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
                         return purchaseDate >= monthStart && purchaseDate <= now;
+                    case 'lastMonth':
+                        const lastMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+                        const lastMonthEnd = new Date(now.getFullYear(), now.getMonth(), 0);
+                        return purchaseDate >= lastMonthStart && orderDate <= lastMonthEnd;
                     default:
                         return true;
                 }
@@ -645,201 +976,47 @@
                 switch(period) {
                     case 'today':
                         return expenseDate.toDateString() === today.toDateString();
+                    case 'yesterday':
+                        const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
+                        return expenseDate.toDateString() === yesterday.toDateString();
                     case 'week':
                         const weekStart = new Date(today.getTime() - (today.getDay() * 24 * 60 * 60 * 1000));
                         return expenseDate >= weekStart && expenseDate <= now;
+                    case 'lastWeek':
+                        const lastWeekEnd = new Date(today.getTime() - (today.getDay() * 24 * 60 * 60 * 1000) - 1);
+                        const lastWeekStart = new Date(lastWeekEnd.getTime() - (6 * 24 * 60 * 60 * 1000));
+                        return expenseDate >= lastWeekStart && expenseDate <= lastWeekEnd;
                     case 'month':
                         const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
                         return expenseDate >= monthStart && expenseDate <= now;
+                    case 'lastMonth':
+                        const lastMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+                        const lastMonthEnd = new Date(now.getFullYear(), now.getMonth(), 0);
+                        return expenseDate >= lastMonthStart && expenseDate <= lastMonthEnd;
                     default:
                         return true;
                 }
             });
         }
 
-        // Formateo de moneda
-        function formatCurrency(amount) {
-            return new Intl.NumberFormat('es-PY', {
-                style: 'currency',
-                currency: 'PYG',
-                minimumFractionDigits: 0
-            }).format(amount || 0).replace('PYG', '₲');
-        }
-
-        // Función principal de actualización
-        function updateAllDisplays() {
-            console.log('Actualizando displays...');
-            
-            const filteredOrders = getOrdersByPeriod(currentDatePeriod);
-            const filteredPurchases = getPurchasesByPeriod(currentDatePeriod);
-            const filteredExpenses = getExpensesByPeriod(currentDatePeriod);
-            
-            const totalRevenue = filteredOrders.reduce((sum, order) => sum + (order.total || 0), 0);
-            const totalPurchases = filteredPurchases.reduce((sum, purchase) => sum + (purchase.total || 0), 0);
-            const totalExpenses = filteredExpenses.reduce((sum, expense) => sum + (expense.amount || 0), 0);
-            const totalCosts = filteredOrders.reduce((sum, order) => sum + (order.cost || 0), 0);
-            
-            // FÓRMULAS CORRECTAS SEGÚN TUS ESPECIFICACIONES
-            // Ganancia Neta = Ingresos - Costos (los egresos NO afectan)
-            const netProfit = totalRevenue - totalCosts;
-            
-            // Saldo Banco = Ingresos - Ganancia Neta (los egresos NO afectan)
-            const bankBalance = totalRevenue - netProfit; // Esto es igual a totalCosts
-            
-            console.log('Cálculos:', {
-                revenue: totalRevenue,
-                costs: totalCosts,
-                purchases: totalPurchases,
-                expenses: totalExpenses,
-                profit: netProfit,
-                bank: bankBalance
-            });
-
-            // Actualizar navbar
-            document.getElementById('totalOrders').textContent = filteredOrders.length;
-            document.getElementById('totalProducts').textContent = products.length;
-            document.getElementById('totalRevenue').textContent = formatCurrency(totalRevenue);
-            document.getElementById('totalPurchases').textContent = formatCurrency(totalPurchases);
-            document.getElementById('totalExpenses').textContent = formatCurrency(totalExpenses);
-            document.getElementById('navbarProfit').textContent = formatCurrency(netProfit);
-            document.getElementById('navbarBank').textContent = formatCurrency(bankBalance);
-
-            // Actualizar dashboard
-            document.getElementById('dashProducts').textContent = products.length;
-            document.getElementById('dashOrders').textContent = filteredOrders.length;
-            document.getElementById('dashRevenue').textContent = formatCurrency(totalRevenue);
-            document.getElementById('dashPurchases').textContent = formatCurrency(totalPurchases);
-            document.getElementById('dashExpenses').textContent = formatCurrency(totalExpenses);
-            document.getElementById('dashProfit').textContent = formatCurrency(netProfit);
-            document.getElementById('dashBank').textContent = formatCurrency(bankBalance);
-            
-            console.log('Displays actualizados correctamente');
-        }
-
-        // Funciones de datos de prueba
-        function generateSampleData() {
-            console.log('Generando datos de prueba...');
-            
-            // Limpiar datos existentes
-            products = [];
-            orders = [];
-            purchases = [];
-            expenses = [];
-
-            // Crear productos de ejemplo
-            const sampleProducts = [
-                { id: '1', name: 'Auriculares Bluetooth', supplier: 'TechSupplier', cost: 45000, price: 89000 },
-                { id: '2', name: 'Camiseta Deportiva', supplier: 'SportWear Co', cost: 25000, price: 55000 },
-                { id: '3', name: 'Lámpara LED', supplier: 'HomeDecor', cost: 35000, price: 75000 },
-                { id: '4', name: 'Mochila Táctica', supplier: 'OutdoorGear', cost: 55000, price: 120000 }
-            ];
-
-            // Crear pedidos de ejemplo
-            const sampleOrders = [
-                { 
-                    id: '1', 
-                    customer: 'María González', 
-                    productName: 'Auriculares Bluetooth',
-                    quantity: 2,
-                    total: 178000,
-                    cost: 90000,
-                    date: new Date().toISOString()
-                },
-                { 
-                    id: '2', 
-                    customer: 'Carlos Rodríguez', 
-                    productName: 'Camiseta Deportiva',
-                    quantity: 3,
-                    total: 165000,
-                    cost: 75000,
-                    date: new Date().toISOString()
-                },
-                { 
-                    id: '3', 
-                    customer: 'Ana López', 
-                    productName: 'Lámpara LED',
-                    quantity: 1,
-                    total: 75000,
-                    cost: 35000,
-                    date: new Date().toISOString()
-                },
-                {
-                    id: '4',
-                    customer: 'Pedro Martínez',
-                    productName: 'Mochila Táctica',
-                    quantity: 4,
-                    total: 480000,
-                    cost: 220000,
-                    date: new Date().toISOString()
-                },
-                {
-                    id: '5',
-                    customer: 'Lucía Fernández',
-                    productName: 'Auriculares Bluetooth',
-                    quantity: 5,
-                    total: 445000,
-                    cost: 225000,
-                    date: new Date().toISOString()
-                },
-                {
-                    id: '6',
-                    customer: 'Roberto Silva',
-                    productName: 'Camiseta Deportiva',
-                    quantity: 10,
-                    total: 550000,
-                    cost: 250000,
-                    date: new Date().toISOString()
-                }
-            ];
-
-            // Crear compras de ejemplo
-            const samplePurchases = [
-                { id: '1', productName: 'Stock Auriculares', supplier: 'TechSupplier', quantity: 50, total: 2250000, date: new Date().toISOString() },
-                { id: '2', productName: 'Stock Camisetas', supplier: 'SportWear Co', quantity: 100, total: 2500000, date: new Date().toISOString() },
-                { id: '3', productName: 'Stock Lámparas', supplier: 'HomeDecor', quantity: 30, total: 1050000, date: new Date().toISOString() },
-                { id: '4', productName: 'Stock Mochilas', supplier: 'OutdoorGear', quantity: 20, total: 1100000, date: new Date().toISOString() },
-                { id: '5', productName: 'Restock General', supplier: 'Various', quantity: 80, total: 3000000, date: new Date().toISOString() }
-            ];
-
-            // Crear gastos de ejemplo
-            const sampleExpenses = [
-                { id: '1', description: 'Facebook Ads Campaña', category: 'marketing', amount: 150000, date: new Date().toISOString() },
-                { id: '2', description: 'Comisión Mercado Libre', category: 'plataforma', amount: 85000, date: new Date().toISOString() },
-                { id: '3', description: 'Envíos Express', category: 'envios', amount: 125000, date: new Date().toISOString() }
-            ];
-
-            // Asignar datos
-            products = sampleProducts;
-            orders = sampleOrders;
-            purchases = samplePurchases;
-            expenses = sampleExpenses;
-
-            // Guardar en localStorage
-            saveToLocalStorage();
-            
-            // Actualizar displays
-            updateAllDisplays();
-            
-            showToast('Datos de prueba cargados correctamente', 'success');
-            console.log('Datos de prueba generados y guardados');
-        }
-
-        function clearAllData() {
-            if (confirm('¿Estás seguro de que quieres eliminar todos los datos? Esta acción no se puede deshacer.')) {
-                products = [];
-                orders = [];
-                purchases = [];
-                expenses = [];
-                
-                saveToLocalStorage();
-                updateAllDisplays();
-                
-                showToast('Todos los datos han sido eliminados', 'warning');
-                console.log('Datos eliminados');
+        function showLoading(show) {
+            const indicator = document.getElementById('loadingIndicator');
+            if (indicator) {
+                indicator.classList.toggle('show', show);
             }
         }
 
-        // Sistema de notificaciones
+        function showSyncStatus(message, isError = false) {
+            const statusEl = document.getElementById('syncStatus');
+            statusEl.textContent = message;
+            statusEl.classList.toggle('error', isError);
+            statusEl.style.display = 'block';
+            
+            setTimeout(() => {
+                statusEl.style.display = 'none';
+            }, 3000);
+        }
+
         function showToast(message, type = 'success') {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
@@ -860,20 +1037,99 @@
             }, 3000);
         }
 
-        // Debug: Mostrar datos en consola
-        function debugData() {
-            console.log('=== ESTADO ACTUAL ===');
-            console.log('Products:', products);
-            console.log('Orders:', orders);
-            console.log('Purchases:', purchases);
-            console.log('Expenses:', expenses);
-            console.log('==================');
+        function setupMenuNavigation() {
+            const menuItems = document.querySelectorAll('.menu-item');
+            menuItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const section = this.getAttribute('data-section');
+                    showSection(section);
+                    menuItems.forEach(mi => mi.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
         }
 
-        // Exponer funciones globales para debugging
-        window.debugData = debugData;
-        window.generateSampleData = generateSampleData;
-        window.updateAllDisplays = updateAllDisplays;
+        function showSection(sectionName) {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => section.classList.remove('active'));
+            const targetSection = document.getElementById(sectionName);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+        }
+
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('es-PY', {
+                style: 'currency',
+                currency: 'PYG',
+                minimumFractionDigits: 0
+            }).format(amount || 0).replace('PYG', '₲');
+        }
+
+        // ============ FUNCIÓN PRINCIPAL CON TU CAMBIO ESPECÍFICO ============
+        function updateAllDisplays() {
+            const filteredOrders = getOrdersByPeriod(currentDatePeriod);
+            const filteredPurchases = getPurchasesByPeriod(currentDatePeriod);
+            const filteredExpenses = getExpensesByPeriod(currentDatePeriod);
+            
+            const totalRevenue = filteredOrders.reduce((sum, order) => sum + (order.total || 0), 0);
+            const totalPurchases = filteredPurchases.reduce((sum, purchase) => sum + (purchase.total || 0), 0);
+            const totalExpenses = filteredExpenses.reduce((sum, expense) => sum + (expense.amount || 0), 0);
+            const totalCosts = filteredOrders.reduce((sum, order) => sum + (order.cost || 0), 0);
+            
+            // ========== TU CAMBIO: EGRESOS NO AFECTAN NADA ==========
+            // GANANCIA NETA: Ingresos - Costos (egresos NO tocan)
+            const netProfit = totalRevenue - totalCosts;
+            
+            // SALDO BANCO: Ingresos - Ganancia Neta (egresos NO tocan)
+            const bankBalance = totalRevenue - netProfit;
+            // ======================================================
+
+            document.getElementById('totalOrders').textContent = filteredOrders.length;
+            document.getElementById('totalProducts').textContent = products.length;
+            document.getElementById('totalRevenue').textContent = formatCurrency(totalRevenue);
+            document.getElementById('totalPurchases').textContent = formatCurrency(totalPurchases);
+            document.getElementById('totalExpenses').textContent = formatCurrency(totalExpenses);
+            document.getElementById('navbarProfit').textContent = formatCurrency(netProfit);
+            document.getElementById('navbarBank').textContent = formatCurrency(bankBalance);
+            
+            // Dashboard
+            document.getElementById('dashProducts').textContent = products.length;
+            document.getElementById('dashOrders').textContent = filteredOrders.length;
+            document.getElementById('dashRevenue').textContent = formatCurrency(totalRevenue);
+            document.getElementById('dashPurchases').textContent = formatCurrency(totalPurchases);
+            document.getElementById('dashExpenses').textContent = formatCurrency(totalExpenses);
+            document.getElementById('dashProfit').textContent = formatCurrency(netProfit);
+            document.getElementById('dashBank').textContent = formatCurrency(bankBalance);
+            document.getElementById('dashMargin').textContent = totalRevenue > 0 ? ((netProfit / totalRevenue) * 100).toFixed(1) + '%' : '0%';
+        }
+
+        // Funciones stub para que no haya errores
+        function openProductModal() { console.log('Abrir modal producto'); }
+        function openOrderModal() { console.log('Abrir modal pedido'); }
+        function openPurchaseModal() { console.log('Abrir modal compra'); }
+        function openExpenseModal() { console.log('Abrir modal gasto'); }
+
+        function generateSampleData() {
+            // Generar algunos datos de ejemplo para probar
+            orders = [
+                { id: '1', customer: 'Test Cliente', productName: 'Test Producto', total: 16908000, cost: 10129360, date: new Date().toISOString() }
+            ];
+            purchases = [
+                { id: '1', productName: 'Stock Test', total: 10913040, date: new Date().toISOString() }
+            ];
+            expenses = [
+                { id: '1', description: 'Gasto Test', amount: 0, date: new Date().toISOString() }
+            ];
+            products = [
+                { id: '1', name: 'Producto Test' }
+            ];
+            
+            saveToLocalStorage();
+            updateAllDisplays();
+            showToast('Datos de ejemplo cargados', 'success');
+        }
     </script>
 </body>
 </html>
