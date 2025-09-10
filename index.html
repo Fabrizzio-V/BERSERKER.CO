@@ -3383,22 +3383,30 @@
             const tbody = document.getElementById('expensesTable');
             
             if (expenses.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 2rem; color: #657786;">No hay gastos registrados. Registra tu primer gasto.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 2rem; color: #657786;">No hay gastos registrados. Registra tu primer gasto.</td></tr>';
                 return;
             }
 
-            tbody.innerHTML = expenses.map(expense => `
-                <tr>
-                    <td>${new Date(expense.date).toLocaleDateString()}</td>
-                    <td>${expense.description}</td>
-                    <td>${expense.category}</td>
-                    <td>${formatCurrency(expense.amount)}</td>
-                    <td class="actions">
-                        <button class="btn btn-primary btn-sm" onclick="openExpenseModal('${expense.id}')" title="Editar gasto">✏️</button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteExpense('${expense.id}')" title="Eliminar gasto">🗑️</button>
-                    </td>
-                </tr>
-            `).join('');
+            tbody.innerHTML = expenses.map(expense => {
+                const isIncluded = expense.includeInTotal !== false;
+                const statusBadge = isIncluded 
+                    ? '<span style="background: #d4edda; color: #155724; padding: 0.25rem 0.5rem; border-radius: 10px; font-size: 0.75rem; font-weight: 600;">CONTABILIZADO</span>'
+                    : '<span style="background: #f8d7da; color: #721c24; padding: 0.25rem 0.5rem; border-radius: 10px; font-size: 0.75rem; font-weight: 600;">NO CONTABILIZADO</span>';
+                
+                return `
+                    <tr style="${!isIncluded ? 'opacity: 0.7;' : ''}">
+                        <td>${new Date(expense.date).toLocaleDateString()}</td>
+                        <td>${expense.description}</td>
+                        <td>${expense.category}</td>
+                        <td>${formatCurrency(expense.amount)}</td>
+                        <td>${statusBadge}</td>
+                        <td class="actions">
+                            <button class="btn btn-primary btn-sm" onclick="openExpenseModal('${expense.id}')" title="Editar gasto">✏️</button>
+                            <button class="btn btn-danger btn-sm" onclick="deleteExpense('${expense.id}')" title="Eliminar gasto">🗑️</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
         }
 
         async function deleteExpense(id) {
