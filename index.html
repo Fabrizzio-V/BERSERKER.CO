@@ -3186,21 +3186,41 @@
 
         async function saveOrder(event) {
             event.preventDefault();
+            console.log('Guardando pedido...');
+            
             const orderId = document.getElementById('orderId').value;
             const isEditing = orderId !== '';
             
+            // Validar campos obligatorios
+            const customer = document.getElementById('orderCustomer').value.trim();
             const productId = document.getElementById('orderProduct').value;
-            const product = products.find(p => p.id === productId);
-            const newQuantity = parseInt(document.getElementById('orderQuantity').value) || 1;
             const total = parseFloat(document.getElementById('orderTotal').value) || 0;
             
+            if (!customer) {
+                showToast('El nombre del cliente es obligatorio', 'error');
+                return;
+            }
+            
+            if (!productId) {
+                showToast('Debes seleccionar un producto', 'error');
+                return;
+            }
+            
+            if (total <= 0) {
+                showToast('El total debe ser mayor a 0', 'error');
+                return;
+            }
+            
+            const product = products.find(p => p.id === productId);
             if (!product) {
                 showToast('Producto no encontrado', 'error');
                 return;
             }
             
+            const newQuantity = parseInt(document.getElementById('orderQuantity').value) || 1;
+            
             const orderData = {
-                customer: document.getElementById('orderCustomer').value,
+                customer: customer,
                 channel: document.getElementById('orderChannel').value,
                 productId: productId,
                 productName: product.name,
@@ -3208,15 +3228,16 @@
                 total: total,
                 cost: product.cost * newQuantity,
                 status: document.getElementById('orderStatus').value,
-                deliveryMethod: document.getElementById('orderDeliveryMethod').value,
-                deliveryPerson: document.getElementById('orderDeliveryPerson').value,
-                deliveryAddress: document.getElementById('orderDeliveryAddress').value,
+                deliveryMethod: document.getElementById('orderDeliveryMethod').value || 'delivery',
+                deliveryPerson: document.getElementById('orderDeliveryPerson').value || '',
+                deliveryAddress: document.getElementById('orderDeliveryAddress').value || '',
                 comments: document.getElementById('orderComments').value || '',
                 date: isEditing ? orders.find(o => o.id === orderId)?.date : getCurrentTimestamp()
             };
 
             try {
                 if (isEditing) {
+                    console.log('Editando pedido existente');
                     const oldOrder = orders.find(o => o.id === orderId);
                     if (oldOrder && oldOrder.productId === productId) {
                         const stockDifference = oldOrder.quantity - newQuantity;
@@ -3251,11 +3272,15 @@
                         showToast('Pedido actualizado correctamente', 'success');
                     }
                 } else {
+                    console.log('Creando nuevo pedido');
+                    
+                    // Validar stock disponible
                     if (product.stock < newQuantity) {
                         showToast(`Stock insuficiente. Disponible: ${product.stock}`, 'warning');
                         return;
                     }
                     
+                    // Reducir stock
                     product.stock = (product.stock || 0) - newQuantity;
                     
                     let newId = Date.now().toString();
@@ -3265,18 +3290,20 @@
                     
                     const newOrder = { id: newId, ...orderData };
                     orders.push(newOrder);
+                    console.log('Pedido creado:', newOrder);
                     
-                    // 🔄 INTEGRACIÓN: Crear automáticamente transacción de ingreso en flujo de caja
+                    // 🔄 INTEGRACIÓN AUTOMÁTICA CON FLUJO DE CAJA
+                    console.log('Creando transacción automática en flujo de caja...');
                     const autoTransaction = {
                         id: Date.now().toString() + '_auto',
                         type: 'income',
-                        description: `Venta a ${orderData.customer} - ${orderData.productName}`,
+                        description: `Venta: ${orderData.customer} - ${orderData.productName}`,
                         amount: total,
-                        date: orderData.date.split('T')[0], // Solo fecha, sin hora
-                        paymentMethod: getPaymentMethodFromChannel(orderData.channel), // Auto-detectar método
-                        notes: `Venta automática - Canal: ${orderData.channel}`,
+                        date: getTodayString(), // Usar fecha de hoy para flujo de caja
+                        paymentMethod: getPaymentMethodFromChannel(orderData.channel),
+                        notes: `Generado automáticamente desde pedido #${newId.slice(-4)}`,
                         timestamp: getCurrentTimestamp(),
-                        relatedOrderId: newId, // Vinculo para futuras ediciones
+                        relatedOrderId: newId,
                         isAutoGenerated: true
                     };
                     
@@ -3286,15 +3313,14 @@
                     }
                     
                     transactions.push(autoTransaction);
+                    console.log('Transacción creada:', autoTransaction);
+                    
                     showToast('Pedido creado y registrado en flujo de caja', 'success');
                 }
                 
+                // Guardar producto actualizado
                 if (isFirebaseConnected) {
-                    try {
-                        await saveToFirebase('products', product, product.id);
-                    } catch (error) {
-                        console.error('Error actualizando stock en Firebase:', error);
-                    }
+                    await saveToFirebase('products', product, product.id);
                 }
                 
                 saveToLocalStorage();
@@ -3302,7 +3328,8 @@
                 updateAllDisplays();
                 
             } catch (error) {
-                showToast('Error al guardar pedido', 'error');
+                console.error('Error al guardar pedido:', error);
+                showToast('Error al guardar pedido: ' + error.message, 'error');
             }
         }
 
@@ -3725,28 +3752,69 @@
 
         async function saveExpense(event) {
             event.preventDefault();
+            console.log('Guardando gasto...');
+            
             const expenseId = document.getElementById('expenseId').value;
             const isEditing = expenseId !== '';
             
+            // Validar campos obligatorios
+            const description = document.getElementById('expenseDescription').value.trim();
+            const amount = parseFloat(document.getElementById('expenseAmount').value) || 0;
+            const category = document.getElementById('expenseCategory').value;
+            const date = document.getElementById('expenseDate').value;
+            
+            if (!description) {
+                showToast('La descripción es obligatoria', 'error');
+                return;
+            }
+            
+            if (amount <= 0) {
+                showToast('El monto debe ser mayor a 0', 'error');
+                return;
+            }
+            
+            if (!date) {
+                showToast('La fecha es obligatoria', 'error');
+                return;
+            }
+            
             const expenseData = {
-                description: document.getElementById('expenseDescription').value,
-                category: document.getElementById('expenseCategory').value,
-                amount: parseFloat(document.getElementById('expenseAmount').value) || 0,
-                date: document.getElementById('expenseDate').value,
+                description: description,
+                category: category,
+                amount: amount,
+                date: date,
                 timestamp: getCurrentTimestamp()
             };
 
             try {
                 if (isEditing) {
+                    console.log('Editando gasto existente');
+                    const oldExpense = expenses.find(e => e.id === expenseId);
                     const index = expenses.findIndex(e => e.id === expenseId);
+                    
                     if (index !== -1) {
                         expenses[index] = { ...expenses[index], ...expenseData };
                         if (isFirebaseConnected) {
                             await saveToFirebase('expenses', expenses[index], expenseId);
                         }
+                        
+                        // ACTUALIZAR TRANSACCIÓN EXISTENTE si hay cambio en el monto
+                        if (oldExpense && oldExpense.amount !== amount) {
+                            const existingTransaction = transactions.find(t => t.relatedExpenseId === expenseId);
+                            if (existingTransaction) {
+                                existingTransaction.amount = amount;
+                                existingTransaction.description = `Gasto: ${description} (EDITADO)`;
+                                if (isFirebaseConnected) {
+                                    await saveToFirebase('transactions', existingTransaction, existingTransaction.id);
+                                }
+                            }
+                        }
+                        
                         showToast('Gasto actualizado correctamente', 'success');
                     }
                 } else {
+                    console.log('Creando nuevo gasto');
+                    
                     let newId = Date.now().toString();
                     if (isFirebaseConnected) {
                         newId = await saveToFirebase('expenses', expenseData);
@@ -3754,7 +3822,32 @@
                     
                     const newExpense = { id: newId, ...expenseData };
                     expenses.push(newExpense);
-                    showToast('Gasto registrado correctamente', 'success');
+                    console.log('Gasto creado:', newExpense);
+                    
+                    // 🔄 INTEGRACIÓN AUTOMÁTICA CON FLUJO DE CAJA
+                    console.log('Creando transacción automática en flujo de caja...');
+                    const autoTransaction = {
+                        id: Date.now().toString() + '_expense_auto',
+                        type: 'expense',
+                        description: `Gasto: ${description}`,
+                        amount: amount,
+                        date: date, // Usar la fecha del gasto
+                        paymentMethod: 'cash', // Por defecto efectivo, se puede cambiar manualmente
+                        notes: `Generado automáticamente desde gasto #${newId.slice(-4)}`,
+                        timestamp: getCurrentTimestamp(),
+                        relatedExpenseId: newId,
+                        isAutoGenerated: true
+                    };
+                    
+                    if (isFirebaseConnected) {
+                        const transactionId = await saveToFirebase('transactions', autoTransaction);
+                        autoTransaction.id = transactionId;
+                    }
+                    
+                    transactions.push(autoTransaction);
+                    console.log('Transacción de gasto creada:', autoTransaction);
+                    
+                    showToast('Gasto registrado y agregado al flujo de caja', 'success');
                 }
                 
                 saveToLocalStorage();
@@ -3762,7 +3855,8 @@
                 updateAllDisplays();
                 
             } catch (error) {
-                showToast('Error al procesar gasto', 'error');
+                console.error('Error al procesar gasto:', error);
+                showToast('Error al procesar gasto: ' + error.message, 'error');
             }
         }
 
@@ -3810,16 +3904,174 @@
         async function deleteExpense(id) {
             if (confirm('¿Estás seguro de eliminar este gasto?')) {
                 try {
+                    const expenseToDelete = expenses.find(e => e.id === id);
+                    console.log('Eliminando gasto:', expenseToDelete);
+                    
+                    // Eliminar transacción relacionada en flujo de caja
+                    const relatedTransaction = transactions.find(t => t.relatedExpenseId === id);
+                    if (relatedTransaction) {
+                        console.log('Eliminando transacción relacionada:', relatedTransaction);
+                        transactions = transactions.filter(t => t.id !== relatedTransaction.id);
+                        if (isFirebaseConnected) {
+                            await deleteFromFirebase('transactions', relatedTransaction.id);
+                        }
+                    }
+                    
+                    // Eliminar el gasto
                     expenses = expenses.filter(e => e.id !== id);
                     if (isFirebaseConnected) {
                         await deleteFromFirebase('expenses', id);
                     }
+                    
                     saveToLocalStorage();
                     updateAllDisplays();
                     showToast('Gasto eliminado correctamente', 'success');
                 } catch (error) {
-                    showToast('Error al eliminar gasto', 'error');
+                    console.error('Error al eliminar gasto:', error);
+                    showToast('Error al eliminar gasto: ' + error.message, 'error');
                 }
+            }
+        }
+
+        // ========== MEJORAS EN VALIDACIÓN DE PRODUCTOS ==========
+        async function saveProduct(event) {
+            event.preventDefault();
+            console.log('Guardando producto...');
+            
+            const productId = document.getElementById('productId').value;
+            const isEditing = productId !== '';
+            
+            // Validar campos obligatorios
+            const name = document.getElementById('productName').value.trim();
+            const supplier = document.getElementById('productSupplier').value.trim();
+            const cost = parseFloat(document.getElementById('productCost').value) || 0;
+            const price = parseFloat(document.getElementById('productPrice').value) || 0;
+            
+            if (!name) {
+                showToast('El nombre del producto es obligatorio', 'error');
+                return;
+            }
+            
+            if (!supplier) {
+                showToast('El proveedor es obligatorio', 'error');
+                return;
+            }
+            
+            if (cost < 0) {
+                showToast('El costo no puede ser negativo', 'error');
+                return;
+            }
+            
+            if (price < 0) {
+                showToast('El precio no puede ser negativo', 'error');
+                return;
+            }
+            
+            if (price > 0 && cost > 0 && price < cost) {
+                if (!confirm('El precio es menor que el costo. ¿Continuar?')) {
+                    return;
+                }
+            }
+            
+            const productData = {
+                name: name,
+                supplier: supplier,
+                category: document.getElementById('productCategory').value,
+                stock: parseInt(document.getElementById('productStock').value) || 0,
+                minStock: parseInt(document.getElementById('productMinStock').value) || 5,
+                cost: cost,
+                price: price,
+                description: document.getElementById('productDescription').value || '',
+                timestamp: getCurrentTimestamp()
+            };
+
+            try {
+                if (isEditing) {
+                    console.log('Editando producto existente');
+                    const index = products.findIndex(p => p.id === productId);
+                    if (index !== -1) {
+                        products[index] = { ...products[index], ...productData };
+                        if (isFirebaseConnected) {
+                            await saveToFirebase('products', products[index], productId);
+                        }
+                        showToast('Producto actualizado correctamente', 'success');
+                    }
+                } else {
+                    console.log('Creando nuevo producto');
+                    let newId = Date.now().toString();
+                    if (isFirebaseConnected) {
+                        newId = await saveToFirebase('products', productData);
+                    }
+                    
+                    const newProduct = { id: newId, ...productData };
+                    products.push(newProduct);
+                    console.log('Producto creado:', newProduct);
+                    showToast('Producto agregado correctamente', 'success');
+                }
+
+                saveToLocalStorage();
+                closeModal('productModal');
+                updateAllDisplays();
+                
+            } catch (error) {
+                console.error('Error al guardar producto:', error);
+                showToast('Error al guardar producto: ' + error.message, 'error');
+            }
+        }
+
+        // ========== MEJORAR FUNCIÓN DE TRANSACCIONES ==========
+        async function saveTransaction(event) {
+            event.preventDefault();
+            console.log('Guardando transacción...');
+            
+            // Validar campos obligatorios
+            const description = document.getElementById('transactionDescription').value.trim();
+            const amount = parseFloat(document.getElementById('transactionAmount').value) || 0;
+            const date = document.getElementById('transactionDate').value;
+            
+            if (!description) {
+                showToast('La descripción es obligatoria', 'error');
+                return;
+            }
+            
+            if (amount <= 0) {
+                showToast('El monto debe ser mayor a 0', 'error');
+                return;
+            }
+            
+            if (!date) {
+                showToast('La fecha es obligatoria', 'error');
+                return;
+            }
+            
+            const transaction = {
+                id: Date.now().toString(),
+                type: document.getElementById('transactionType').value,
+                description: description,
+                amount: amount,
+                date: date,
+                paymentMethod: document.getElementById('paymentMethod').value,
+                notes: document.getElementById('transactionNotes').value || '',
+                timestamp: getCurrentTimestamp()
+            };
+            
+            try {
+                if (isFirebaseConnected) {
+                    const newId = await saveToFirebase('transactions', transaction);
+                    transaction.id = newId;
+                }
+                
+                transactions.push(transaction);
+                console.log('Transacción creada:', transaction);
+                saveToLocalStorage();
+                
+                closeModal('transactionModal');
+                updateAllDisplays();
+                showToast(`${transaction.type === 'income' ? 'Ingreso' : 'Gasto'} registrado correctamente`, 'success');
+                
+            } catch (error) {
+                console.error('Error al guardar transacción:', error);
+                showToast('Error al guardar transacción: ' + error.message, 'error');
             }
         }
 
