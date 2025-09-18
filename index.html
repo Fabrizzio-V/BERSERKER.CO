@@ -120,6 +120,13 @@
         .btn-danger { background: #dc3545; }
         .btn-warning { background: #ffc107; color: #333; }
         .btn-info { background: #17a2b8; }
+        .btn-secondary { background: #6c757d; }
+
+        .btn-sm {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.8rem;
+            margin: 0.1rem;
+        }
 
         .modal {
             display: none;
@@ -226,6 +233,59 @@
             font-size: 0.9rem;
         }
 
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .delivery-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .delivery-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .delivery-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-assigned { background: #d1ecf1; color: #0c5460; }
+        .status-in-progress { background: #cce5ff; color: #004085; }
+        .status-delivered { background: #d4edda; color: #155724; }
+        .status-failed { background: #f8d7da; color: #721c24; }
+
+        .delivery-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 0.5rem;
+            margin: 0.5rem 0;
+        }
+
+        .info-item {
+            font-size: 0.9rem;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: #666;
+        }
+
         @media (max-width: 768px) {
             .main-grid {
                 grid-template-columns: 1fr;
@@ -242,6 +302,11 @@
             .stat-item {
                 min-width: 100px;
                 font-size: 0.8rem;
+            }
+            
+            .filters {
+                flex-direction: column;
+                align-items: stretch;
             }
         }
     </style>
@@ -270,6 +335,10 @@
                 <div id="totalProfit">₲0</div>
                 <div>Ganancia</div>
             </div>
+            <div class="stat-item">
+                <div id="pendingDeliveries">0</div>
+                <div>Entregas Pendientes</div>
+            </div>
         </div>
     </nav>
 
@@ -279,6 +348,7 @@
                 <div class="menu-item active" onclick="showSection('dashboard')">📊 Dashboard</div>
                 <div class="menu-item" onclick="showSection('products')">🛍️ Productos</div>
                 <div class="menu-item" onclick="showSection('orders')">🛒 Pedidos</div>
+                <div class="menu-item" onclick="showSection('deliveries')">🚚 Entregas</div>
                 <div class="menu-item" onclick="showSection('expenses')">💸 Gastos</div>
                 <div class="menu-item" onclick="showSection('cashflow')">💰 Flujo de Caja</div>
             </div>
@@ -303,6 +373,14 @@
                         <div class="stat-card">
                             <div class="stat-value" id="dashProfit">₲0</div>
                             <div class="stat-label">Ganancia</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="dashPendingDeliveries">0</div>
+                            <div class="stat-label">Entregas Pendientes</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="dashDeliveryRate">0%</div>
+                            <div class="stat-label">Tasa de Entrega</div>
                         </div>
                     </div>
                     
@@ -368,6 +446,38 @@
                             </tr>
                         </tbody>
                     </table>
+                </div>
+
+                <!-- Entregas -->
+                <div id="deliveries" class="section">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <h2>Gestión de Entregas</h2>
+                        <button class="btn btn-info" onclick="syncDeliveries()">🔄 Sincronizar Pedidos</button>
+                    </div>
+                    
+                    <div class="filters">
+                        <select id="deliveryFilter" class="form-control" onchange="filterDeliveries()" style="width: auto; min-width: 150px;">
+                            <option value="all">Todas las entregas</option>
+                            <option value="pending">Pendientes</option>
+                            <option value="assigned">Asignadas</option>
+                            <option value="in-progress">En camino</option>
+                            <option value="delivered">Entregadas</option>
+                            <option value="failed">Fallidas</option>
+                        </select>
+                        
+                        <select id="assigneeFilter" class="form-control" onchange="filterDeliveries()" style="width: auto; min-width: 150px;">
+                            <option value="all">Todos los responsables</option>
+                            <option value="unassigned">Sin asignar</option>
+                            <option value="socio">Socio</option>
+                            <option value="yo">Yo</option>
+                        </select>
+                        
+                        <input type="date" id="dateFilter" class="form-control" onchange="filterDeliveries()" style="width: auto;">
+                    </div>
+                    
+                    <div id="deliveriesContainer">
+                        <p style="text-align: center; color: #666; padding: 2rem;">No hay entregas para mostrar</p>
+                    </div>
                 </div>
 
                 <!-- Gastos -->
@@ -507,6 +617,81 @@
         </div>
     </div>
 
+    <!-- Modal Editar Estado -->
+    <div id="editStatusModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('editStatusModal')">&times;</span>
+            <h3>Editar Estado del Pedido</h3>
+            
+            <div class="form-group">
+                <label>Cliente</label>
+                <input type="text" class="form-control" id="editStatusCustomer" readonly>
+            </div>
+            
+            <div class="form-group">
+                <label>Producto</label>
+                <input type="text" class="form-control" id="editStatusProduct" readonly>
+            </div>
+            
+            <div class="form-group">
+                <label>Estado *</label>
+                <select class="form-control" id="editStatusValue" required>
+                    <option value="pending">Pendiente</option>
+                    <option value="confirmed">Confirmado</option>
+                    <option value="delivered">Entregado</option>
+                    <option value="cancelled">Cancelado</option>
+                </select>
+            </div>
+            
+            <div style="text-align: right; margin-top: 1.5rem;">
+                <button class="btn" onclick="closeModal('editStatusModal')">Cancelar</button>
+                <button class="btn btn-success" onclick="updateOrderStatus()">Actualizar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Asignar Entrega -->
+    <div id="assignDeliveryModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('assignDeliveryModal')">&times;</span>
+            <h3>Asignar Entrega</h3>
+            
+            <div class="form-group">
+                <label>Cliente</label>
+                <input type="text" class="form-control" id="assignCustomer" readonly>
+            </div>
+            
+            <div class="form-group">
+                <label>Producto</label>
+                <input type="text" class="form-control" id="assignProduct" readonly>
+            </div>
+            
+            <div class="form-group">
+                <label>Responsable de Entrega *</label>
+                <select class="form-control" id="assignResponsible" required>
+                    <option value="">Seleccionar...</option>
+                    <option value="socio">Socio</option>
+                    <option value="yo">Yo</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Fecha Programada *</label>
+                <input type="date" class="form-control" id="assignDate" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Notas</label>
+                <textarea class="form-control" id="assignNotes" rows="3" placeholder="Dirección, horarios, etc."></textarea>
+            </div>
+            
+            <div style="text-align: right; margin-top: 1.5rem;">
+                <button class="btn" onclick="closeModal('assignDeliveryModal')">Cancelar</button>
+                <button class="btn btn-success" onclick="saveDeliveryAssignment()">Asignar</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal Gasto -->
     <div id="expenseModal" class="modal">
         <div class="modal-content">
@@ -542,6 +727,9 @@
         let orders = [];
         let expenses = [];
         let transactions = [];
+        let deliveries = [];
+        let currentEditingOrderId = null;
+        let currentAssigningDeliveryId = null;
 
         // Inicialización
         document.addEventListener('DOMContentLoaded', function() {
@@ -571,6 +759,10 @@
             if (sectionName === 'products') updateProductsTable();
             if (sectionName === 'orders') updateOrdersTable();
             if (sectionName === 'expenses') updateExpensesTable();
+            if (sectionName === 'deliveries') {
+                syncDeliveries();
+                updateDeliveriesDisplay();
+            }
             if (sectionName === 'cashflow') updateCashflowDisplay();
         }
 
@@ -579,6 +771,9 @@
             
             if (modalId === 'orderModal') {
                 populateProductSelect();
+            }
+            if (modalId === 'assignDeliveryModal') {
+                document.getElementById('assignDate').value = getTodayString();
             }
         }
 
@@ -589,7 +784,7 @@
 
         function clearForm(modalId) {
             const modal = document.getElementById(modalId);
-            const inputs = modal.querySelectorAll('input, select');
+            const inputs = modal.querySelectorAll('input, select, textarea');
             inputs.forEach(input => {
                 if (input.type === 'number') {
                     input.value = input.id === 'productStock' ? '0' : 
@@ -686,7 +881,7 @@
             saveData();
             updateAllDisplays();
             closeModal('orderModal');
-            alert('Pedido guardado correctamente y agregado al flujo de caja');
+            alert('Pedido guardado correctamente');
         }
 
         function saveExpense() {
@@ -699,7 +894,6 @@
                 return;
             }
 
-            // Crear gasto
             const expense = {
                 id: Date.now().toString(),
                 description,
@@ -710,7 +904,6 @@
 
             expenses.push(expense);
             
-            // Crear transacción automática de gasto
             transactions.push({
                 id: Date.now().toString() + '_expense',
                 type: 'expense',
@@ -723,7 +916,250 @@
             saveData();
             updateAllDisplays();
             closeModal('expenseModal');
-            alert('Gasto guardado correctamente y agregado al flujo de caja');
+            alert('Gasto guardado correctamente');
+        }
+
+        // Funciones de edición de estado
+        function editOrderStatus(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            if (!order) return;
+
+            currentEditingOrderId = orderId;
+            document.getElementById('editStatusCustomer').value = order.customer;
+            document.getElementById('editStatusProduct').value = order.productName;
+            document.getElementById('editStatusValue').value = order.status;
+            
+            openModal('editStatusModal');
+        }
+
+        function updateOrderStatus() {
+            if (!currentEditingOrderId) return;
+
+            const newStatus = document.getElementById('editStatusValue').value;
+            const order = orders.find(o => o.id === currentEditingOrderId);
+            
+            if (order) {
+                order.status = newStatus;
+                saveData();
+                updateAllDisplays();
+                closeModal('editStatusModal');
+                alert('Estado del pedido actualizado');
+                
+                // Actualizar entrega si existe
+                const delivery = deliveries.find(d => d.orderId === currentEditingOrderId);
+                if (delivery) {
+                    if (newStatus === 'delivered') {
+                        delivery.status = 'delivered';
+                        delivery.deliveredDate = getTodayString();
+                    }
+                    updateDeliveriesDisplay();
+                }
+            }
+            
+            currentEditingOrderId = null;
+        }
+
+        // Funciones de gestión de entregas
+        function syncDeliveries() {
+            // Sincronizar entregas con pedidos confirmados que no han sido cancelados
+            const ordersNeedingDelivery = orders.filter(order => 
+                order.status !== 'cancelled' && 
+                !deliveries.find(d => d.orderId === order.id)
+            );
+
+            ordersNeedingDelivery.forEach(order => {
+                const delivery = {
+                    id: 'delivery_' + order.id,
+                    orderId: order.id,
+                    customer: order.customer,
+                    productName: order.productName,
+                    quantity: order.quantity,
+                    total: order.total,
+                    status: order.status === 'delivered' ? 'delivered' : 'pending',
+                    assignedTo: null,
+                    scheduledDate: null,
+                    deliveredDate: order.status === 'delivered' ? order.created.split('T')[0] : null,
+                    notes: '',
+                    created: new Date().toISOString()
+                };
+                deliveries.push(delivery);
+            });
+
+            saveData();
+        }
+
+        function assignDelivery(deliveryId) {
+            const delivery = deliveries.find(d => d.id === deliveryId);
+            if (!delivery) return;
+
+            currentAssigningDeliveryId = deliveryId;
+            document.getElementById('assignCustomer').value = delivery.customer;
+            document.getElementById('assignProduct').value = delivery.productName;
+            
+            openModal('assignDeliveryModal');
+        }
+
+        function saveDeliveryAssignment() {
+            if (!currentAssigningDeliveryId) return;
+
+            const delivery = deliveries.find(d => d.id === currentAssigningDeliveryId);
+            if (!delivery) return;
+
+            const responsible = document.getElementById('assignResponsible').value;
+            const scheduledDate = document.getElementById('assignDate').value;
+            const notes = document.getElementById('assignNotes').value;
+
+            if (!responsible || !scheduledDate) {
+                alert('Por favor completa todos los campos obligatorios');
+                return;
+            }
+
+            delivery.assignedTo = responsible;
+            delivery.scheduledDate = scheduledDate;
+            delivery.notes = notes;
+            delivery.status = 'assigned';
+
+            saveData();
+            updateAllDisplays();
+            updateDeliveriesDisplay();
+            closeModal('assignDeliveryModal');
+            alert('Entrega asignada correctamente');
+            
+            currentAssigningDeliveryId = null;
+        }
+
+        function updateDeliveryStatus(deliveryId, newStatus) {
+            const delivery = deliveries.find(d => d.id === deliveryId);
+            if (!delivery) return;
+
+            delivery.status = newStatus;
+            
+            if (newStatus === 'delivered') {
+                delivery.deliveredDate = getTodayString();
+                // Actualizar también el pedido
+                const order = orders.find(o => o.id === delivery.orderId);
+                if (order) {
+                    order.status = 'delivered';
+                }
+            } else if (newStatus === 'in-progress') {
+                // Marcar como en progreso
+            } else if (newStatus === 'failed') {
+                // Marcar como fallida
+            }
+
+            saveData();
+            updateAllDisplays();
+            updateDeliveriesDisplay();
+        }
+
+        function filterDeliveries() {
+            updateDeliveriesDisplay();
+        }
+
+        function updateDeliveriesDisplay() {
+            const container = document.getElementById('deliveriesContainer');
+            const statusFilter = document.getElementById('deliveryFilter').value;
+            const assigneeFilter = document.getElementById('assigneeFilter').value;
+            const dateFilter = document.getElementById('dateFilter').value;
+
+            let filteredDeliveries = [...deliveries];
+
+            // Filtrar por estado
+            if (statusFilter !== 'all') {
+                filteredDeliveries = filteredDeliveries.filter(d => d.status === statusFilter);
+            }
+
+            // Filtrar por responsable
+            if (assigneeFilter !== 'all') {
+                if (assigneeFilter === 'unassigned') {
+                    filteredDeliveries = filteredDeliveries.filter(d => !d.assignedTo);
+                } else {
+                    filteredDeliveries = filteredDeliveries.filter(d => d.assignedTo === assigneeFilter);
+                }
+            }
+
+            // Filtrar por fecha
+            if (dateFilter) {
+                filteredDeliveries = filteredDeliveries.filter(d => 
+                    d.scheduledDate === dateFilter || 
+                    d.deliveredDate === dateFilter
+                );
+            }
+
+            if (filteredDeliveries.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #666; padding: 2rem;">No hay entregas para mostrar</p>';
+                return;
+            }
+
+            container.innerHTML = filteredDeliveries.map(delivery => `
+                <div class="delivery-card">
+                    <div class="delivery-header">
+                        <h4>${delivery.customer} - ${delivery.productName}</h4>
+                        <span class="delivery-status status-${delivery.status}">${getDeliveryStatusLabel(delivery.status)}</span>
+                    </div>
+                    
+                    <div class="delivery-info">
+                        <div class="info-item">
+                            <div class="info-label">Cantidad:</div>
+                            <div>${delivery.quantity}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Total:</div>
+                            <div>${formatCurrency(delivery.total)}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Responsable:</div>
+                            <div>${delivery.assignedTo || 'Sin asignar'}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Fecha programada:</div>
+                            <div>${delivery.scheduledDate ? new Date(delivery.scheduledDate).toLocaleDateString() : 'No programada'}</div>
+                        </div>
+                        ${delivery.deliveredDate ? `
+                        <div class="info-item">
+                            <div class="info-label">Fecha entregada:</div>
+                            <div>${new Date(delivery.deliveredDate).toLocaleDateString()}</div>
+                        </div>
+                        ` : ''}
+                    </div>
+                    
+                    ${delivery.notes ? `
+                    <div style="margin: 0.5rem 0; padding: 0.5rem; background: #f8f9fa; border-radius: 5px;">
+                        <strong>Notas:</strong> ${delivery.notes}
+                    </div>
+                    ` : ''}
+                    
+                    <div style="margin-top: 1rem; text-align: right;">
+                        ${delivery.status === 'pending' ? `
+                            <button class="btn btn-info btn-sm" onclick="assignDelivery('${delivery.id}')">Asignar</button>
+                        ` : ''}
+                        
+                        ${delivery.status === 'assigned' ? `
+                            <button class="btn btn-warning btn-sm" onclick="updateDeliveryStatus('${delivery.id}', 'in-progress')">En Camino</button>
+                        ` : ''}
+                        
+                        ${delivery.status === 'in-progress' ? `
+                            <button class="btn btn-success btn-sm" onclick="updateDeliveryStatus('${delivery.id}', 'delivered')">Entregar</button>
+                            <button class="btn btn-danger btn-sm" onclick="updateDeliveryStatus('${delivery.id}', 'failed')">Falló</button>
+                        ` : ''}
+                        
+                        ${delivery.status === 'failed' ? `
+                            <button class="btn btn-info btn-sm" onclick="updateDeliveryStatus('${delivery.id}', 'assigned')">Reagendar</button>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getDeliveryStatusLabel(status) {
+            const labels = {
+                'pending': 'Pendiente',
+                'assigned': 'Asignada',
+                'in-progress': 'En camino',
+                'delivered': 'Entregada',
+                'failed': 'Fallida'
+            };
+            return labels[status] || status;
         }
 
         // Funciones de actualización de datos
@@ -768,7 +1204,7 @@
                     <td>${formatCurrency(product.cost)}</td>
                     <td>${formatCurrency(product.price)}</td>
                     <td>
-                        <button class="btn btn-danger" onclick="deleteProduct('${product.id}')" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">Eliminar</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteProduct('${product.id}')">Eliminar</button>
                     </td>
                 </tr>
             `).join('');
@@ -791,7 +1227,8 @@
                     <td><span style="color: ${getStatusColor(order.status)}">${getStatusLabel(order.status)}</span></td>
                     <td>${new Date(order.created).toLocaleDateString()}</td>
                     <td>
-                        <button class="btn btn-danger" onclick="deleteOrder('${order.id}')" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">Eliminar</button>
+                        <button class="btn btn-warning btn-sm" onclick="editOrderStatus('${order.id}')">Editar</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteOrder('${order.id}')">Eliminar</button>
                     </td>
                 </tr>
             `).join('');
@@ -811,7 +1248,7 @@
                     <td>${formatCurrency(expense.amount)}</td>
                     <td>${new Date(expense.date).toLocaleDateString()}</td>
                     <td>
-                        <button class="btn btn-danger" onclick="deleteExpense('${expense.id}')" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;">Eliminar</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteExpense('${expense.id}')">Eliminar</button>
                     </td>
                 </tr>
             `).join('');
@@ -851,6 +1288,10 @@
             const totalRevenue = orders.reduce((sum, order) => sum + order.total, 0);
             const totalExpenseAmount = expenses.reduce((sum, expense) => sum + expense.amount, 0);
             const totalProfit = totalRevenue - totalExpenseAmount;
+            const pendingDeliveriesCount = deliveries.filter(d => d.status !== 'delivered' && d.status !== 'cancelled').length;
+            const deliveredCount = deliveries.filter(d => d.status === 'delivered').length;
+            const totalDeliveries = deliveries.length;
+            const deliveryRate = totalDeliveries > 0 ? Math.round((deliveredCount / totalDeliveries) * 100) : 0;
 
             // Actualizar navbar
             document.getElementById('totalProducts').textContent = products.length;
@@ -858,12 +1299,15 @@
             document.getElementById('totalRevenue').textContent = formatCurrency(totalRevenue);
             document.getElementById('totalExpenses').textContent = formatCurrency(totalExpenseAmount);
             document.getElementById('totalProfit').textContent = formatCurrency(totalProfit);
+            document.getElementById('pendingDeliveries').textContent = pendingDeliveriesCount;
 
             // Actualizar dashboard
             document.getElementById('dashProducts').textContent = products.length;
             document.getElementById('dashOrders').textContent = orders.length;
             document.getElementById('dashRevenue').textContent = formatCurrency(totalRevenue);
             document.getElementById('dashProfit').textContent = formatCurrency(totalProfit);
+            document.getElementById('dashPendingDeliveries').textContent = pendingDeliveriesCount;
+            document.getElementById('dashDeliveryRate').textContent = deliveryRate + '%';
 
             // Actualizar color de ganancia
             const profitElements = [document.getElementById('totalProfit'), document.getElementById('dashProfit')];
@@ -894,12 +1338,16 @@
                     
                     // Eliminar transacción relacionada
                     transactions = transactions.filter(t => !t.description.includes(order.customer));
+                    
+                    // Eliminar entrega relacionada
+                    deliveries = deliveries.filter(d => d.orderId !== id);
                 }
                 
                 orders = orders.filter(o => o.id !== id);
                 saveData();
                 updateAllDisplays();
                 updateOrdersTable();
+                updateDeliveriesDisplay();
             }
         }
 
@@ -907,7 +1355,6 @@
             if (confirm('¿Estás seguro de eliminar este gasto?')) {
                 const expense = expenses.find(e => e.id === id);
                 if (expense) {
-                    // Eliminar transacción relacionada
                     transactions = transactions.filter(t => !t.description.includes(expense.description));
                 }
                 
@@ -977,8 +1424,9 @@
 
                 // Pedidos de ejemplo
                 const sampleOrders = [
-                    { customer: 'María González', productIndex: 0, quantity: 1, status: 'delivered' },
-                    { customer: 'Carlos Rodríguez', productIndex: 1, quantity: 2, status: 'confirmed' }
+                    { customer: 'María González', productIndex: 0, quantity: 1, status: 'confirmed' },
+                    { customer: 'Carlos Rodríguez', productIndex: 1, quantity: 2, status: 'delivered' },
+                    { customer: 'Ana Pérez', productIndex: 2, quantity: 1, status: 'pending' }
                 ];
 
                 sampleOrders.forEach(orderData => {
@@ -1035,6 +1483,7 @@
                 });
 
                 saveData();
+                syncDeliveries();
                 updateAllDisplays();
                 alert('Datos de ejemplo cargados correctamente');
             }
@@ -1046,6 +1495,7 @@
             localStorage.setItem('berserker_orders', JSON.stringify(orders));
             localStorage.setItem('berserker_expenses', JSON.stringify(expenses));
             localStorage.setItem('berserker_transactions', JSON.stringify(transactions));
+            localStorage.setItem('berserker_deliveries', JSON.stringify(deliveries));
         }
 
         function loadData() {
@@ -1053,6 +1503,7 @@
             orders = JSON.parse(localStorage.getItem('berserker_orders') || '[]');
             expenses = JSON.parse(localStorage.getItem('berserker_expenses') || '[]');
             transactions = JSON.parse(localStorage.getItem('berserker_transactions') || '[]');
+            deliveries = JSON.parse(localStorage.getItem('berserker_deliveries') || '[]');
         }
 
         // Cerrar modales al hacer clic fuera
@@ -1062,7 +1513,7 @@
             }
         }
 
-        console.log('BERSERKER.CO ERP - Versión Simple cargada correctamente');
+        console.log('BERSERKER.CO ERP - Versión Completa con Gestión de Entregas cargada correctamente');
     </script>
 </body>
 </html>
