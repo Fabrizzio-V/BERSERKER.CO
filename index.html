@@ -29,6 +29,8 @@
             --gradient-success: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
             --gradient-warning: linear-gradient(135deg, #fcb045 0%, #fd1d1d 100%);
             --gradient-info: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            --gradient-cash: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+            --gradient-bank: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
             --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
         }
@@ -109,14 +111,14 @@
             border-radius: 8px;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            min-width: 120px;
-            max-width: 140px;
+            min-width: 140px;
+            max-width: 160px;
             flex: 1;
         }
 
         .stat-value {
             font-weight: 700;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             margin-bottom: 0.2rem;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
             line-height: 1.1;
@@ -124,7 +126,7 @@
         }
 
         .stat-label {
-            font-size: 0.55rem;
+            font-size: 0.6rem;
             opacity: 0.95;
             text-transform: uppercase;
             letter-spacing: 0.3px;
@@ -323,6 +325,224 @@
         .btn-sm {
             padding: 0.5rem 1rem;
             font-size: 0.9rem;
+        }
+
+        /* ESTILOS ESPECÍFICOS PARA FLUJO DE CAJA */
+        .cash-flow-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .cash-flow-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            border-left: 4px solid #ddd;
+        }
+
+        .cash-flow-card.cash {
+            border-left-color: #f39c12;
+            background: linear-gradient(135deg, #fef9e7 0%, #ffffff 100%);
+        }
+
+        .cash-flow-card.bank {
+            border-left-color: #3498db;
+            background: linear-gradient(135deg, #e3f2fd 0%, #ffffff 100%);
+        }
+
+        .cash-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .cash-item {
+            text-align: center;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .cash-item.positive {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .cash-item.negative {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .cash-value {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 0.3rem;
+        }
+
+        .cash-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .transaction-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem;
+            border-bottom: 1px solid #f1f5f9;
+            transition: background-color 0.3s ease;
+        }
+
+        .transaction-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .transaction-info {
+            flex-grow: 1;
+        }
+
+        .transaction-type {
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+
+        .transaction-detail {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+
+        .transaction-amount {
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .transaction-amount.income {
+            color: #27ae60;
+        }
+
+        .transaction-amount.expense {
+            color: #e74c3c;
+        }
+
+        .close-cash-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .close-cash-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .close-cash-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .close-cash-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .close-cash-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.3rem;
+        }
+
+        .close-cash-label {
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+
+        .close-button {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .close-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .cash-history {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .cash-history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .cash-history-date {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .cash-history-amounts {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .payment-method-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .payment-method-btn {
+            padding: 0.5rem;
+            border: 2px solid #e1e8ed;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+
+        .payment-method-btn.active {
+            background: var(--secondary);
+            color: white;
+            border-color: var(--secondary);
         }
 
         .table-container {
@@ -737,6 +957,38 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
+        /* NUEVOS ESTILOS PARA TRANSFERENCIAS */
+        .transfer-form {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 1rem;
+            align-items: end;
+            margin-bottom: 1rem;
+        }
+
+        .transfer-arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .backup-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .export-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
         /* Mobile responsiveness */
         @media (max-width: 768px) {
             .main-grid {
@@ -787,17 +1039,17 @@
             }
 
             .stat-item {
-                min-width: 80px;
-                max-width: 100px;
-                font-size: 0.7rem;
+                min-width: 90px;
+                max-width: 110px;
+                font-size: 0.75rem;
             }
 
             .stat-value {
-                font-size: 0.65rem;
+                font-size: 0.7rem;
             }
 
             .stat-label {
-                font-size: 0.45rem;
+                font-size: 0.5rem;
             }
 
             .date-filters {
@@ -865,6 +1117,27 @@
             .priority-grid {
                 grid-template-columns: 1fr;
             }
+
+            .cash-flow-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .close-cash-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .transfer-form {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .transfer-arrow {
+                transform: rotate(90deg);
+            }
+
+            .export-buttons {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -905,13 +1178,13 @@
                 </div>
                 <div class="date-filters">
                     <span style="font-size: 0.8rem; opacity: 0.9;">Período:</span>
-                    <button class="date-filter-btn active" onclick="filterByDatePeriod('all', this)">Todo</button>
-                    <button class="date-filter-btn" onclick="filterByDatePeriod('today', this)">Hoy</button>
-                    <button class="date-filter-btn" onclick="filterByDatePeriod('yesterday', this)">Ayer</button>
-                    <button class="date-filter-btn" onclick="filterByDatePeriod('week', this)">Esta Semana</button>
-                    <button class="date-filter-btn" onclick="filterByDatePeriod('lastWeek', this)">Semana Pasada</button>
-                    <button class="date-filter-btn" onclick="filterByDatePeriod('month', this)">Este Mes</button>
-                    <button class="date-filter-btn" onclick="filterByDatePeriod('lastMonth', this)">Mes Pasado</button>
+                    <button class="date-filter-btn active" onclick="filterByDatePeriod('all')">Todo</button>
+                    <button class="date-filter-btn" onclick="filterByDatePeriod('today')">Hoy</button>
+                    <button class="date-filter-btn" onclick="filterByDatePeriod('yesterday')">Ayer</button>
+                    <button class="date-filter-btn" onclick="filterByDatePeriod('week')">Esta Semana</button>
+                    <button class="date-filter-btn" onclick="filterByDatePeriod('lastWeek')">Semana Pasada</button>
+                    <button class="date-filter-btn" onclick="filterByDatePeriod('month')">Este Mes</button>
+                    <button class="date-filter-btn" onclick="filterByDatePeriod('lastMonth')">Mes Pasado</button>
                 </div>
             </div>
         </div>
@@ -925,6 +1198,7 @@
             <aside class="sidebar">
                 <ul class="sidebar-menu">
                     <li><a href="#" class="menu-item active" data-section="dashboard">📊 Dashboard</a></li>
+                    <li><a href="#" class="menu-item" data-section="cashflow">💰 Flujo de Caja</a></li>
                     <li><a href="#" class="menu-item" data-section="delivery">🚚 Panel Entregas</a></li>
                     <li><a href="#" class="menu-item" data-section="products">🛍️ Productos</a></li>
                     <li><a href="#" class="menu-item" data-section="orders">🛒 Pedidos</a></li>
@@ -932,6 +1206,7 @@
                     <li><a href="#" class="menu-item" data-section="expenses">💸 Gastos</a></li>
                     <li><a href="#" class="menu-item" data-section="calculator">🧮 Calculadora</a></li>
                     <li><a href="#" class="menu-item" data-section="reports">📈 Reportes</a></li>
+                    <li><a href="#" class="menu-item" data-section="backup">💾 Backup</a></li>
                 </ul>
             </aside>
 
@@ -975,7 +1250,7 @@
                                 <div class="stat-value" id="dashMargin">0%</div>
                                 <div class="stat-label">Margen Promedio</div>
                             </div>
-                            <div class="stat-card" style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); color: white;">
+                            <div class="stat-card" style="background: var(--gradient-bank); color: white;">
                                 <div class="stat-value" id="dashBank">₲0</div>
                                 <div class="stat-label">Saldo Banco</div>
                             </div>
@@ -990,7 +1265,131 @@
                                 <button class="btn btn-primary" onclick="openOrderModal()">🛒 Nuevo Pedido</button>
                                 <button class="btn btn-info" onclick="openPurchaseModal()">📦 Nueva Compra</button>
                                 <button class="btn btn-danger" onclick="openExpenseModal()">💸 Registrar Gasto</button>
+                                <button class="btn btn-warning" onclick="openTransactionModal('income')">💰 Ingreso</button>
                                 <button class="btn btn-secondary" onclick="generateSampleData()">📊 Datos de Prueba</button>
+                            </div>
+                        </div>
+
+                        <!-- Resumen de productos con stock bajo -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">⚠️ Alertas de Stock</h3>
+                            </div>
+                            <div id="lowStockAlerts">
+                                <p style="text-align: center; color: #666;">No hay productos con stock bajo</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECCIÓN: Flujo de Caja -->
+                <div id="cashflow" class="section">
+                    <div class="content-header">
+                        <h2>💰 Control de Flujo de Caja</h2>
+                        <p>Gestiona tus ingresos, egresos y cierre diario de caja</p>
+                    </div>
+                    <div class="content-body">
+                        <!-- Resumen del Día -->
+                        <div class="cash-summary">
+                            <div class="cash-item positive">
+                                <div class="cash-value" id="todayIncome">₲0</div>
+                                <div class="cash-label">Ingresos Hoy</div>
+                            </div>
+                            <div class="cash-item negative">
+                                <div class="cash-value" id="todayExpenses">₲0</div>
+                                <div class="cash-label">Egresos Hoy</div>
+                            </div>
+                            <div class="cash-item">
+                                <div class="cash-value" id="todayNet">₲0</div>
+                                <div class="cash-label">Neto del Día</div>
+                            </div>
+                            <div class="cash-item">
+                                <div class="cash-value" id="cashBalance">₲0</div>
+                                <div class="cash-label">Saldo Total</div>
+                            </div>
+                        </div>
+
+                        <!-- Efectivo vs Banco -->
+                        <div class="cash-flow-grid">
+                            <div class="cash-flow-card cash">
+                                <h3 style="margin-bottom: 1rem; color: #f39c12;">💵 Efectivo</h3>
+                                <div class="cash-summary">
+                                    <div class="cash-item">
+                                        <div class="cash-value" id="cashInHand">₲0</div>
+                                        <div class="cash-label">En Caja</div>
+                                    </div>
+                                    <div class="cash-item positive">
+                                        <div class="cash-value" id="cashIncome">₲0</div>
+                                        <div class="cash-label">Ingresos Efectivo</div>
+                                    </div>
+                                </div>
+                                <div class="transaction-list" id="cashTransactions">
+                                    <div style="text-align: center; color: #666; padding: 1rem;">No hay transacciones en efectivo</div>
+                                </div>
+                            </div>
+
+                            <div class="cash-flow-card bank">
+                                <h3 style="margin-bottom: 1rem; color: #3498db;">🏦 Banco</h3>
+                                <div class="cash-summary">
+                                    <div class="cash-item">
+                                        <div class="cash-value" id="bankAmount">₲0</div>
+                                        <div class="cash-label">Saldo Banco</div>
+                                    </div>
+                                    <div class="cash-item positive">
+                                        <div class="cash-value" id="bankIncome">₲0</div>
+                                        <div class="cash-label">Ingresos Banco</div>
+                                    </div>
+                                </div>
+                                <div class="transaction-list" id="bankTransactions">
+                                    <div style="text-align: center; color: #666; padding: 1rem;">No hay transacciones bancarias</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sección de Cierre de Caja -->
+                        <div class="close-cash-section">
+                            <div class="close-cash-title">🔒 Cierre de Caja Diario</div>
+                            <div class="close-cash-grid">
+                                <div class="close-cash-item">
+                                    <div class="close-cash-value" id="closeIncome">₲0</div>
+                                    <div class="close-cash-label">Total Ingresos</div>
+                                </div>
+                                <div class="close-cash-item">
+                                    <div class="close-cash-value" id="closeExpenses">₲0</div>
+                                    <div class="close-cash-label">Total Egresos</div>
+                                </div>
+                                <div class="close-cash-item">
+                                    <div class="close-cash-value" id="closeNet">₲0</div>
+                                    <div class="close-cash-label">Resultado del Día</div>
+                                </div>
+                                <div class="close-cash-item">
+                                    <div class="close-cash-value" id="closeFinalBalance">₲0</div>
+                                    <div class="close-cash-label">Saldo Final</div>
+                                </div>
+                            </div>
+                            <button class="close-button" onclick="openCloseCashModal()">
+                                🔒 CERRAR CAJA DEL DÍA
+                            </button>
+                        </div>
+
+                        <!-- Historial de Cierres -->
+                        <div class="cash-history">
+                            <h3 style="margin-bottom: 1rem; color: var(--primary);">📈 Historial de Cierres</h3>
+                            <div id="cashHistoryList">
+                                <div style="text-align: center; color: #666; padding: 2rem;">No hay cierres registrados</div>
+                            </div>
+                        </div>
+
+                        <!-- Acciones Rápidas -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">⚡ Acciones Rápidas</h3>
+                            </div>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                                <button class="btn btn-success" onclick="openTransactionModal('income')">💰 Registrar Ingreso</button>
+                                <button class="btn btn-danger" onclick="openTransactionModal('expense')">💸 Registrar Gasto</button>
+                                <button class="btn btn-info" onclick="openTransferModal()">🔄 Transferir Fondos</button>
+                                <button class="btn btn-warning" onclick="reconcileCash()">🔍 Reconciliar Caja</button>
                             </div>
                         </div>
                     </div>
@@ -1033,26 +1432,6 @@
                             </div>
                         </div>
 
-                        <!-- Filtros -->
-                        <div class="compact-filters">
-                            <div class="filter-group">
-                                <span class="filter-label">Ver:</span>
-                                <button class="filter-chip active" onclick="filterDeliveryStatus('all', this)">Todos</button>
-                                <button class="filter-chip" onclick="filterDeliveryStatus('pending', this)">Pendientes</button>
-                                <button class="filter-chip" onclick="filterDeliveryStatus('confirmed', this)">Confirmados</button>
-                                <button class="filter-chip" onclick="filterDeliveryStatus('prepared', this)">Preparados</button>
-                                <button class="filter-chip" onclick="filterDeliveryStatus('shipped', this)">En Tránsito</button>
-                            </div>
-                            <div class="filter-group">
-                                <span class="filter-label">Método:</span>
-                                <button class="filter-chip active" onclick="filterDeliveryMethod('all', this)">Todos</button>
-                                <button class="filter-chip" onclick="filterDeliveryMethod('personal', this)">🚶‍♂️ Nosotros</button>
-                                <button class="filter-chip" onclick="filterDeliveryMethod('delivery', this)">🛵 Delivery</button>
-                                <button class="filter-chip" onclick="filterDeliveryMethod('pickup', this)">🏪 Recolección</button>
-                                <button class="filter-chip" onclick="filterDeliveryMethod('shipping', this)">📮 Envío</button>
-                            </div>
-                        </div>
-
                         <!-- Panel Principal de Estados -->
                         <div class="delivery-grid">
                             <!-- PENDIENTES -->
@@ -1077,17 +1456,6 @@
                                 </div>
                             </div>
 
-                            <!-- PREPARADOS -->
-                            <div class="delivery-status-card" style="border-left-color: #17a2b8; background: linear-gradient(135deg, #d1ecf1 0%, #ffffff 100%);" onclick="toggleDeliverySection('prepared-section')">
-                                <div style="display: flex; justify-content: space-between; align-items: center;">
-                                    <div>
-                                        <h3>📦 PREPARADOS</h3>
-                                        <p>Listos para entregar/enviar</p>
-                                    </div>
-                                    <div style="font-size: 2rem; font-weight: bold;" id="preparedCount">0</div>
-                                </div>
-                            </div>
-
                             <!-- EN TRÁNSITO -->
                             <div class="delivery-status-card shipped" onclick="toggleDeliverySection('shipped-section')">
                                 <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -1096,6 +1464,17 @@
                                         <p>En camino al cliente</p>
                                     </div>
                                     <div style="font-size: 2rem; font-weight: bold;" id="shippedCount">0</div>
+                                </div>
+                            </div>
+
+                            <!-- ENTREGADOS -->
+                            <div class="delivery-status-card" style="border-left-color: #27ae60; background: linear-gradient(135deg, #d4edda 0%, #ffffff 100%);" onclick="toggleDeliverySection('delivered-section')">
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <div>
+                                        <h3>📋 ENTREGADOS</h3>
+                                        <p>Completados exitosamente</p>
+                                    </div>
+                                    <div style="font-size: 2rem; font-weight: bold;" id="deliveredCount">0</div>
                                 </div>
                             </div>
                         </div>
@@ -1121,16 +1500,6 @@
                             </div>
                         </div>
 
-                        <div id="prepared-section" class="card" style="display: none;">
-                            <div class="card-header">
-                                <h3>📦 Pedidos Preparados - Asignar Entrega</h3>
-                                <button class="btn btn-secondary btn-sm" onclick="toggleDeliverySection('prepared-section')">Cerrar</button>
-                            </div>
-                            <div id="preparedOrders">
-                                <!-- Se llena dinámicamente -->
-                            </div>
-                        </div>
-
                         <div id="shipped-section" class="card" style="display: none;">
                             <div class="card-header">
                                 <h3>🚚 Pedidos en Tránsito - Por Confirmar Entrega</h3>
@@ -1141,24 +1510,13 @@
                             </div>
                         </div>
 
-                        <!-- Resumen de Hoy -->
-                        <div class="card">
+                        <div id="delivered-section" class="card" style="display: none;">
                             <div class="card-header">
-                                <h3>📅 Resumen de Hoy</h3>
+                                <h3>📋 Pedidos Entregados</h3>
+                                <button class="btn btn-secondary btn-sm" onclick="toggleDeliverySection('delivered-section')">Cerrar</button>
                             </div>
-                            <div class="stats-grid">
-                                <div class="stat-card">
-                                    <div class="stat-value" id="todayNewOrders">0</div>
-                                    <div class="stat-label">Pedidos Nuevos</div>
-                                </div>
-                                <div class="stat-card" style="background: var(--gradient-success); color: white;">
-                                    <div class="stat-value" id="todayDelivered">0</div>
-                                    <div class="stat-label">Entregados Hoy</div>
-                                </div>
-                                <div class="stat-card" style="background: var(--gradient-info); color: white;">
-                                    <div class="stat-value" id="todayRevenue">₲0</div>
-                                    <div class="stat-label">Ingresos del Día</div>
-                                </div>
+                            <div id="deliveredOrders">
+                                <!-- Se llena dinámicamente -->
                             </div>
                         </div>
                     </div>
@@ -1174,26 +1532,27 @@
                             <button class="btn btn-success" onclick="openProductModal()">+ Nuevo Producto</button>
                             <div class="toolbar">
                                 <button class="btn btn-secondary" onclick="syncData()">Sincronizar</button>
+                                <button class="btn btn-info" onclick="updateAllStock()">Actualizar Stock</button>
                             </div>
                         </div>
 
                         <div class="compact-filters">
                             <div class="filter-group">
                                 <span class="filter-label">Categoría:</span>
-                                <button class="filter-chip active" onclick="filterByCategory('', this)">Todas</button>
-                                <button class="filter-chip" onclick="filterByCategory('electronica', this)">Electrónica</button>
-                                <button class="filter-chip" onclick="filterByCategory('ropa', this)">Ropa</button>
-                                <button class="filter-chip" onclick="filterByCategory('hogar', this)">Hogar</button>
-                                <button class="filter-chip" onclick="filterByCategory('deportes', this)">Deportes</button>
-                                <button class="filter-chip" onclick="filterByCategory('belleza', this)">Belleza</button>
-                                <button class="filter-chip" onclick="filterByCategory('otros', this)">Otros</button>
+                                <button class="filter-chip active" onclick="filterByCategory('')">Todas</button>
+                                <button class="filter-chip" onclick="filterByCategory('electronica')">Electrónica</button>
+                                <button class="filter-chip" onclick="filterByCategory('ropa')">Ropa</button>
+                                <button class="filter-chip" onclick="filterByCategory('hogar')">Hogar</button>
+                                <button class="filter-chip" onclick="filterByCategory('deportes')">Deportes</button>
+                                <button class="filter-chip" onclick="filterByCategory('belleza')">Belleza</button>
+                                <button class="filter-chip" onclick="filterByCategory('otros')">Otros</button>
                             </div>
                             <div class="filter-group">
                                 <span class="filter-label">Stock:</span>
-                                <button class="filter-chip active" onclick="filterByStock('', this)">Todos</button>
-                                <button class="filter-chip" onclick="filterByStock('available', this)">Con Stock</button>
-                                <button class="filter-chip" onclick="filterByStock('low', this)">Poco Stock</button>
-                                <button class="filter-chip" onclick="filterByStock('out', this)">Sin Stock</button>
+                                <button class="filter-chip active" onclick="filterByStock('')">Todos</button>
+                                <button class="filter-chip" onclick="filterByStock('available')">Con Stock</button>
+                                <button class="filter-chip" onclick="filterByStock('low')">Poco Stock</button>
+                                <button class="filter-chip" onclick="filterByStock('out')">Sin Stock</button>
                             </div>
                         </div>
 
@@ -1233,18 +1592,21 @@
                     <div class="content-body">
                         <div class="action-buttons">
                             <button class="btn btn-success" onclick="openOrderModal()">+ Nuevo Pedido</button>
+                            <div class="toolbar">
+                                <button class="btn btn-warning" onclick="markAllAsDelivered()">📋 Marcar Todo Entregado</button>
+                            </div>
                         </div>
 
                         <div class="compact-filters">
                             <div class="filter-group">
                                 <span class="filter-label">Estado:</span>
-                                <button class="filter-chip active" onclick="filterOrdersByStatus('', this)">Todos</button>
-                                <button class="filter-chip" onclick="filterOrdersByStatus('pending', this)">Pendiente</button>
-                                <button class="filter-chip" onclick="filterOrdersByStatus('confirmed', this)">Confirmado</button>
-                                <button class="filter-chip" onclick="filterOrdersByStatus('prepared', this)">Preparado</button>
-                                <button class="filter-chip" onclick="filterOrdersByStatus('shipped', this)">Enviado</button>
-                                <button class="filter-chip" onclick="filterOrdersByStatus('delivered', this)">Entregado</button>
-                                <button class="filter-chip" onclick="filterOrdersByStatus('cancelled', this)">Cancelado</button>
+                                <button class="filter-chip active" onclick="filterOrdersByStatus('')">Todos</button>
+                                <button class="filter-chip" onclick="filterOrdersByStatus('pending')">Pendiente</button>
+                                <button class="filter-chip" onclick="filterOrdersByStatus('confirmed')">Confirmado</button>
+                                <button class="filter-chip" onclick="filterOrdersByStatus('prepared')">Preparado</button>
+                                <button class="filter-chip" onclick="filterOrdersByStatus('shipped')">Enviado</button>
+                                <button class="filter-chip" onclick="filterOrdersByStatus('delivered')">Entregado</button>
+                                <button class="filter-chip" onclick="filterOrdersByStatus('cancelled')">Cancelado</button>
                             </div>
                         </div>
 
@@ -1291,19 +1653,11 @@
                         <div class="compact-filters">
                             <div class="filter-group">
                                 <span class="filter-label">Proveedor:</span>
-                                <button class="filter-chip active" onclick="filterPurchasesBySupplier('', this)">Todos</button>
-                                <button class="filter-chip" onclick="filterPurchasesBySupplier('TechSupplier', this)">TechSupplier</button>
-                                <button class="filter-chip" onclick="filterPurchasesBySupplier('SportWear Co', this)">SportWear Co</button>
-                                <button class="filter-chip" onclick="filterPurchasesBySupplier('HomeDecor', this)">HomeDecor</button>
-                                <button class="filter-chip" onclick="filterPurchasesBySupplier('OutdoorGear', this)">OutdoorGear</button>
-                            </div>
-                            <div class="filter-group">
-                                <span class="filter-label">Fecha:</span>
-                                <button class="filter-chip active" onclick="filterPurchasesByDate('', this)">Todas</button>
-                                <button class="filter-chip" onclick="filterPurchasesByDate('today', this)">Hoy</button>
-                                <button class="filter-chip" onclick="filterPurchasesByDate('week', this)">Esta Semana</button>
-                                <button class="filter-chip" onclick="filterPurchasesByDate('month', this)">Este Mes</button>
-                                <input type="date" class="form-control" id="customPurchaseDateFilter" onchange="filterPurchasesByDate('custom', this)" style="max-width: 150px; margin-left: 10px;">
+                                <button class="filter-chip active" onclick="filterPurchasesBySupplier('')">Todos</button>
+                                <button class="filter-chip" onclick="filterPurchasesBySupplier('TechSupplier')">TechSupplier</button>
+                                <button class="filter-chip" onclick="filterPurchasesBySupplier('SportWear Co')">SportWear Co</button>
+                                <button class="filter-chip" onclick="filterPurchasesBySupplier('HomeDecor')">HomeDecor</button>
+                                <button class="filter-chip" onclick="filterPurchasesBySupplier('OutdoorGear')">OutdoorGear</button>
                             </div>
                         </div>
 
@@ -1361,6 +1715,9 @@
                     <div class="content-body">
                         <div class="action-buttons">
                             <button class="btn btn-danger" onclick="openExpenseModal()">💸 Nuevo Gasto</button>
+                            <div class="toolbar">
+                                <button class="btn btn-info" onclick="showExpensesSummary()">📊 Resumen Categorías</button>
+                            </div>
                         </div>
 
                         <div class="table-container">
@@ -1398,187 +1755,6 @@
                             </div>
                             
                             <div class="form-row">
-                                <div class="form-group">
-                                    <label>Costo del Producto (₲)</label>
-                                    <input type="number" class="form-control" id="calcCost" onchange="calculatePrice()">
-                                </div>
-                                <div class="form-group">
-                                    <label>Margen Deseado (%)</label>
-                                    <input type="number" class="form-control" id="calcMargin" value="30" onchange="calculatePrice()">
-                                </div>
-                            </div>
-
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Costo de Envío (₲)</label>
-                                    <input type="number" class="form-control" id="calcShipping" onchange="calculatePrice()">
-                                </div>
-                                <div class="form-group">
-                                    <label>Comisión Plataforma (%)</label>
-                                    <input type="number" class="form-control" id="calcCommission" value="10" onchange="calculatePrice()">
-                                </div>
-                            </div>
-
-                            <div class="stats-grid">
-                                <div class="stat-card" style="background: var(--gradient-primary); color: white;">
-                                    <div class="stat-value" id="suggestedPrice">₲0</div>
-                                    <div class="stat-label">Precio Sugerido</div>
-                                </div>
-                                <div class="stat-card" style="background: var(--gradient-success); color: white;">
-                                    <div class="stat-value" id="expectedProfit">₲0</div>
-                                    <div class="stat-label">Ganancia Esperada</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Reportes -->
-                <div id="reports" class="section">
-                    <div class="content-header">
-                        <h2>Reportes</h2>
-                    </div>
-                    <div class="content-body">
-                        <div class="stats-grid">
-                            <div class="stat-card">
-                                <div class="stat-value" id="reportRevenue">₲0</div>
-                                <div class="stat-label">Ingresos Totales</div>
-                            </div>
-                            <div class="stat-card" style="background: var(--gradient-info); color: white;">
-                                <div class="stat-value" id="reportPurchases">₲0</div>
-                                <div class="stat-label">Compras Totales</div>
-                            </div>
-                            <div class="stat-card">
-                                <div class="stat-value" id="reportExpenses">₲0</div>
-                                <div class="stat-label">Gastos Totales</div>
-                            </div>
-                            <div class="stat-card" style="background: var(--gradient-success); color: white;">
-                                <div class="stat-value" id="reportProfit">₲0</div>
-                                <div class="stat-label">Ganancia Neta</div>
-                            </div>
-                            <div class="stat-card" style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); color: white;">
-                                <div class="stat-value" id="reportBank">₲0</div>
-                                <div class="stat-label">Saldo Banco</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </main>
-        </div>
-    </div>
-
-    <!-- Modales -->
-    <div id="productModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('productModal')">&times;</span>
-            <h2 id="productModalTitle">Nuevo Producto</h2>
-            <form onsubmit="saveProduct(event)">
-                <input type="hidden" id="productId">
-                <div class="form-group">
-                    <label>Nombre del Producto</label>
-                    <input type="text" class="form-control" id="productName" required>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Proveedor</label>
-                        <input type="text" class="form-control" id="productSupplier" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Categoría</label>
-                        <select class="form-control" id="productCategory">
-                            <option value="electronica">Electrónica</option>
-                            <option value="ropa">Ropa</option>
-                            <option value="hogar">Hogar</option>
-                            <option value="deportes">Deportes</option>
-                            <option value="belleza">Belleza</option>
-                            <option value="otros">Otros</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Stock</label>
-                        <input type="number" class="form-control" id="productStock" value="0">
-                    </div>
-                    <div class="form-group">
-                        <label>Stock Mínimo</label>
-                        <input type="number" class="form-control" id="productMinStock" value="5">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Costo (₲)</label>
-                        <input type="number" class="form-control" id="productCost" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Precio de Venta (₲)</label>
-                        <input type="number" class="form-control" id="productPrice" required>
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-success">💾 Guardar Producto</button>
-            </form>
-        </div>
-    </div>
-
-    <div id="orderModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('orderModal')">&times;</span>
-            <h2>Nuevo Pedido</h2>
-            <form onsubmit="saveOrder(event)">
-                <input type="hidden" id="orderId">
-                <div class="form-group">
-                    <label>Cliente</label>
-                    <input type="text" class="form-control" id="orderCustomer" required>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Canal de Venta</label>
-                        <select class="form-control" id="orderChannel">
-                            <option value="facebook">Facebook</option>
-                            <option value="instagram">Instagram</option>
-                            <option value="whatsapp">WhatsApp</option>
-                            <option value="marketplace">Marketplace</option>
-                            <option value="web">Sitio Web</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Estado</label>
-                        <select class="form-control" id="orderStatus">
-                            <option value="pending">Pendiente</option>
-                            <option value="confirmed">Confirmado</option>
-                            <option value="prepared">Preparado</option>
-                            <option value="shipped">En Tránsito</option>
-                            <option value="delivered">Entregado</option>
-                            <option value="cancelled">Cancelado</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Método de Entrega</label>
-                        <select class="form-control" id="orderDeliveryMethod">
-                            <option value="delivery">Delivery Tercerizado</option>
-                            <option value="personal">Entrega Personal (Nosotros)</option>
-                            <option value="pickup">Recolección en Punto</option>
-                            <option value="shipping">Envío Postal</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Responsable de Entrega</label>
-                        <input type="text" class="form-control" id="orderDeliveryPerson" placeholder="Ej: Juan, Delivery Express, Cliente">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Dirección de Entrega</label>
-                    <input type="text" class="form-control" id="orderDeliveryAddress" placeholder="Dirección completa para entrega">
-                </div>
-                <div class="form-group">
-                    <label>Producto</label>
-                    <select class="form-control" id="orderProduct" onchange="updateOrderPrice()" required>
-                        <option value="">Seleccionar producto...</option>
-                    </select>
-                </div>
-                <div class="form-row">
                     <div class="form-group">
                         <label>Cantidad</label>
                         <input type="number" class="form-control" id="orderQuantity" value="1" min="1" onchange="updateOrderPrice()">
@@ -1716,37 +1892,25 @@
         let orders = [];
         let purchases = [];
         let expenses = [];
+        let transactions = [];
+        let cashClosures = [];
         let isFirebaseConnected = false;
         let currentEditingOrderId = null;
         let currentCategoryFilter = '';
         let currentStockFilter = '';
         let currentOrderStatusFilter = '';
         let currentPurchaseSupplierFilter = '';
-        let currentPurchaseDateFilter = '';
         let currentDatePeriod = 'all';
-        let currentDeliveryStatusFilter = 'all';
-        let currentDeliveryMethodFilter = 'all';
+        const EXCHANGE_RATE = 7300; // USD a PYG
 
         document.addEventListener('DOMContentLoaded', function() {
             setupMenuNavigation();
+            setupPaymentMethodButtons();
             initializeFirebase();
-            
-            // Configurar fechas en los inputs
-            const today = getTodayString();
-            
-            const expenseDateInput = document.getElementById('expenseDate');
-            const purchaseDateInput = document.getElementById('purchaseDate');
-            
-            if (expenseDateInput) {
-                expenseDateInput.value = today;
-            }
-            
-            if (purchaseDateInput) {
-                purchaseDateInput.value = today;
-            }
+            setTodayDate();
         });
 
-        // SISTEMA DE FECHAS CORREGIDO
+        // ========== SISTEMA UNIFICADO DE FECHAS ==========
         function getTodayString() {
             const now = new Date();
             const year = now.getFullYear();
@@ -1755,14 +1919,69 @@
             return `${year}-${month}-${day}`;
         }
 
-        function getCurrentDateTime() {
-            return new Date().toISOString();
-        }
-
         function getCurrentTimestamp() {
             return new Date().toISOString();
         }
 
+        function setTodayDate() {
+            const today = getTodayString();
+            const dateInputs = ['expenseDate', 'purchaseDate', 'transactionDate'];
+            dateInputs.forEach(id => {
+                const input = document.getElementById(id);
+                if (input) input.value = today;
+            });
+        }
+
+        // ========== SISTEMA UNIFICADO DE FILTROS ==========
+        function filterByDatePeriod(period) {
+            currentDatePeriod = period;
+            
+            // Actualizar UI de filtros del navbar
+            document.querySelectorAll('.date-filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Actualizar TODAS las displays del sistema
+            updateAllDisplays();
+        }
+
+        function getFilteredDataByPeriod(dataArray, dateField = 'date') {
+            if (currentDatePeriod === 'all') return dataArray;
+            
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            
+            return dataArray.filter(item => {
+                const itemDate = new Date(item[dateField]);
+                
+                switch(currentDatePeriod) {
+                    case 'today':
+                        return itemDate.toDateString() === today.toDateString();
+                    case 'yesterday':
+                        const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
+                        return itemDate.toDateString() === yesterday.toDateString();
+                    case 'week':
+                        const weekStart = new Date(today.getTime() - (today.getDay() * 24 * 60 * 60 * 1000));
+                        return itemDate >= weekStart && itemDate <= now;
+                    case 'lastWeek':
+                        const lastWeekEnd = new Date(today.getTime() - (today.getDay() * 24 * 60 * 60 * 1000) - 1);
+                        const lastWeekStart = new Date(lastWeekEnd.getTime() - (6 * 24 * 60 * 60 * 1000));
+                        return itemDate >= lastWeekStart && itemDate <= lastWeekEnd;
+                    case 'month':
+                        const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+                        return itemDate >= monthStart && itemDate <= now;
+                    case 'lastMonth':
+                        const lastMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+                        const lastMonthEnd = new Date(now.getFullYear(), now.getMonth(), 0);
+                        return itemDate >= lastMonthStart && itemDate <= lastMonthEnd;
+                    default:
+                        return true;
+                }
+            });
+        }
+
+        // ========== FIREBASE ==========
         async function initializeFirebase() {
             showSyncStatus('Conectando a Firebase...', false);
             showLoading(true);
@@ -1780,12 +1999,14 @@
                 isFirebaseConnected = true;
                 await loadAllData();
                 showSyncStatus('Conectado a Firebase ✓', false);
+                updateSyncStatusDetails();
                 
             } catch (error) {
                 console.error('Error conectando a Firebase:', error);
                 isFirebaseConnected = false;
                 showSyncStatus('Modo offline - usando localStorage', true);
                 loadFromLocalStorage();
+                updateSyncStatusDetails();
             } finally {
                 showLoading(false);
             }
@@ -1795,7 +2016,8 @@
 
         async function saveToFirebase(collection, data, docId = null) {
             if (!isFirebaseConnected) {
-                return saveToLocalStorage();
+                saveToLocalStorage();
+                return docId || Date.now().toString();
             }
 
             try {
@@ -1833,7 +2055,7 @@
 
         async function deleteFromFirebase(collection, docId) {
             if (!isFirebaseConnected) {
-                return deleteFromLocalStorage();
+                return;
             }
 
             try {
@@ -1850,6 +2072,8 @@
                 orders = await loadFromFirebase('orders');
                 purchases = await loadFromFirebase('purchases');
                 expenses = await loadFromFirebase('expenses');
+                transactions = await loadFromFirebase('transactions');
+                cashClosures = await loadFromFirebase('cashClosures');
             } else {
                 loadFromLocalStorage();
             }
@@ -1860,6 +2084,9 @@
             localStorage.setItem('berserker_orders', JSON.stringify(orders));
             localStorage.setItem('berserker_purchases', JSON.stringify(purchases));
             localStorage.setItem('berserker_expenses', JSON.stringify(expenses));
+            localStorage.setItem('berserker_transactions', JSON.stringify(transactions));
+            localStorage.setItem('berserker_cashClosures', JSON.stringify(cashClosures));
+            localStorage.setItem('berserker_lastBackup', new Date().toISOString());
         }
 
         function loadFromLocalStorage() {
@@ -1867,274 +2094,11 @@
             orders = JSON.parse(localStorage.getItem('berserker_orders') || '[]');
             purchases = JSON.parse(localStorage.getItem('berserker_purchases') || '[]');
             expenses = JSON.parse(localStorage.getItem('berserker_expenses') || '[]');
+            transactions = JSON.parse(localStorage.getItem('berserker_transactions') || '[]');
+            cashClosures = JSON.parse(localStorage.getItem('berserker_cashClosures') || '[]');
         }
 
-        function deleteFromLocalStorage() {
-            saveToLocalStorage();
-        }
-
-        // FUNCIONES DE FILTRADO CORREGIDAS - ahora reciben el elemento como parámetro
-        function filterByDatePeriod(period, element) {
-            currentDatePeriod = period;
-            
-            document.querySelectorAll('.date-filter-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            if (element) {
-                element.classList.add('active');
-            }
-            
-            updateAllDisplays();
-        }
-
-        function filterByCategory(category, element) {
-            currentCategoryFilter = category;
-            
-            document.querySelectorAll('#products .compact-filters .filter-group:first-child .filter-chip').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            if (element) {
-                element.classList.add('active');
-            }
-            
-            updateProductsTable();
-        }
-
-        function filterByStock(stockType, element) {
-            currentStockFilter = stockType;
-            
-            document.querySelectorAll('#products .compact-filters .filter-group:last-child .filter-chip').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            if (element) {
-                element.classList.add('active');
-            }
-            
-            updateProductsTable();
-        }
-
-        function filterOrdersByStatus(status, element) {
-            currentOrderStatusFilter = status;
-            
-            document.querySelectorAll('#orders .compact-filters .filter-group:first-child .filter-chip').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            if (element) {
-                element.classList.add('active');
-            }
-            
-            updateOrdersTable();
-        }
-
-        function filterPurchasesBySupplier(supplier, element) {
-            currentPurchaseSupplierFilter = supplier;
-            
-            document.querySelectorAll('#purchases .compact-filters .filter-group:first-child .filter-chip').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            if (element) {
-                element.classList.add('active');
-            }
-            
-            updatePurchasesTable();
-        }
-
-        function filterPurchasesByDate(dateType, element) {
-            currentPurchaseDateFilter = dateType;
-            
-            document.querySelectorAll('#purchases .compact-filters .filter-group:last-child .filter-chip').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            if (element && dateType !== 'custom') {
-                element.classList.add('active');
-            } else if (dateType === 'custom') {
-                const customDateInput = document.getElementById('customPurchaseDateFilter');
-                if (customDateInput && customDateInput.value) {
-                    // Marcar como activo el filtro personalizado si tiene fecha
-                    document.querySelector('#purchases .filter-chip[onclick*="custom"]')?.classList.add('active');
-                }
-            }
-            
-            updatePurchasesTable();
-        }
-
-        function filterDeliveryStatus(status, element) {
-            currentDeliveryStatusFilter = status;
-            
-            document.querySelectorAll('#delivery .filter-group:first-child .filter-chip').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            if (element) {
-                element.classList.add('active');
-            }
-            
-            updateDeliveryPanel();
-        }
-
-        function filterDeliveryMethod(method, element) {
-            currentDeliveryMethodFilter = method;
-            
-            document.querySelectorAll('#delivery .filter-group:last-child .filter-chip').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            if (element) {
-                element.classList.add('active');
-            }
-            
-            updateDeliveryPanel();
-        }
-
-        function getOrdersByPeriod(period) {
-            if (period === 'all') return orders;
-            
-            const now = new Date();
-            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-            
-            return orders.filter(order => {
-                const orderDate = new Date(order.date);
-                
-                switch(period) {
-                    case 'today':
-                        return orderDate.toDateString() === today.toDateString();
-                    case 'yesterday':
-                        const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
-                        return orderDate.toDateString() === yesterday.toDateString();
-                    case 'week':
-                        const weekStart = new Date(today.getTime() - (today.getDay() * 24 * 60 * 60 * 1000));
-                        return orderDate >= weekStart && orderDate <= now;
-                    case 'lastWeek':
-                        const lastWeekEnd = new Date(today.getTime() - (today.getDay() * 24 * 60 * 60 * 1000) - 1);
-                        const lastWeekStart = new Date(lastWeekEnd.getTime() - (6 * 24 * 60 * 60 * 1000));
-                        return orderDate >= lastWeekStart && orderDate <= lastWeekEnd;
-                    case 'month':
-                        const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-                        return orderDate >= monthStart && orderDate <= now;
-                    case 'lastMonth':
-                        const lastMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-                        const lastMonthEnd = new Date(now.getFullYear(), now.getMonth(), 0);
-                        return orderDate >= lastMonthStart && orderDate <= lastMonthEnd;
-                    default:
-                        return true;
-                }
-            });
-        }
-
-        function getPurchasesByPeriod(period) {
-            if (period === 'all') return purchases;
-            
-            const now = new Date();
-            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-            
-            return purchases.filter(purchase => {
-                const purchaseDate = new Date(purchase.date);
-                
-                switch(period) {
-                    case 'today':
-                        return purchaseDate.toDateString() === today.toDateString();
-                    case 'yesterday':
-                        const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
-                        return purchaseDate.toDateString() === yesterday.toDateString();
-                    case 'week':
-                        const weekStart = new Date(today.getTime() - (today.getDay() * 24 * 60 * 60 * 1000));
-                        return purchaseDate >= weekStart && purchaseDate <= now;
-                    case 'lastWeek':
-                        const lastWeekEnd = new Date(today.getTime() - (today.getDay() * 24 * 60 * 60 * 1000) - 1);
-                        const lastWeekStart = new Date(lastWeekEnd.getTime() - (6 * 24 * 60 * 60 * 1000));
-                        return purchaseDate >= lastWeekStart && purchaseDate <= lastWeekEnd;
-                    case 'month':
-                        const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-                        return purchaseDate >= monthStart && purchaseDate <= now;
-                    case 'lastMonth':
-                        const lastMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-                        const lastMonthEnd = new Date(now.getFullYear(), now.getMonth(), 0);
-                        return purchaseDate >= lastMonthStart && purchaseDate <= lastMonthEnd;
-                    default:
-                        return true;
-                }
-            });
-        }
-
-        function getExpensesByPeriod(period) {
-            if (period === 'all') return expenses;
-            
-            const now = new Date();
-            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-            
-            return expenses.filter(expense => {
-                const expenseDate = new Date(expense.date);
-                
-                switch(period) {
-                    case 'today':
-                        return expenseDate.toDateString() === today.toDateString();
-                    case 'yesterday':
-                        const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
-                        return expenseDate.toDateString() === yesterday.toDateString();
-                    case 'week':
-                        const weekStart = new Date(today.getTime() - (today.getDay() * 24 * 60 * 60 * 1000));
-                        return expenseDate >= weekStart && expenseDate <= now;
-                    case 'lastWeek':
-                        const lastWeekEnd = new Date(today.getTime() - (today.getDay() * 24 * 60 * 60 * 1000) - 1);
-                        const lastWeekStart = new Date(lastWeekEnd.getTime() - (6 * 24 * 60 * 60 * 1000));
-                        return expenseDate >= lastWeekStart && expenseDate <= lastWeekEnd;
-                    case 'month':
-                        const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
-                        return expenseDate >= monthStart && expenseDate <= now;
-                    case 'lastMonth':
-                        const lastMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-                        const lastMonthEnd = new Date(now.getFullYear(), now.getMonth(), 0);
-                        return expenseDate >= lastMonthStart && expenseDate <= lastMonthEnd;
-                    default:
-                        return true;
-                }
-            });
-        }
-
-        function showLoading(show) {
-            const indicator = document.getElementById('loadingIndicator');
-            if (indicator) {
-                indicator.classList.toggle('show', show);
-            }
-        }
-
-        function showSyncStatus(message, isError = false) {
-            const statusEl = document.getElementById('syncStatus');
-            statusEl.textContent = message;
-            statusEl.classList.toggle('error', isError);
-            statusEl.style.display = 'block';
-            
-            setTimeout(() => {
-                statusEl.style.display = 'none';
-            }, 3000);
-        }
-
-        function showToast(message, type = 'success') {
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            toast.textContent = message;
-            
-            container.appendChild(toast);
-            
-            setTimeout(() => toast.classList.add('show'), 100);
-            
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => {
-                    if (container.contains(toast)) {
-                        container.removeChild(toast);
-                    }
-                }, 300);
-            }, 3000);
-        }
-
+        // ========== FUNCIONES PRINCIPALES ==========
         function setupMenuNavigation() {
             const menuItems = document.querySelectorAll('.menu-item');
             menuItems.forEach(item => {
@@ -2144,6 +2108,17 @@
                     showSection(section);
                     menuItems.forEach(mi => mi.classList.remove('active'));
                     this.classList.add('active');
+                });
+            });
+        }
+
+        function setupPaymentMethodButtons() {
+            const buttons = document.querySelectorAll('.payment-method-btn');
+            buttons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    buttons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    document.getElementById('paymentMethod').value = this.dataset.method;
                 });
             });
         }
@@ -2160,27 +2135,23 @@
 
         function updateSectionData(sectionName) {
             switch(sectionName) {
+                case 'dashboard':
+                    updateLowStockAlerts();
+                    break;
                 case 'products': 
                     currentCategoryFilter = '';
                     currentStockFilter = '';
+                    resetLocalFilters('#products .filter-chip');
                     updateProductsTable(); 
                     break;
                 case 'orders': 
                     currentOrderStatusFilter = '';
-                    
-                    setTimeout(() => {
-                        const statusButtons = document.querySelectorAll('#orders .compact-filters .filter-chip');
-                        statusButtons.forEach(btn => btn.classList.remove('active'));
-                        if (statusButtons[0]) statusButtons[0].classList.add('active');
-                    }, 100);
-                    
+                    resetLocalFilters('#orders .filter-chip');
                     updateOrdersTable(); 
                     break;
                 case 'purchases':
                     currentPurchaseSupplierFilter = '';
-                    currentPurchaseDateFilter = '';
-                    const customInput = document.getElementById('customPurchaseDateFilter');
-                    if (customInput) customInput.value = '';
+                    resetLocalFilters('#purchases .filter-chip');
                     updatePurchasesTable();
                     break;
                 case 'expenses': 
@@ -2189,7 +2160,20 @@
                 case 'delivery':
                     updateDeliveryPanel();
                     break;
+                case 'cashflow':
+                    updateCashFlowDisplays();
+                    break;
+                case 'backup':
+                    updateSyncStatusDetails();
+                    break;
             }
+        }
+
+        function resetLocalFilters(selector) {
+            setTimeout(() => {
+                document.querySelectorAll(selector).forEach(btn => btn.classList.remove('active'));
+                document.querySelector(selector).classList.add('active');
+            }, 100);
         }
 
         function formatCurrency(amount) {
@@ -2201,34 +2185,36 @@
         }
 
         function updateAllDisplays() {
-            const filteredOrders = getOrdersByPeriod(currentDatePeriod);
-            const filteredPurchases = getPurchasesByPeriod(currentDatePeriod);
-            const filteredExpenses = getExpensesByPeriod(currentDatePeriod);
+            const filteredOrders = getFilteredDataByPeriod(orders);
+            const filteredPurchases = getFilteredDataByPeriod(purchases);
+            const filteredExpenses = getFilteredDataByPeriod(expenses);
+            const filteredTransactions = getFilteredDataByPeriod(transactions);
             
             const totalRevenue = filteredOrders.reduce((sum, order) => sum + (order.total || 0), 0);
             const totalPurchases = filteredPurchases.reduce((sum, purchase) => sum + (purchase.total || 0), 0);
             const totalExpenses = filteredExpenses.reduce((sum, expense) => sum + (expense.amount || 0), 0);
             const totalCosts = filteredOrders.reduce((sum, order) => sum + (order.cost || 0), 0);
             
-            const netProfit = totalRevenue - totalCosts - totalExpenses;
-            const bankBalance = totalRevenue - netProfit - totalExpenses;
+            const extraTransactionExpenses = filteredTransactions
+                .filter(t => t.type === 'expense')
+                .reduce((sum, t) => sum + (t.amount || 0), 0);
             
+            const netProfit = totalRevenue - totalCosts - totalExpenses - extraTransactionExpenses;
+            const bankBalance = netProfit;
+            
+            // Actualizar displays del navbar
             document.getElementById('totalOrders').textContent = filteredOrders.length;
             document.getElementById('totalProducts').textContent = products.length;
             document.getElementById('totalRevenue').textContent = formatCurrency(totalRevenue);
-            
             document.getElementById('totalPurchases').textContent = formatCurrency(totalPurchases);
-            document.getElementById('totalExpenses').textContent = formatCurrency(totalExpenses);
+            document.getElementById('totalExpenses').textContent = formatCurrency(totalExpenses + extraTransactionExpenses);
             document.getElementById('navbarProfit').textContent = formatCurrency(netProfit);
             document.getElementById('navbarBank').textContent = formatCurrency(bankBalance);
             
+            // Actualizar colores del profit
             const navbarProfitElement = document.getElementById('navbarProfit');
             const navbarProfitParent = navbarProfitElement.parentElement.parentElement;
             const navbarProfitLabel = navbarProfitParent.querySelector('.stat-label');
-            
-            const navbarBankElement = document.getElementById('navbarBank');
-            const navbarBankParent = navbarBankElement.parentElement.parentElement;
-            const navbarBankLabel = navbarBankParent.querySelector('.stat-label');
             
             if (netProfit >= 0) {
                 navbarProfitElement.style.color = '#27ae60';
@@ -2242,34 +2228,25 @@
                 navbarProfitParent.style.border = '1px solid rgba(231, 76, 60, 0.3)';
             }
 
-            if (bankBalance >= 0) {
-                navbarBankElement.style.color = '#3498db';
-                navbarBankLabel.style.color = '#3498db';
-                navbarBankParent.style.background = 'rgba(52, 152, 219, 0.2)';
-                navbarBankParent.style.border = '1px solid rgba(52, 152, 219, 0.3)';
-            } else {
-                navbarBankElement.style.color = '#e74c3c';
-                navbarBankLabel.style.color = '#e74c3c';
-                navbarBankParent.style.background = 'rgba(231, 76, 60, 0.2)';
-                navbarBankParent.style.border = '1px solid rgba(231, 76, 60, 0.3)';
-            }
-
-            // Dashboard - mismo cálculo limpio
+            // Dashboard
             document.getElementById('dashProducts').textContent = products.length;
             document.getElementById('dashOrders').textContent = filteredOrders.length;
             document.getElementById('dashRevenue').textContent = formatCurrency(totalRevenue);
             document.getElementById('dashPurchases').textContent = formatCurrency(totalPurchases);
-            document.getElementById('dashExpenses').textContent = formatCurrency(totalExpenses);
+            document.getElementById('dashExpenses').textContent = formatCurrency(totalExpenses + extraTransactionExpenses);
             document.getElementById('dashProfit').textContent = formatCurrency(netProfit);
             document.getElementById('dashBank').textContent = formatCurrency(bankBalance);
             document.getElementById('dashMargin').textContent = totalRevenue > 0 ? ((netProfit / totalRevenue) * 100).toFixed(1) + '%' : '0%';
 
-            // Reports - mismo cálculo limpio
+            // Reports
             document.getElementById('reportRevenue').textContent = formatCurrency(totalRevenue);
             document.getElementById('reportPurchases').textContent = formatCurrency(totalPurchases);
-            document.getElementById('reportExpenses').textContent = formatCurrency(totalExpenses);
+            document.getElementById('reportExpenses').textContent = formatCurrency(totalExpenses + extraTransactionExpenses);
             document.getElementById('reportProfit').textContent = formatCurrency(netProfit);
             document.getElementById('reportBank').textContent = formatCurrency(bankBalance);
+
+            // Advanced Analytics
+            updateAdvancedAnalytics(filteredOrders);
 
             populateOrderProductSelect();
             populatePurchaseProductSelect();
@@ -2279,20 +2256,404 @@
             updateExpensesTable();
             updatePurchasesSummary();
             updateDeliveryPanel();
+            updateCashFlowDisplays();
+            updateLowStockAlerts();
         }
 
-        // ============= FUNCIONES PARA PANEL DE ENTREGAS =============
+        function updateAdvancedAnalytics(filteredOrders) {
+            const avgOrderValue = filteredOrders.length > 0 ? 
+                filteredOrders.reduce((sum, order) => sum + order.total, 0) / filteredOrders.length : 0;
+            
+            const deliveredOrders = filteredOrders.filter(order => order.status === 'delivered').length;
+            const conversionRate = filteredOrders.length > 0 ? (deliveredOrders / filteredOrders.length) * 100 : 0;
+            
+            const productSales = {};
+            const channelSales = {};
+            
+            filteredOrders.forEach(order => {
+                productSales[order.productName] = (productSales[order.productName] || 0) + order.quantity;
+                channelSales[order.channel] = (channelSales[order.channel] || 0) + 1;
+            });
+            
+            const topProduct = Object.keys(productSales).length > 0 ? 
+                Object.keys(productSales).reduce((a, b) => productSales[a] > productSales[b] ? a : b) : '-';
+            
+            const topChannel = Object.keys(channelSales).length > 0 ? 
+                Object.keys(channelSales).reduce((a, b) => channelSales[a] > channelSales[b] ? a : b) : '-';
+            
+            document.getElementById('avgOrderValue').textContent = formatCurrency(avgOrderValue);
+            document.getElementById('conversionRate').textContent = conversionRate.toFixed(1) + '%';
+            document.getElementById('topProduct').textContent = topProduct;
+            document.getElementById('topChannel').textContent = topChannel;
+        }
+
+        function updateLowStockAlerts() {
+            const lowStockProducts = products.filter(product => {
+                const stock = product.stock || 0;
+                const minStock = product.minStock || 5;
+                return stock <= minStock;
+            });
+
+            const container = document.getElementById('lowStockAlerts');
+            
+            if (lowStockProducts.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #666;">No hay productos con stock bajo</p>';
+                return;
+            }
+
+            container.innerHTML = lowStockProducts.map(product => {
+                const stock = product.stock || 0;
+                const urgency = stock === 0 ? 'error' : 'warning';
+                return `
+                    <div class="toast ${urgency}" style="position: static; transform: none; opacity: 1; margin-bottom: 0.5rem; pointer-events: auto;">
+                        <strong>${product.name}</strong> - Stock: ${stock} unidades
+                        <button class="btn btn-sm btn-info" onclick="openProductModal('${product.id}')" style="float: right; padding: 0.25rem 0.5rem;">Actualizar</button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // ========== FUNCIONES DE FLUJO DE CAJA ==========
+        function openTransactionModal(type) {
+            const modal = document.getElementById('transactionModal');
+            const title = document.getElementById('transactionModalTitle');
+            const typeSelect = document.getElementById('transactionType');
+            
+            if (type === 'income') {
+                title.textContent = '💰 Registrar Ingreso';
+                typeSelect.value = 'income';
+            } else {
+                title.textContent = '💸 Registrar Gasto';
+                typeSelect.value = 'expense';
+            }
+            
+            document.getElementById('transactionDescription').value = '';
+            document.getElementById('transactionAmount').value = '';
+            document.getElementById('transactionNotes').value = '';
+            setTodayDate();
+            
+            modal.style.display = 'block';
+        }
+
+        function openTransferModal() {
+            document.getElementById('transferFrom').value = 'cash';
+            document.getElementById('transferTo').value = 'bank';
+            document.getElementById('transferAmount').value = '';
+            document.getElementById('transferConcept').value = '';
+            document.getElementById('transferNotes').value = '';
+            document.getElementById('transferModal').style.display = 'block';
+        }
+
+        function reconcileCash() {
+            const systemCash = getTodayTransactions()
+                .filter(t => t.paymentMethod === 'cash' && t.type === 'income')
+                .reduce((sum, t) => sum + t.amount, 0);
+            
+            document.getElementById('systemCash').textContent = formatCurrency(systemCash);
+            document.getElementById('physicalCashCount').value = '';
+            document.getElementById('cashDifference').textContent = '₲0';
+            document.getElementById('reconcileNotes').value = '';
+            document.getElementById('reconcileModal').style.display = 'block';
+            
+            document.getElementById('physicalCashCount').addEventListener('input', function() {
+                const physical = parseFloat(this.value) || 0;
+                const difference = physical - systemCash;
+                document.getElementById('cashDifference').textContent = formatCurrency(difference);
+                document.getElementById('cashDifference').style.color = difference >= 0 ? '#27ae60' : '#e74c3c';
+            });
+        }
+
+        async function processTransfer(event) {
+            event.preventDefault();
+            
+            const fromMethod = document.getElementById('transferFrom').value;
+            const toMethod = document.getElementById('transferTo').value;
+            const amount = parseFloat(document.getElementById('transferAmount').value);
+            const concept = document.getElementById('transferConcept').value;
+            const notes = document.getElementById('transferNotes').value;
+            
+            if (fromMethod === toMethod) {
+                showToast('No puedes transferir al mismo método', 'error');
+                return;
+            }
+            
+            const outTransaction = {
+                id: Date.now().toString() + '_out',
+                type: 'expense',
+                description: `Transferencia: ${concept}`,
+                amount: amount,
+                date: getTodayString(),
+                paymentMethod: fromMethod,
+                notes: `Transferido a ${toMethod}. ${notes}`,
+                timestamp: getCurrentTimestamp(),
+                isTransfer: true
+            };
+            
+            const inTransaction = {
+                id: Date.now().toString() + '_in',
+                type: 'income',
+                description: `Transferencia: ${concept}`,
+                amount: amount,
+                date: getTodayString(),
+                paymentMethod: toMethod,
+                notes: `Recibido de ${fromMethod}. ${notes}`,
+                timestamp: getCurrentTimestamp(),
+                isTransfer: true
+            };
+            
+            try {
+                if (isFirebaseConnected) {
+                    await saveToFirebase('transactions', outTransaction);
+                    await saveToFirebase('transactions', inTransaction);
+                }
+                
+                transactions.push(outTransaction, inTransaction);
+                saveToLocalStorage();
+                
+                closeModal('transferModal');
+                updateAllDisplays();
+                showToast('Transferencia realizada correctamente', 'success');
+                
+            } catch (error) {
+                showToast('Error al procesar transferencia', 'error');
+            }
+        }
+
+        async function performReconciliation() {
+            const physicalCount = parseFloat(document.getElementById('physicalCashCount').value) || 0;
+            const notes = document.getElementById('reconcileNotes').value;
+            const systemCash = getTodayTransactions()
+                .filter(t => t.paymentMethod === 'cash' && t.type === 'income')
+                .reduce((sum, t) => sum + t.amount, 0);
+            
+            const difference = physicalCount - systemCash;
+            
+            if (Math.abs(difference) > 0) {
+                const adjustmentTransaction = {
+                    id: Date.now().toString(),
+                    type: difference > 0 ? 'income' : 'expense',
+                    description: 'Ajuste por reconciliación de caja',
+                    amount: Math.abs(difference),
+                    date: getTodayString(),
+                    paymentMethod: 'cash',
+                    notes: `Diferencia encontrada: ${formatCurrency(difference)}. ${notes}`,
+                    timestamp: getCurrentTimestamp(),
+                    isReconciliation: true
+                };
+                
+                try {
+                    if (isFirebaseConnected) {
+                        await saveToFirebase('transactions', adjustmentTransaction);
+                    }
+                    
+                    transactions.push(adjustmentTransaction);
+                    saveToLocalStorage();
+                    
+                } catch (error) {
+                    console.error('Error guardando ajuste:', error);
+                }
+            }
+            
+            closeModal('reconcileModal');
+            updateAllDisplays();
+            showToast('Reconciliación completada', 'success');
+        }
+
+        function openCloseCashModal() {
+            const todayTransactions = getTodayTransactions();
+            const todayIncome = todayTransactions.filter(t => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
+            const todayExpenses = todayTransactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
+            const netAmount = todayIncome - todayExpenses;
+            
+            document.getElementById('closeModalIncome').textContent = formatCurrency(todayIncome);
+            document.getElementById('closeModalExpenses').textContent = formatCurrency(todayExpenses);
+            document.getElementById('closeModalNet').textContent = formatCurrency(netAmount);
+            
+            document.getElementById('physicalCash').value = '';
+            document.getElementById('closeNotes').value = '';
+            
+            document.getElementById('closeCashModal').style.display = 'block';
+        }
+
+        function getTodayTransactions() {
+            const today = getTodayString();
+            return transactions.filter(t => t.date === today);
+        }
+
+        async function saveTransaction(event) {
+            event.preventDefault();
+            
+            const transaction = {
+                id: Date.now().toString(),
+                type: document.getElementById('transactionType').value,
+                description: document.getElementById('transactionDescription').value,
+                amount: parseFloat(document.getElementById('transactionAmount').value),
+                date: document.getElementById('transactionDate').value,
+                paymentMethod: document.getElementById('paymentMethod').value,
+                notes: document.getElementById('transactionNotes').value,
+                timestamp: getCurrentTimestamp()
+            };
+            
+            try {
+                if (isFirebaseConnected) {
+                    const newId = await saveToFirebase('transactions', transaction);
+                    transaction.id = newId;
+                }
+                
+                transactions.push(transaction);
+                saveToLocalStorage();
+                
+                closeModal('transactionModal');
+                updateAllDisplays();
+                showToast(`${transaction.type === 'income' ? 'Ingreso' : 'Gasto'} registrado correctamente`, 'success');
+                
+            } catch (error) {
+                showToast('Error al guardar transacción', 'error');
+            }
+        }
+
+        async function closeCash() {
+            const physicalCash = parseFloat(document.getElementById('physicalCash').value) || 0;
+            const notes = document.getElementById('closeNotes').value;
+            
+            const todayTransactions = getTodayTransactions();
+            const todayIncome = todayTransactions.filter(t => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
+            const todayExpenses = todayTransactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
+            const netAmount = todayIncome - todayExpenses;
+            
+            const closure = {
+                id: Date.now().toString(),
+                date: getTodayString(),
+                income: todayIncome,
+                expenses: todayExpenses,
+                netAmount: netAmount,
+                physicalCash: physicalCash,
+                notes: notes,
+                timestamp: getCurrentTimestamp()
+            };
+            
+            try {
+                if (isFirebaseConnected) {
+                    const newId = await saveToFirebase('cashClosures', closure);
+                    closure.id = newId;
+                }
+                
+                cashClosures.push(closure);
+                saveToLocalStorage();
+                
+                closeModal('closeCashModal');
+                updateCashFlowDisplays();
+                showToast('Caja cerrada correctamente', 'success');
+                
+            } catch (error) {
+                showToast('Error al cerrar caja', 'error');
+            }
+        }
+
+        function updateCashFlowDisplays() {
+            const todayTransactions = getTodayTransactions();
+            const todayIncome = todayTransactions.filter(t => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
+            const todayExpenses = todayTransactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + t.amount, 0);
+            const todayNet = todayIncome - todayExpenses;
+            
+            const cashTransactions = todayTransactions.filter(t => t.paymentMethod === 'cash');
+            const bankTransactions = todayTransactions.filter(t => ['bank', 'card', 'transfer'].includes(t.paymentMethod));
+            
+            const cashIncome = cashTransactions.filter(t => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
+            const bankIncome = bankTransactions.filter(t => t.type === 'income').reduce((sum, t) => sum + t.amount, 0);
+            
+            // Actualizar displays
+            document.getElementById('todayIncome').textContent = formatCurrency(todayIncome);
+            document.getElementById('todayExpenses').textContent = formatCurrency(todayExpenses);
+            document.getElementById('todayNet').textContent = formatCurrency(todayNet);
+            document.getElementById('cashIncome').textContent = formatCurrency(cashIncome);
+            document.getElementById('bankIncome').textContent = formatCurrency(bankIncome);
+            document.getElementById('cashBalance').textContent = formatCurrency(todayNet);
+            document.getElementById('cashInHand').textContent = formatCurrency(cashIncome);
+            document.getElementById('bankAmount').textContent = formatCurrency(bankIncome);
+            
+            // Actualizar contadores de cierre
+            document.getElementById('closeIncome').textContent = formatCurrency(todayIncome);
+            document.getElementById('closeExpenses').textContent = formatCurrency(todayExpenses);
+            document.getElementById('closeNet').textContent = formatCurrency(todayNet);
+            document.getElementById('closeFinalBalance').textContent = formatCurrency(todayNet);
+            
+            updateTransactionLists();
+            updateCashHistory();
+        }
+
+        function updateTransactionLists() {
+            const todayTransactions = getTodayTransactions();
+            const cashTransactions = todayTransactions.filter(t => t.paymentMethod === 'cash');
+            const bankTransactions = todayTransactions.filter(t => ['bank', 'card', 'transfer'].includes(t.paymentMethod));
+            
+            updateTransactionList('cashTransactions', cashTransactions);
+            updateTransactionList('bankTransactions', bankTransactions);
+        }
+
+        function updateTransactionList(containerId, transactions) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            if (transactions.length === 0) {
+                container.innerHTML = '<div style="text-align: center; color: #666; padding: 1rem;">No hay transacciones</div>';
+                return;
+            }
+            
+            container.innerHTML = transactions.map(transaction => `
+                <div class="transaction-item">
+                    <div class="transaction-info">
+                        <div class="transaction-type">${transaction.description}</div>
+                        <div class="transaction-detail">${getPaymentMethodLabel(transaction.paymentMethod)}</div>
+                    </div>
+                    <div class="transaction-amount ${transaction.type}">
+                        ${transaction.type === 'income' ? '+' : '-'}${formatCurrency(transaction.amount)}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateCashHistory() {
+            const container = document.getElementById('cashHistoryList');
+            if (!container) return;
+            
+            if (cashClosures.length === 0) {
+                container.innerHTML = '<div style="text-align: center; color: #666; padding: 2rem;">No hay cierres registrados</div>';
+                return;
+            }
+            
+            container.innerHTML = cashClosures.slice(-10).reverse().map(closure => `
+                <div class="cash-history-item">
+                    <div class="cash-history-date">${new Date(closure.date).toLocaleDateString()}</div>
+                    <div class="cash-history-amounts">
+                        <span style="color: #27ae60;">+${formatCurrency(closure.income)}</span>
+                        <span style="color: #e74c3c;">-${formatCurrency(closure.expenses)}</span>
+                        <span style="font-weight: bold;">= ${formatCurrency(closure.netAmount)}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getPaymentMethodLabel(method) {
+            const labels = {
+                'cash': '💵 Efectivo',
+                'bank': '🏦 Banco',
+                'card': '💳 Tarjeta',
+                'transfer': '📱 Transferencia'
+            };
+            return labels[method] || method;
+        }
+
+        // ========== FUNCIONES DE PANEL DE ENTREGAS ==========
         function updateDeliveryPanel() {
             updateDeliveryStats();
             updateDeliverySections();
-            updateTodaySummary();
             checkUrgentDeliveries();
         }
 
         function updateDeliveryStats() {
             const pending = orders.filter(order => order.status === 'pending').length;
             const confirmed = orders.filter(order => order.status === 'confirmed').length;
-            const prepared = orders.filter(order => order.status === 'prepared').length;
             const shipped = orders.filter(order => order.status === 'shipped').length;
             const delivered = orders.filter(order => order.status === 'delivered').length;
 
@@ -2303,26 +2664,20 @@
 
             document.getElementById('pendingCount').textContent = pending;
             document.getElementById('confirmedCount').textContent = confirmed;
-            document.getElementById('preparedCount').textContent = prepared;
             document.getElementById('shippedCount').textContent = shipped;
+            document.getElementById('deliveredCount').textContent = delivered;
         }
 
         function updateDeliverySections() {
             updateOrdersInSection('pending', 'pendingOrders');
             updateOrdersInSection('confirmed', 'confirmedOrders');
-            updateOrdersInSection('prepared', 'preparedOrders');
             updateOrdersInSection('shipped', 'shippedOrders');
+            updateOrdersInSection('delivered', 'deliveredOrders');
         }
 
         function updateOrdersInSection(status, containerId) {
             const container = document.getElementById(containerId);
             let filteredOrders = orders.filter(order => order.status === status);
-
-            if (currentDeliveryMethodFilter !== 'all') {
-                filteredOrders = filteredOrders.filter(order => 
-                    (order.deliveryMethod || 'delivery') === currentDeliveryMethodFilter
-                );
-            }
 
             if (filteredOrders.length === 0) {
                 container.innerHTML = '<p style="text-align: center; color: #666; padding: 2rem;">No hay pedidos en este estado.</p>';
@@ -2415,24 +2770,11 @@
             return buttons;
         }
 
-        function updateTodaySummary() {
-            const today = new Date().toDateString();
-            const todayOrders = orders.filter(order => new Date(order.date).toDateString() === today);
-            const todayDelivered = orders.filter(order => 
-                order.status === 'delivered' && new Date(order.date).toDateString() === today
-            );
-            const todayRevenue = todayDelivered.reduce((sum, order) => sum + (order.total || 0), 0);
-
-            document.getElementById('todayNewOrders').textContent = todayOrders.length;
-            document.getElementById('todayDelivered').textContent = todayDelivered.length;
-            document.getElementById('todayRevenue').textContent = formatCurrency(todayRevenue);
-        }
-
         function checkUrgentDeliveries() {
             const urgentOrders = orders.filter(order => {
                 if (order.status === 'delivered' || order.status === 'cancelled') return false;
                 const orderDate = new Date(order.date);
-                const daysDiff = Math.floor((new Date() - orderDate) / (1000 * 60 * 60 * 24));
+                const daysDiff = Math.floor((new Date() - orderDate) / (1000 * 60 * 60 * 1000));
                 return daysDiff >= 2;
             });
 
@@ -2513,7 +2855,7 @@
             const section = document.getElementById(sectionId);
             const isVisible = section.style.display !== 'none';
             
-            document.querySelectorAll('#pending-section, #confirmed-section, #prepared-section, #shipped-section').forEach(s => {
+            document.querySelectorAll('#pending-section, #confirmed-section, #shipped-section, #delivered-section').forEach(s => {
                 s.style.display = 'none';
             });
             
@@ -2523,7 +2865,7 @@
             }
         }
 
-        // ============= FUNCIONES DE PRODUCTOS =============
+        // ========== FUNCIONES DE PRODUCTOS ==========
         function openProductModal(productId = null) {
             const modal = document.getElementById('productModal');
             const title = document.getElementById('productModalTitle');
@@ -2536,6 +2878,7 @@
             document.getElementById('productMinStock').value = '5';
             document.getElementById('productCost').value = '';
             document.getElementById('productPrice').value = '';
+            document.getElementById('productDescription').value = '';
             
             if (productId) {
                 const product = products.find(p => p.id === productId);
@@ -2549,6 +2892,7 @@
                     document.getElementById('productMinStock').value = product.minStock || 5;
                     document.getElementById('productCost').value = product.cost;
                     document.getElementById('productPrice').value = product.price;
+                    document.getElementById('productDescription').value = product.description || '';
                 }
             } else {
                 title.textContent = 'Nuevo Producto';
@@ -2569,6 +2913,7 @@
                 minStock: parseInt(document.getElementById('productMinStock').value) || 5,
                 cost: parseFloat(document.getElementById('productCost').value) || 0,
                 price: parseFloat(document.getElementById('productPrice').value) || 0,
+                description: document.getElementById('productDescription').value || '',
                 timestamp: getCurrentTimestamp()
             };
 
@@ -2583,11 +2928,9 @@
                         showToast('Producto actualizado correctamente', 'success');
                     }
                 } else {
-                    let newId;
+                    let newId = Date.now().toString();
                     if (isFirebaseConnected) {
                         newId = await saveToFirebase('products', productData);
-                    } else {
-                        newId = Date.now().toString();
                     }
                     
                     const newProduct = { id: newId, ...productData };
@@ -2618,6 +2961,32 @@
                     showToast('Error al eliminar producto', 'error');
                 }
             }
+        }
+
+        function filterByCategory(category) {
+            currentCategoryFilter = category;
+            
+            document.querySelectorAll('#products .filter-chip').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            updateProductsTable();
+        }
+
+        function filterByStock(stockType) {
+            currentStockFilter = stockType;
+            
+            document.querySelectorAll('#products .filter-group:last-child .filter-chip').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            updateProductsTable();
+        }
+
+        function updateAllStock() {
+            showToast('Función de actualización masiva en desarrollo', 'info');
         }
 
         function updateProductsTable() {
@@ -2696,7 +3065,7 @@
             });
         }
 
-        // ============= FUNCIONES DE PEDIDOS =============
+        // ========== FUNCIONES DE PEDIDOS ==========
         function openOrderModal(orderId = null) {
             if (products.length === 0 && !orderId) {
                 showToast('Primero debes agregar productos antes de crear pedidos', 'warning');
@@ -2786,6 +3155,35 @@
             }
         }
 
+        async function markAllAsDelivered() {
+            if (confirm('¿Marcar todos los pedidos como entregados? Esta acción no se puede deshacer.')) {
+                let updatedCount = 0;
+                
+                for (let order of orders) {
+                    if (order.status !== 'delivered' && order.status !== 'cancelled') {
+                        order.status = 'delivered';
+                        updatedCount++;
+                        
+                        if (isFirebaseConnected) {
+                            try {
+                                await saveToFirebase('orders', order, order.id);
+                            } catch (error) {
+                                console.error('Error actualizando orden:', error);
+                            }
+                        }
+                    }
+                }
+                
+                if (updatedCount > 0) {
+                    saveToLocalStorage();
+                    updateAllDisplays();
+                    showToast(`${updatedCount} pedidos marcados como entregados`, 'success');
+                } else {
+                    showToast('No hay pedidos para actualizar', 'info');
+                }
+            }
+        }
+
         async function saveOrder(event) {
             event.preventDefault();
             const orderId = document.getElementById('orderId').value;
@@ -2837,6 +3235,19 @@
                         if (isFirebaseConnected) {
                             await saveToFirebase('orders', orders[index], orderId);
                         }
+                        
+                        // ACTUALIZAR TRANSACCIÓN EXISTENTE si hay cambio en el total
+                        if (oldOrder && oldOrder.total !== total) {
+                            const existingTransaction = transactions.find(t => t.relatedOrderId === orderId);
+                            if (existingTransaction) {
+                                existingTransaction.amount = total;
+                                existingTransaction.description = `Venta a ${orderData.customer} - ${orderData.productName} (EDITADO)`;
+                                if (isFirebaseConnected) {
+                                    await saveToFirebase('transactions', existingTransaction, existingTransaction.id);
+                                }
+                            }
+                        }
+                        
                         showToast('Pedido actualizado correctamente', 'success');
                     }
                 } else {
@@ -2847,16 +3258,35 @@
                     
                     product.stock = (product.stock || 0) - newQuantity;
                     
-                    let newId;
+                    let newId = Date.now().toString();
                     if (isFirebaseConnected) {
                         newId = await saveToFirebase('orders', orderData);
-                    } else {
-                        newId = Date.now().toString();
                     }
                     
                     const newOrder = { id: newId, ...orderData };
                     orders.push(newOrder);
-                    showToast('Pedido creado correctamente', 'success');
+                    
+                    // 🔄 INTEGRACIÓN: Crear automáticamente transacción de ingreso en flujo de caja
+                    const autoTransaction = {
+                        id: Date.now().toString() + '_auto',
+                        type: 'income',
+                        description: `Venta a ${orderData.customer} - ${orderData.productName}`,
+                        amount: total,
+                        date: orderData.date.split('T')[0], // Solo fecha, sin hora
+                        paymentMethod: getPaymentMethodFromChannel(orderData.channel), // Auto-detectar método
+                        notes: `Venta automática - Canal: ${orderData.channel}`,
+                        timestamp: getCurrentTimestamp(),
+                        relatedOrderId: newId, // Vinculo para futuras ediciones
+                        isAutoGenerated: true
+                    };
+                    
+                    if (isFirebaseConnected) {
+                        const transactionId = await saveToFirebase('transactions', autoTransaction);
+                        autoTransaction.id = transactionId;
+                    }
+                    
+                    transactions.push(autoTransaction);
+                    showToast('Pedido creado y registrado en flujo de caja', 'success');
                 }
                 
                 if (isFirebaseConnected) {
@@ -2876,58 +3306,22 @@
             }
         }
 
+        // Función para auto-detectar método de pago según canal
+        function getPaymentMethodFromChannel(channel) {
+            const channelMethods = {
+                'facebook': 'bank', // Usualmente transferencias
+                'instagram': 'bank', 
+                'whatsapp': 'cash', // Más común efectivo
+                'marketplace': 'bank',
+                'web': 'card'
+            };
+            return channelMethods[channel] || 'cash';
+        }
+
         function updateOrdersTable() {
             const tbody = document.getElementById('ordersTable');
             
-            let ordersToShow = [...orders];
-            
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            
-            switch(currentDatePeriod) {
-                case 'today':
-                    ordersToShow = ordersToShow.filter(order => {
-                        const orderDay = new Date(order.date);
-                        orderDay.setHours(0, 0, 0, 0);
-                        return orderDay.getTime() === today.getTime();
-                    });
-                    break;
-                case 'yesterday':
-                    const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
-                    ordersToShow = ordersToShow.filter(order => {
-                        const orderDay = new Date(order.date);
-                        orderDay.setHours(0, 0, 0, 0);
-                        return orderDay.getTime() === yesterday.getTime();
-                    });
-                    break;
-                case 'week':
-                    const weekStart = new Date(today.getTime() - (today.getDay() * 24 * 60 * 60 * 1000));
-                    ordersToShow = ordersToShow.filter(order => new Date(order.date) >= weekStart);
-                    break;
-                case 'lastWeek':
-                    const lastWeekEnd = new Date(today.getTime() - (today.getDay() * 24 * 60 * 60 * 1000) - 1);
-                    const lastWeekStart = new Date(lastWeekEnd.getTime() - (6 * 24 * 60 * 60 * 1000));
-                    ordersToShow = ordersToShow.filter(order => {
-                        const orderDate = new Date(order.date);
-                        return orderDate >= lastWeekStart && orderDate <= lastWeekEnd;
-                    });
-                    break;
-                case 'month':
-                    const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
-                    ordersToShow = ordersToShow.filter(order => new Date(order.date) >= monthStart);
-                    break;
-                case 'lastMonth':
-                    const lastMonthStart = new Date(today.getFullYear(), today.getMonth() - 1, 1);
-                    const lastMonthEnd = new Date(today.getFullYear(), today.getMonth(), 0);
-                    ordersToShow = ordersToShow.filter(order => {
-                        const orderDate = new Date(order.date);
-                        return orderDate >= lastMonthStart && orderDate <= lastMonthEnd;
-                    });
-                    break;
-                case 'all':
-                default:
-                    break;
-            }
+            let ordersToShow = getFilteredDataByPeriod(orders);
             
             if (currentOrderStatusFilter && currentOrderStatusFilter !== '') {
                 ordersToShow = ordersToShow.filter(order => order.status === currentOrderStatusFilter);
@@ -2973,6 +3367,17 @@
             }
         }
 
+        function filterOrdersByStatus(status) {
+            currentOrderStatusFilter = status;
+            
+            document.querySelectorAll('#orders .filter-chip').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            updateOrdersTable();
+        }
+
         function getStatusClass(status) {
             const classes = {
                 'pending': 'status-pending',
@@ -3009,6 +3414,15 @@
                                 await saveToFirebase('products', product, product.id);
                             }
                         }
+
+                        // Eliminar transacción relacionada
+                        const relatedTransaction = transactions.find(t => t.relatedOrderId === id);
+                        if (relatedTransaction) {
+                            transactions = transactions.filter(t => t.id !== relatedTransaction.id);
+                            if (isFirebaseConnected) {
+                                await deleteFromFirebase('transactions', relatedTransaction.id);
+                            }
+                        }
                     }
                     
                     orders = orders.filter(o => o.id !== id);
@@ -3024,7 +3438,7 @@
             }
         }
 
-        // ============= FUNCIONES DE COMPRAS =============
+        // ========== FUNCIONES DE COMPRAS ==========
         function populatePurchaseProductSelect() {
             const select = document.getElementById('purchaseProduct');
             if (!select) return;
@@ -3046,9 +3460,7 @@
             document.getElementById('purchaseUnitPrice').value = '';
             document.getElementById('purchaseTotal').value = '';
             document.getElementById('purchaseNotes').value = '';
-            
-            const todayString = getTodayString();
-            document.getElementById('purchaseDate').value = todayString;
+            document.getElementById('purchaseDate').value = getTodayString();
             
             if (purchaseId) {
                 const purchase = purchases.find(p => p.id === purchaseId);
@@ -3069,9 +3481,6 @@
                 }
             } else {
                 title.textContent = 'Nueva Compra';
-                setTimeout(() => {
-                    document.getElementById('purchaseDate').value = getTodayString();
-                }, 100);
             }
             
             modal.style.display = 'block';
@@ -3112,7 +3521,6 @@
             const quantity = parseInt(document.getElementById('purchaseQuantity').value) || 0;
             const unitPrice = parseFloat(document.getElementById('purchaseUnitPrice').value) || 0;
             const total = parseFloat(document.getElementById('purchaseTotal').value) || 0;
-            
             const dateFromInput = document.getElementById('purchaseDate').value;
             
             if (!productName || !supplier) {
@@ -3165,11 +3573,9 @@
                         productToUpdate.stock = (productToUpdate.stock || 0) + quantity;
                     }
                     
-                    let newId;
+                    let newId = Date.now().toString();
                     if (isFirebaseConnected) {
                         newId = await saveToFirebase('purchases', purchaseData);
-                    } else {
-                        newId = Date.now().toString();
                     }
                     
                     const newPurchase = { id: newId, ...purchaseData };
@@ -3194,45 +3600,28 @@
             }
         }
 
+        function filterPurchasesBySupplier(supplier) {
+            currentPurchaseSupplierFilter = supplier;
+            
+            document.querySelectorAll('#purchases .filter-chip').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            updatePurchasesTable();
+        }
+
         function updatePurchasesTable() {
             const tbody = document.getElementById('purchasesTable');
             
-            let purchasesToShow = purchases.filter(purchase => {
-                const matchesSupplier = currentPurchaseSupplierFilter === '' || purchase.supplier === currentPurchaseSupplierFilter;
-                
-                let matchesDate = true;
-                if (currentPurchaseDateFilter) {
-                    const purchaseDate = new Date(purchase.date);
-                    const now = new Date();
-                    
-                    switch(currentPurchaseDateFilter) {
-                        case 'today':
-                            matchesDate = purchaseDate.toDateString() === now.toDateString();
-                            break;
-                        case 'week':
-                            const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-                            matchesDate = purchaseDate >= weekAgo;
-                            break;
-                        case 'month':
-                            const monthAgo = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
-                            matchesDate = purchaseDate >= monthAgo;
-                            break;
-                        case 'custom':
-                            const customDate = document.getElementById('customPurchaseDateFilter').value;
-                            if (customDate) {
-                                matchesDate = purchaseDate.toDateString() === new Date(customDate).toDateString();
-                            }
-                            break;
-                        default:
-                            matchesDate = true;
-                    }
-                }
-                
-                return matchesSupplier && matchesDate;
-            });
+            let purchasesToShow = getFilteredDataByPeriod(purchases);
+            
+            if (currentPurchaseSupplierFilter && currentPurchaseSupplierFilter !== '') {
+                purchasesToShow = purchasesToShow.filter(purchase => purchase.supplier === currentPurchaseSupplierFilter);
+            }
             
             if (purchasesToShow.length === 0) {
-                const message = (currentPurchaseSupplierFilter || currentPurchaseDateFilter) ? 
+                const message = (currentPurchaseSupplierFilter || currentDatePeriod !== 'all') ? 
                     'No se encontraron compras con los filtros seleccionados.' : 
                     'No hay compras registradas. Registra tu primera compra.';
                 tbody.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 2rem; color: #657786;">${message}</td></tr>`;
@@ -3265,7 +3654,7 @@
         }
 
         function updatePurchasesSummary() {
-            const filteredPurchases = getPurchasesByPeriod(currentDatePeriod);
+            const filteredPurchases = getFilteredDataByPeriod(purchases);
             
             const totalAmount = filteredPurchases.reduce((sum, purchase) => sum + (purchase.total || 0), 0);
             const totalCount = filteredPurchases.length;
@@ -3306,7 +3695,7 @@
             }
         }
 
-        // ============= FUNCIONES DE GASTOS =============
+        // ========== FUNCIONES DE GASTOS ==========
         function openExpenseModal(expenseId = null) {
             const modal = document.getElementById('expenseModal');
             const title = document.querySelector('#expenseModal h2');
@@ -3358,11 +3747,9 @@
                         showToast('Gasto actualizado correctamente', 'success');
                     }
                 } else {
-                    let newId;
+                    let newId = Date.now().toString();
                     if (isFirebaseConnected) {
                         newId = await saveToFirebase('expenses', expenseData);
-                    } else {
-                        newId = Date.now().toString();
                     }
                     
                     const newExpense = { id: newId, ...expenseData };
@@ -3379,15 +3766,34 @@
             }
         }
 
+        function showExpensesSummary() {
+            const filteredExpenses = getFilteredDataByPeriod(expenses);
+            const categorySummary = {};
+            
+            filteredExpenses.forEach(expense => {
+                categorySummary[expense.category] = (categorySummary[expense.category] || 0) + expense.amount;
+            });
+            
+            const summaryText = Object.keys(categorySummary).map(category => 
+                `${category}: ${formatCurrency(categorySummary[category])}`
+            ).join('\n');
+            
+            alert(`Resumen por categorías:\n\n${summaryText || 'No hay gastos en el período seleccionado'}`);
+        }
+
         function updateExpensesTable() {
             const tbody = document.getElementById('expensesTable');
+            const filteredExpenses = getFilteredDataByPeriod(expenses);
             
-            if (expenses.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 2rem; color: #657786;">No hay gastos registrados. Registra tu primer gasto.</td></tr>';
+            if (filteredExpenses.length === 0) {
+                const message = currentDatePeriod !== 'all' ? 
+                    'No hay gastos en el período seleccionado.' : 
+                    'No hay gastos registrados. Registra tu primer gasto.';
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 2rem; color: #657786;">${message}</td></tr>`;
                 return;
             }
 
-            tbody.innerHTML = expenses.map(expense => `
+            tbody.innerHTML = filteredExpenses.map(expense => `
                 <tr>
                     <td>${new Date(expense.date).toLocaleDateString()}</td>
                     <td>${expense.description}</td>
@@ -3417,7 +3823,7 @@
             }
         }
 
-        // ============= FUNCIONES DE CALCULADORA =============
+        // ========== FUNCIONES DE CALCULADORA ==========
         function calculatePrice() {
             const cost = parseFloat(document.getElementById('calcCost').value) || 0;
             const margin = parseFloat(document.getElementById('calcMargin').value) || 30;
@@ -3429,105 +3835,339 @@
                 const totalCosts = cost + shipping;
                 const suggestedPrice = commission > 0 ? basePrice / (1 - commission / 100) : basePrice;
                 const profit = suggestedPrice - totalCosts - (suggestedPrice * commission / 100);
+                const finalMargin = totalCosts > 0 ? ((profit / totalCosts) * 100) : 0;
 
                 document.getElementById('suggestedPrice').textContent = formatCurrency(suggestedPrice);
                 document.getElementById('expectedProfit').textContent = formatCurrency(profit);
+                document.getElementById('finalMargin').textContent = finalMargin.toFixed(1) + '%';
             } else {
                 document.getElementById('suggestedPrice').textContent = '₲0';
                 document.getElementById('expectedProfit').textContent = '₲0';
+                document.getElementById('finalMargin').textContent = '0%';
             }
         }
 
-        // ============= FUNCIONES DE DATOS DE EJEMPLO =============
-        async function generateSampleData() {
-            const sampleProducts = [
-                { name: 'Auriculares Bluetooth', supplier: 'TechSupplier', category: 'electronica', stock: 25, minStock: 5, cost: 45000, price: 89000 },
-                { name: 'Camiseta Deportiva', supplier: 'SportWear Co', category: 'ropa', stock: 50, minStock: 10, cost: 25000, price: 55000 },
-                { name: 'Lámpara LED', supplier: 'HomeDecor', category: 'hogar', stock: 15, minStock: 5, cost: 35000, price: 75000 },
-                { name: 'Mochila Táctica', supplier: 'OutdoorGear', category: 'deportes', stock: 8, minStock: 5, cost: 55000, price: 120000 }
-            ];
+        function convertCurrency(from) {
+            const usdInput = document.getElementById('calcUSD');
+            const pygInput = document.getElementById('calcPYG');
+            
+            if (from === 'usd') {
+                const usd = parseFloat(usdInput.value) || 0;
+                pygInput.value = Math.round(usd * EXCHANGE_RATE);
+            } else {
+                const pyg = parseFloat(pygInput.value) || 0;
+                usdInput.value = (pyg / EXCHANGE_RATE).toFixed(2);
+            }
+        }
 
-            const sampleExpenses = [
-                { description: 'Facebook Ads - Campaña Octubre', category: 'marketing', amount: 150000, date: getTodayString() },
-                { description: 'Comisión Mercado Libre', category: 'plataforma', amount: 8500, date: getTodayString() },
-                { description: 'Envío Express', category: 'envios', amount: 25000, date: getTodayString() }
-            ];
+        // ========== FUNCIONES DE BACKUP Y EXPORTACIÓN ==========
+        function exportData(format) {
+            const allData = {
+                products,
+                orders,
+                purchases,
+                expenses,
+                transactions,
+                cashClosures,
+                exportDate: new Date().toISOString(),
+                version: '1.0'
+            };
 
+            let dataToExport, filename, mimeType;
+
+            switch(format) {
+                case 'json':
+                    dataToExport = JSON.stringify(allData, null, 2);
+                    filename = `berserker_data_${getTodayString()}.json`;
+                    mimeType = 'application/json';
+                    break;
+                case 'csv':
+                    dataToExport = generateCSVExport();
+                    filename = `berserker_data_${getTodayString()}.csv`;
+                    mimeType = 'text/csv';
+                    break;
+                case 'backup':
+                    dataToExport = JSON.stringify(allData, null, 2);
+                    filename = `berserker_backup_${getTodayString()}.json`;
+                    mimeType = 'application/json';
+                    break;
+            }
+
+            downloadFile(dataToExport, filename, mimeType);
+            showToast(`Datos exportados como ${filename}`, 'success');
+        }
+
+        function generateCSVExport() {
+            let csv = 'Tipo,ID,Fecha,Descripción,Categoría,Cantidad,Precio,Total,Cliente,Canal,Estado\n';
+            
+            orders.forEach(order => {
+                csv += `Pedido,${order.id},${new Date(order.date).toLocaleDateString()},"${order.productName}",${order.channel},${order.quantity},${order.total/order.quantity},${order.total},"${order.customer}",${order.channel},${order.status}\n`;
+            });
+            
+            purchases.forEach(purchase => {
+                csv += `Compra,${purchase.id},${new Date(purchase.date).toLocaleDateString()},"${purchase.productName}",${purchase.supplier},${purchase.quantity},${purchase.unitPrice},${purchase.total},-,-,-\n`;
+            });
+            
+            expenses.forEach(expense => {
+                csv += `Gasto,${expense.id},${new Date(expense.date).toLocaleDateString()},"${expense.description}",${expense.category},-,-,${expense.amount},-,-,-\n`;
+            });
+            
+            return csv;
+        }
+
+        function downloadFile(content, filename, mimeType) {
+            const blob = new Blob([content], { type: mimeType });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+
+        function importData() {
+            const fileInput = document.getElementById('backupFile');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                showToast('Selecciona un archivo de backup', 'warning');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const backupData = JSON.parse(e.target.result);
+                    
+                    if (confirm('¿Estás seguro de importar estos datos? Se reemplazarán todos los datos actuales.')) {
+                        products = backupData.products || [];
+                        orders = backupData.orders || [];
+                        purchases = backupData.purchases || [];
+                        expenses = backupData.expenses || [];
+                        transactions = backupData.transactions || [];
+                        cashClosures = backupData.cashClosures || [];
+                        
+                        saveToLocalStorage();
+                        updateAllDisplays();
+                        showToast('Datos importados correctamente', 'success');
+                    }
+                } catch (error) {
+                    showToast('Error al leer el archivo de backup', 'error');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function clearAllData() {
+            if (confirm('¿ESTÁS SEGURO de eliminar TODOS los datos? Esta acción NO se puede deshacer.')) {
+                if (confirm('ÚLTIMA CONFIRMACIÓN: Se eliminarán todos los productos, pedidos, compras, gastos y transacciones. ¿Continuar?')) {
+                    products = [];
+                    orders = [];
+                    purchases = [];
+                    expenses = [];
+                    transactions = [];
+                    cashClosures = [];
+                    
+                    // Limpiar localStorage
+                    localStorage.removeItem('berserker_products');
+                    localStorage.removeItem('berserker_orders');
+                    localStorage.removeItem('berserker_purchases');
+                    localStorage.removeItem('berserker_expenses');
+                    localStorage.removeItem('berserker_transactions');
+                    localStorage.removeItem('berserker_cashClosures');
+                    
+                    updateAllDisplays();
+                    showToast('Todos los datos han sido eliminados', 'success');
+                }
+            }
+        }
+
+        async function forceSync() {
+            if (!isFirebaseConnected) {
+                showToast('No hay conexión con Firebase', 'error');
+                return;
+            }
+            
+            showLoading(true);
             try {
-                for (const productData of sampleProducts) {
-                    let newId;
-                    if (isFirebaseConnected) {
-                        newId = await saveToFirebase('products', productData);
-                    } else {
-                        newId = Date.now().toString() + Math.random();
-                    }
-                    products.push({ id: newId, ...productData });
+                // Sincronizar todos los datos locales con Firebase
+                for (const product of products) {
+                    await saveToFirebase('products', product, product.id);
                 }
-
-                const today = new Date();
-                const getDaysAgo = (days) => {
-                    const date = new Date(today);
-                    date.setDate(date.getDate() - days);
-                    const year = date.getFullYear();
-                    const month = String(date.getMonth() + 1).padStart(2, '0');
-                    const day = String(date.getDate()).padStart(2, '0');
-                    return `${year}-${month}-${day}`;
-                };
-
-                const samplePurchases = [
-                    { productId: products[0]?.id, productName: 'Auriculares Bluetooth', supplier: 'TechSupplier', quantity: 15, unitPrice: 45000, total: 675000, type: 'historical', notes: 'Inventario inicial - compra anterior al sistema', date: getDaysAgo(30) },
-                    { productId: products[1]?.id, productName: 'Camiseta Deportiva', supplier: 'SportWear Co', quantity: 30, unitPrice: 25000, total: 750000, type: 'historical', notes: 'Stock inicial previo al sistema', date: getDaysAgo(25) },
-                    { productId: products[2]?.id, productName: 'Lámpara LED', supplier: 'HomeDecor', quantity: 10, unitPrice: 35000, total: 350000, type: 'operational', notes: 'Primera compra operacional', date: getDaysAgo(5) },
-                    { productId: products[3]?.id, productName: 'Mochila Táctica', supplier: 'OutdoorGear', quantity: 5, unitPrice: 55000, total: 275000, type: 'operational', notes: 'Restock operacional', date: getDaysAgo(2) }
-                ];
-
-                const sampleOrders = [
-                    { customer: 'María González', channel: 'facebook', productId: products[0]?.id, productName: 'Auriculares Bluetooth', quantity: 1, total: 89000, cost: 45000, status: 'delivered', comments: 'Cliente pidió entrega urgente. Completado exitosamente.', date: getCurrentTimestamp() },
-                    { customer: 'Carlos Rodríguez', channel: 'instagram', productId: products[1]?.id, productName: 'Camiseta Deportiva', quantity: 2, total: 110000, cost: 50000, status: 'shipped', comments: 'Envío a sucursal. Número de seguimiento: ABC123', date: getCurrentTimestamp() },
-                    { customer: 'Ana López', channel: 'whatsapp', productId: products[2]?.id, productName: 'Lámpara LED', quantity: 1, total: 75000, cost: 35000, status: 'confirmed', comments: 'Verificar color antes de enviar', date: getCurrentTimestamp() },
-                    { customer: 'Pedro Martínez', channel: 'marketplace', productId: products[3]?.id, productName: 'Mochila Táctica', quantity: 1, total: 120000, cost: 55000, status: 'pending', comments: '', date: getCurrentTimestamp() }
-                ];
-
-                for (const purchaseData of samplePurchases) {
-                    let newId;
-                    if (isFirebaseConnected) {
-                        newId = await saveToFirebase('purchases', purchaseData);
-                    } else {
-                        newId = Date.now().toString() + Math.random();
-                    }
-                    purchases.push({ id: newId, ...purchaseData });
+                for (const order of orders) {
+                    await saveToFirebase('orders', order, order.id);
                 }
-
-                for (const orderData of sampleOrders) {
-                    let newId;
-                    if (isFirebaseConnected) {
-                        newId = await saveToFirebase('orders', orderData);
-                    } else {
-                        newId = Date.now().toString() + Math.random();
-                    }
-                    orders.push({ id: newId, ...orderData });
+                for (const purchase of purchases) {
+                    await saveToFirebase('purchases', purchase, purchase.id);
                 }
-
-                for (const expenseData of sampleExpenses) {
-                    let newId;
-                    if (isFirebaseConnected) {
-                        newId = await saveToFirebase('expenses', expenseData);
-                    } else {
-                        newId = Date.now().toString() + Math.random();
-                    }
-                    expenses.push({ id: newId, ...expenseData });
+                for (const expense of expenses) {
+                    await saveToFirebase('expenses', expense, expense.id);
                 }
-
-                saveToLocalStorage();
-                updateAllDisplays();
-                showToast('Datos de ejemplo cargados correctamente', 'success');
+                for (const transaction of transactions) {
+                    await saveToFirebase('transactions', transaction, transaction.id);
+                }
+                for (const closure of cashClosures) {
+                    await saveToFirebase('cashClosures', closure, closure.id);
+                }
                 
+                showToast('Sincronización forzada completada', 'success');
+                updateSyncStatusDetails();
             } catch (error) {
-                showToast('Error cargando datos de ejemplo', 'error');
+                showToast('Error en la sincronización forzada', 'error');
+            } finally {
+                showLoading(false);
             }
         }
 
-        // ============= FUNCIONES UTILIDADES =============
+        function updateSyncStatusDetails() {
+            document.getElementById('firebaseStatus').textContent = isFirebaseConnected ? 'Conectado' : 'Desconectado';
+            
+            const lastBackup = localStorage.getItem('berserker_lastBackup');
+            document.getElementById('lastBackup').textContent = lastBackup ? 
+                new Date(lastBackup).toLocaleString() : 'Nunca';
+            
+            const totalRecords = products.length + orders.length + purchases.length + 
+                               expenses.length + transactions.length + cashClosures.length;
+            document.getElementById('totalRecords').textContent = totalRecords;
+        }
+
+        // ========== FUNCIONES DE DATOS DE EJEMPLO ==========
+        async function generateSampleData() {
+            if (confirm('¿Generar datos de ejemplo? Esto agregará productos, pedidos y transacciones de prueba.')) {
+                const sampleProducts = [
+                    { name: 'Auriculares Bluetooth Pro', supplier: 'TechSupplier', category: 'electronica', stock: 25, minStock: 5, cost: 45000, price: 89000, description: 'Auriculares inalámbricos con cancelación de ruido' },
+                    { name: 'Camiseta Deportiva Premium', supplier: 'SportWear Co', category: 'ropa', stock: 50, minStock: 10, cost: 25000, price: 55000, description: 'Camiseta transpirable para deportes' },
+                    { name: 'Lámpara LED Inteligente', supplier: 'HomeDecor', category: 'hogar', stock: 15, minStock: 5, cost: 35000, price: 75000, description: 'Lámpara WiFi con control por app' },
+                    { name: 'Mochila Táctica Militar', supplier: 'OutdoorGear', category: 'deportes', stock: 8, minStock: 5, cost: 55000, price: 120000, description: 'Mochila resistente de 40L' },
+                    { name: 'Perfume Unisex', supplier: 'Beauty Corp', category: 'belleza', stock: 20, minStock: 3, cost: 30000, price: 75000, description: 'Fragancia de larga duración' }
+                ];
+
+                const sampleExpenses = [
+                    { description: 'Facebook Ads - Campaña Verano', category: 'marketing', amount: 150000, date: getTodayString() },
+                    { description: 'Comisión Mercado Libre', category: 'plataforma', amount: 8500, date: getTodayString() },
+                    { description: 'Envío Express - Lote 1', category: 'envios', amount: 25000, date: getTodayString() },
+                    { description: 'Herramientas de gestión', category: 'herramientas', amount: 35000, date: getTodayString() }
+                ];
+
+                const sampleTransactions = [
+                    { type: 'income', description: 'Venta Local - Cliente VIP', amount: 89000, paymentMethod: 'cash', date: getTodayString(), notes: 'Cliente frecuente, descuento aplicado' },
+                    { type: 'income', description: 'Transferencia Bancaria', amount: 120000, paymentMethod: 'bank', date: getTodayString(), notes: 'Pago por transferencia Banco Nacional' },
+                    { type: 'expense', description: 'Combustible delivery', amount: 35000, paymentMethod: 'cash', date: getTodayString(), notes: 'Gasto operativo semanal' },
+                    { type: 'income', description: 'Pago con tarjeta', amount: 55000, paymentMethod: 'card', date: getTodayString(), notes: 'Venta online confirmada' }
+                ];
+
+                try {
+                    for (const productData of sampleProducts) {
+                        let newId = Date.now().toString() + '_' + Math.random().toString(36).substr(2, 9);
+                        if (isFirebaseConnected) {
+                            newId = await saveToFirebase('products', productData);
+                        }
+                        products.push({ id: newId, timestamp: getCurrentTimestamp(), ...productData });
+                    }
+
+                    const getDaysAgo = (days) => {
+                        const date = new Date();
+                        date.setDate(date.getDate() - days);
+                        return date.toISOString().split('T')[0];
+                    };
+
+                    const samplePurchases = [
+                        { productId: products[products.length-5]?.id, productName: 'Auriculares Bluetooth Pro', supplier: 'TechSupplier', quantity: 30, unitPrice: 45000, total: 1350000, notes: 'Lote inicial - descuento por volumen', date: getDaysAgo(30) },
+                        { productId: products[products.length-4]?.id, productName: 'Camiseta Deportiva Premium', supplier: 'SportWear Co', quantity: 100, unitPrice: 25000, total: 2500000, notes: 'Stock de temporada', date: getDaysAgo(25) },
+                        { productId: products[products.length-3]?.id, productName: 'Lámpara LED Inteligente', supplier: 'HomeDecor', quantity: 20, unitPrice: 35000, total: 700000, notes: 'Nuevo proveedor, producto innovador', date: getDaysAgo(15) }
+                    ];
+
+                    const sampleOrders = [
+                        { customer: 'María González', channel: 'facebook', productId: products[products.length-5]?.id, productName: 'Auriculares Bluetooth Pro', quantity: 1, total: 89000, cost: 45000, status: 'delivered', deliveryMethod: 'personal', deliveryPerson: 'Carlos', deliveryAddress: 'Av. España 1234', comments: 'Cliente muy satisfecho, recomendó a amigos', date: getCurrentTimestamp() },
+                        { customer: 'Carlos Rodríguez', channel: 'instagram', productId: products[products.length-4]?.id, productName: 'Camiseta Deportiva Premium', quantity: 2, total: 110000, cost: 50000, status: 'shipped', deliveryMethod: 'delivery', deliveryPerson: 'Delivery Express', deliveryAddress: 'Barrio San Roque', comments: 'Envío programado para mañana', date: getCurrentTimestamp() },
+                        { customer: 'Ana Martínez', channel: 'whatsapp', productId: products[products.length-3]?.id, productName: 'Lámpara LED Inteligente', quantity: 1, total: 75000, cost: 35000, status: 'confirmed', deliveryMethod: 'pickup', deliveryPerson: 'Cliente', deliveryAddress: 'Local Comercial Centro', comments: 'Recogerá el viernes por la tarde', date: getCurrentTimestamp() },
+                        { customer: 'Roberto Silva', channel: 'marketplace', productId: products[products.length-2]?.id, productName: 'Mochila Táctica Militar', quantity: 1, total: 120000, cost: 55000, status: 'pending', deliveryMethod: 'shipping', deliveryPerson: 'Correo Paraguayo', deliveryAddress: 'Interior del país', comments: 'Esperando confirmación de pago', date: getCurrentTimestamp() }
+                    ];
+
+                    for (const purchaseData of samplePurchases) {
+                        let newId = Date.now().toString() + '_' + Math.random().toString(36).substr(2, 9);
+                        if (isFirebaseConnected) {
+                            newId = await saveToFirebase('purchases', purchaseData);
+                        }
+                        purchases.push({ id: newId, timestamp: getCurrentTimestamp(), ...purchaseData });
+                    }
+
+                    for (const orderData of sampleOrders) {
+                        let newId = Date.now().toString() + '_' + Math.random().toString(36).substr(2, 9);
+                        if (isFirebaseConnected) {
+                            newId = await saveToFirebase('orders', orderData);
+                        }
+                        orders.push({ id: newId, ...orderData });
+                        
+                        // Crear transacción automática para cada pedido
+                        if (orderData.status === 'delivered' || orderData.status === 'shipped') {
+                            const autoTransaction = {
+                                id: Date.now().toString() + '_auto_' + Math.random().toString(36).substr(2, 9),
+                                type: 'income',
+                                description: `Venta a ${orderData.customer} - ${orderData.productName}`,
+                                amount: orderData.total,
+                                date: orderData.date.split('T')[0],
+                                paymentMethod: getPaymentMethodFromChannel(orderData.channel),
+                                notes: `Venta automática - Canal: ${orderData.channel}`,
+                                timestamp: getCurrentTimestamp(),
+                                relatedOrderId: newId,
+                                isAutoGenerated: true
+                            };
+                            
+                            if (isFirebaseConnected) {
+                                await saveToFirebase('transactions', autoTransaction);
+                            }
+                            transactions.push(autoTransaction);
+                        }
+                    }
+
+                    for (const expenseData of sampleExpenses) {
+                        let newId = Date.now().toString() + '_' + Math.random().toString(36).substr(2, 9);
+                        if (isFirebaseConnected) {
+                            newId = await saveToFirebase('expenses', expenseData);
+                        }
+                        expenses.push({ id: newId, timestamp: getCurrentTimestamp(), ...expenseData });
+                    }
+
+                    for (const transactionData of sampleTransactions) {
+                        let newId = Date.now().toString() + '_' + Math.random().toString(36).substr(2, 9);
+                        if (isFirebaseConnected) {
+                            newId = await saveToFirebase('transactions', transactionData);
+                        }
+                        transactions.push({ id: newId, ...transactionData, timestamp: getCurrentTimestamp() });
+                    }
+
+                    // Crear un cierre de caja de ejemplo
+                    const sampleClosure = {
+                        id: Date.now().toString() + '_closure',
+                        date: getDaysAgo(1),
+                        income: 284000,
+                        expenses: 60000,
+                        netAmount: 224000,
+                        physicalCash: 224000,
+                        notes: 'Cierre exitoso - día de muchas ventas',
+                        timestamp: getCurrentTimestamp()
+                    };
+
+                    if (isFirebaseConnected) {
+                        await saveToFirebase('cashClosures', sampleClosure);
+                    }
+                    cashClosures.push(sampleClosure);
+
+                    saveToLocalStorage();
+                    updateAllDisplays();
+                    showToast('Datos de ejemplo cargados correctamente', 'success');
+                    
+                } catch (error) {
+                    showToast('Error cargando datos de ejemplo', 'error');
+                    console.error('Error:', error);
+                }
+            }
+        }
+
+        // ========== FUNCIONES UTILIDADES ==========
         async function syncData() {
             if (!isFirebaseConnected) {
                 showToast('No hay conexión con Firebase', 'warning');
@@ -3546,10 +4186,51 @@
             }
         }
 
+        function showLoading(show) {
+            const indicator = document.getElementById('loadingIndicator');
+            if (indicator) {
+                indicator.classList.toggle('show', show);
+            }
+        }
+
+        function showSyncStatus(message, isError = false) {
+            const statusEl = document.getElementById('syncStatus');
+            statusEl.textContent = message;
+            statusEl.classList.toggle('error', isError);
+            statusEl.style.display = 'block';
+            
+            setTimeout(() => {
+                statusEl.style.display = 'none';
+            }, 3000);
+        }
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => toast.classList.add('show'), 100);
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    if (container.contains(toast)) {
+                        container.removeChild(toast);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
         }
 
+        // ========== EVENTOS Y LISTENERS ==========
+        
+        // Cerrar modales al hacer clic fuera
         window.onclick = function(event) {
             const modals = document.querySelectorAll('.modal');
             modals.forEach(modal => {
@@ -3559,6 +4240,7 @@
             });
         }
 
+        // Atajos de teclado
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 const modals = document.querySelectorAll('.modal');
@@ -3568,7 +4250,486 @@
                     }
                 });
             }
+            
+            // Atajos para acciones rápidas (Ctrl/Cmd + tecla)
+            if ((e.ctrlKey || e.metaKey)) {
+                switch(e.key.toLowerCase()) {
+                    case 'n':
+                        e.preventDefault();
+                        openProductModal();
+                        break;
+                    case 'o':
+                        e.preventDefault();
+                        openOrderModal();
+                        break;
+                    case 'p':
+                        e.preventDefault();
+                        openPurchaseModal();
+                        break;
+                    case 'g':
+                        e.preventDefault();
+                        openExpenseModal();
+                        break;
+                    case 's':
+                        e.preventDefault();
+                        syncData();
+                        break;
+                }
+            }
         });
+
+        // Auto-guardado cada 5 minutos
+        setInterval(() => {
+            if (isFirebaseConnected) {
+                console.log('Auto-guardado ejecutado');
+                saveToLocalStorage();
+            }
+        }, 300000); // 5 minutos
+
+        // Detectar cambios de conectividad
+        window.addEventListener('online', function() {
+            showToast('Conexión restaurada', 'success');
+            if (!isFirebaseConnected) {
+                initializeFirebase();
+            }
+        });
+
+        window.addEventListener('offline', function() {
+            showToast('Sin conexión - modo offline', 'warning');
+        });
+
+        // Prevenir pérdida de datos al cerrar
+        window.addEventListener('beforeunload', function(e) {
+            saveToLocalStorage();
+        });
+
+        console.log('🚀 BERSERKER.CO ERP inicializado correctamente');
+        console.log('💡 Atajos de teclado disponibles:');
+        console.log('   Ctrl+N: Nuevo producto');
+        console.log('   Ctrl+O: Nuevo pedido');
+        console.log('   Ctrl+P: Nueva compra');
+        console.log('   Ctrl+G: Nuevo gasto');
+        console.log('   Ctrl+S: Sincronizar');
+        console.log('   ESC: Cerrar modales');
     </script>
 </body>
-</html>
+</html>-row">
+                                <div class="form-group">
+                                    <label>Costo del Producto (₲)</label>
+                                    <input type="number" class="form-control" id="calcCost" onchange="calculatePrice()">
+                                </div>
+                                <div class="form-group">
+                                    <label>Margen Deseado (%)</label>
+                                    <input type="number" class="form-control" id="calcMargin" value="30" onchange="calculatePrice()">
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Costo de Envío (₲)</label>
+                                    <input type="number" class="form-control" id="calcShipping" onchange="calculatePrice()">
+                                </div>
+                                <div class="form-group">
+                                    <label>Comisión Plataforma (%)</label>
+                                    <input type="number" class="form-control" id="calcCommission" value="10" onchange="calculatePrice()">
+                                </div>
+                            </div>
+
+                            <div class="stats-grid">
+                                <div class="stat-card" style="background: var(--gradient-primary); color: white;">
+                                    <div class="stat-value" id="suggestedPrice">₲0</div>
+                                    <div class="stat-label">Precio Sugerido</div>
+                                </div>
+                                <div class="stat-card" style="background: var(--gradient-success); color: white;">
+                                    <div class="stat-value" id="expectedProfit">₲0</div>
+                                    <div class="stat-label">Ganancia Esperada</div>
+                                </div>
+                                <div class="stat-card" style="background: var(--gradient-warning); color: white;">
+                                    <div class="stat-value" id="finalMargin">0%</div>
+                                    <div class="stat-label">Margen Real</div>
+                                </div>
+                            </div>
+
+                            <!-- Calculadora de Conversión de Moneda -->
+                            <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                                <h4>💱 Conversión de Moneda</h4>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>USD</label>
+                                        <input type="number" class="form-control" id="calcUSD" onchange="convertCurrency('usd')" placeholder="Valor en dólares">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Guaraníes (₲)</label>
+                                        <input type="number" class="form-control" id="calcPYG" onchange="convertCurrency('pyg')" placeholder="Valor en guaraníes">
+                                    </div>
+                                </div>
+                                <small class="text-muted">Tasa aproximada: 1 USD = 7,300 ₲</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reportes -->
+                <div id="reports" class="section">
+                    <div class="content-header">
+                        <h2>Reportes</h2>
+                    </div>
+                    <div class="content-body">
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-value" id="reportRevenue">₲0</div>
+                                <div class="stat-label">Ingresos Totales</div>
+                            </div>
+                            <div class="stat-card" style="background: var(--gradient-info); color: white;">
+                                <div class="stat-value" id="reportPurchases">₲0</div>
+                                <div class="stat-label">Compras Totales</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value" id="reportExpenses">₲0</div>
+                                <div class="stat-label">Gastos Totales</div>
+                            </div>
+                            <div class="stat-card" style="background: var(--gradient-success); color: white;">
+                                <div class="stat-value" id="reportProfit">₲0</div>
+                                <div class="stat-label">Ganancia Neta</div>
+                            </div>
+                            <div class="stat-card" style="background: var(--gradient-bank); color: white;">
+                                <div class="stat-value" id="reportBank">₲0</div>
+                                <div class="stat-label">Saldo Banco</div>
+                            </div>
+                        </div>
+
+                        <!-- Análisis Avanzado -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">📈 Análisis Avanzado</h3>
+                            </div>
+                            <div class="stats-grid">
+                                <div class="stat-card">
+                                    <div class="stat-value" id="avgOrderValue">₲0</div>
+                                    <div class="stat-label">Valor Promedio por Pedido</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-value" id="conversionRate">0%</div>
+                                    <div class="stat-label">Tasa de Conversión</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-value" id="topProduct">-</div>
+                                    <div class="stat-label">Producto Más Vendido</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-value" id="topChannel">-</div>
+                                    <div class="stat-label">Canal Más Efectivo</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Backup -->
+                <div id="backup" class="section">
+                    <div class="content-header">
+                        <h2>💾 Backup y Exportación</h2>
+                    </div>
+                    <div class="content-body">
+                        <div class="backup-section">
+                            <h3>📤 Exportar Datos</h3>
+                            <p>Descarga tus datos en diferentes formatos para respaldo o análisis externo.</p>
+                            <div class="export-buttons">
+                                <button class="btn btn-success" onclick="exportData('json')">📄 Exportar JSON</button>
+                                <button class="btn btn-info" onclick="exportData('csv')">📊 Exportar CSV</button>
+                                <button class="btn btn-warning" onclick="exportData('backup')">💾 Backup Completo</button>
+                            </div>
+                        </div>
+
+                        <div class="backup-section">
+                            <h3>📥 Importar Datos</h3>
+                            <p>Restaura tus datos desde un archivo de backup.</p>
+                            <div class="form-group">
+                                <label>Seleccionar archivo de backup</label>
+                                <input type="file" class="form-control" id="backupFile" accept=".json" onchange="importData()">
+                            </div>
+                            <button class="btn btn-danger" onclick="clearAllData()">🗑️ Limpiar Todos los Datos</button>
+                        </div>
+
+                        <div class="backup-section">
+                            <h3>🔄 Estado de Sincronización</h3>
+                            <div id="syncStatusDetails">
+                                <p>Firebase: <span id="firebaseStatus">Desconectado</span></p>
+                                <p>Último backup: <span id="lastBackup">Nunca</span></p>
+                                <p>Total registros: <span id="totalRecords">0</span></p>
+                            </div>
+                            <button class="btn btn-primary" onclick="forceSync()">🔄 Forzar Sincronización</button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- MODALES -->
+    
+    <!-- Modal de Transacciones -->
+    <div id="transactionModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('transactionModal')">&times;</span>
+            <h2 id="transactionModalTitle">Registrar Transacción</h2>
+            <form onsubmit="saveTransaction(event)">
+                <div class="form-group">
+                    <label>Tipo de Transacción</label>
+                    <select class="form-control" id="transactionType">
+                        <option value="income">💰 Ingreso</option>
+                        <option value="expense">💸 Gasto</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <input type="text" class="form-control" id="transactionDescription" required placeholder="Ej: Venta de producto, Pago proveedor">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Monto (₲)</label>
+                        <input type="number" class="form-control" id="transactionAmount" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Fecha</label>
+                        <input type="date" class="form-control" id="transactionDate" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Método de Pago</label>
+                    <div class="payment-method-grid">
+                        <button type="button" class="payment-method-btn active" data-method="cash">💵 Efectivo</button>
+                        <button type="button" class="payment-method-btn" data-method="bank">🏦 Banco</button>
+                        <button type="button" class="payment-method-btn" data-method="card">💳 Tarjeta</button>
+                        <button type="button" class="payment-method-btn" data-method="transfer">📱 Transferencia</button>
+                    </div>
+                    <input type="hidden" id="paymentMethod" value="cash">
+                </div>
+                <div class="form-group">
+                    <label>Notas (opcional)</label>
+                    <textarea class="form-control" id="transactionNotes" rows="3" placeholder="Información adicional..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">💾 Guardar Transacción</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Transferencia de Fondos -->
+    <div id="transferModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('transferModal')">&times;</span>
+            <h2>🔄 Transferir Fondos</h2>
+            <form onsubmit="processTransfer(event)">
+                <div class="transfer-form">
+                    <div class="form-group">
+                        <label>Desde</label>
+                        <select class="form-control" id="transferFrom" required>
+                            <option value="cash">💵 Efectivo</option>
+                            <option value="bank">🏦 Banco</option>
+                        </select>
+                    </div>
+                    <div class="transfer-arrow">➡️</div>
+                    <div class="form-group">
+                        <label>Hacia</label>
+                        <select class="form-control" id="transferTo" required>
+                            <option value="bank">🏦 Banco</option>
+                            <option value="cash">💵 Efectivo</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Monto a transferir (₲)</label>
+                    <input type="number" class="form-control" id="transferAmount" required placeholder="0">
+                </div>
+                <div class="form-group">
+                    <label>Concepto</label>
+                    <input type="text" class="form-control" id="transferConcept" required placeholder="Ej: Depósito bancario, Retiro efectivo">
+                </div>
+                <div class="form-group">
+                    <label>Notas (opcional)</label>
+                    <textarea class="form-control" id="transferNotes" rows="2" placeholder="Información adicional sobre la transferencia..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-info">🔄 Realizar Transferencia</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Reconciliación -->
+    <div id="reconcileModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('reconcileModal')">&times;</span>
+            <h2>🔍 Reconciliar Caja</h2>
+            <div class="form-group">
+                <label>Efectivo físico contado (₲)</label>
+                <input type="number" class="form-control" id="physicalCashCount" placeholder="Contar efectivo físicamente">
+            </div>
+            <div class="form-group">
+                <label>Efectivo según sistema: <strong id="systemCash">₲0</strong></label>
+            </div>
+            <div class="form-group">
+                <label>Diferencia: <strong id="cashDifference" style="color: #e74c3c;">₲0</strong></label>
+            </div>
+            <div class="form-group">
+                <label>Observaciones</label>
+                <textarea class="form-control" id="reconcileNotes" rows="3" placeholder="Explicación de diferencias encontradas..."></textarea>
+            </div>
+            <button class="btn btn-warning" onclick="performReconciliation()">🔍 Confirmar Reconciliación</button>
+        </div>
+    </div>
+
+    <!-- Modal de Cierre de Caja -->
+    <div id="closeCashModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('closeCashModal')">&times;</span>
+            <h2>🔒 Cierre de Caja</h2>
+            <div style="background: #f8f9fa; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                <h3>Resumen del Día</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+                    <div>
+                        <strong>Total Ingresos:</strong><br>
+                        <span style="color: #27ae60; font-size: 1.2rem;" id="closeModalIncome">₲0</span>
+                    </div>
+                    <div>
+                        <strong>Total Egresos:</strong><br>
+                        <span style="color: #e74c3c; font-size: 1.2rem;" id="closeModalExpenses">₲0</span>
+                    </div>
+                </div>
+                <div style="border-top: 2px solid #dee2e6; margin-top: 1rem; padding-top: 1rem;">
+                    <strong>RESULTADO DEL DÍA:</strong><br>
+                    <span style="color: #27ae60; font-size: 1.5rem; font-weight: bold;" id="closeModalNet">₲0</span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label>Efectivo Físico en Caja (₲)</label>
+                <input type="number" class="form-control" id="physicalCash" placeholder="Contar efectivo físico">
+            </div>
+            
+            <div class="form-group">
+                <label>Observaciones del Cierre</label>
+                <textarea class="form-control" id="closeNotes" rows="3" placeholder="Notas sobre el cierre del día..."></textarea>
+            </div>
+            
+            <div style="display: flex; gap: 1rem;">
+                <button class="btn btn-warning" onclick="closeCash()">🔒 Confirmar Cierre</button>
+                <button class="btn btn-secondary" onclick="closeModal('closeCashModal')">❌ Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Otros modales existentes... -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('productModal')">&times;</span>
+            <h2 id="productModalTitle">Nuevo Producto</h2>
+            <form onsubmit="saveProduct(event)">
+                <input type="hidden" id="productId">
+                <div class="form-group">
+                    <label>Nombre del Producto</label>
+                    <input type="text" class="form-control" id="productName" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Proveedor</label>
+                        <input type="text" class="form-control" id="productSupplier" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Categoría</label>
+                        <select class="form-control" id="productCategory">
+                            <option value="electronica">Electrónica</option>
+                            <option value="ropa">Ropa</option>
+                            <option value="hogar">Hogar</option>
+                            <option value="deportes">Deportes</option>
+                            <option value="belleza">Belleza</option>
+                            <option value="otros">Otros</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Stock</label>
+                        <input type="number" class="form-control" id="productStock" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Stock Mínimo</label>
+                        <input type="number" class="form-control" id="productMinStock" value="5">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Costo (₲)</label>
+                        <input type="number" class="form-control" id="productCost" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Precio de Venta (₲)</label>
+                        <input type="number" class="form-control" id="productPrice" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Descripción (opcional)</label>
+                    <textarea class="form-control" id="productDescription" rows="2" placeholder="Descripción del producto..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-success">💾 Guardar Producto</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="orderModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('orderModal')">&times;</span>
+            <h2>Nuevo Pedido</h2>
+            <form onsubmit="saveOrder(event)">
+                <input type="hidden" id="orderId">
+                <div class="form-group">
+                    <label>Cliente</label>
+                    <input type="text" class="form-control" id="orderCustomer" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Canal de Venta</label>
+                        <select class="form-control" id="orderChannel">
+                            <option value="facebook">Facebook</option>
+                            <option value="instagram">Instagram</option>
+                            <option value="whatsapp">WhatsApp</option>
+                            <option value="marketplace">Marketplace</option>
+                            <option value="web">Sitio Web</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Estado</label>
+                        <select class="form-control" id="orderStatus">
+                            <option value="pending">Pendiente</option>
+                            <option value="confirmed">Confirmado</option>
+                            <option value="prepared">Preparado</option>
+                            <option value="shipped">En Tránsito</option>
+                            <option value="delivered">Entregado</option>
+                            <option value="cancelled">Cancelado</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Método de Entrega</label>
+                        <select class="form-control" id="orderDeliveryMethod">
+                            <option value="delivery">Delivery Tercerizado</option>
+                            <option value="personal">Entrega Personal (Nosotros)</option>
+                            <option value="pickup">Recolección en Punto</option>
+                            <option value="shipping">Envío Postal</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Responsable de Entrega</label>
+                        <input type="text" class="form-control" id="orderDeliveryPerson" placeholder="Ej: Juan, Delivery Express, Cliente">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Dirección de Entrega</label>
+                    <input type="text" class="form-control" id="orderDeliveryAddress" placeholder="Dirección completa para entrega">
+                </div>
+                <div class="form-group">
+                    <label>Producto</label>
+                    <select class="form-control" id="orderProduct" onchange="updateOrderPrice()" required>
+                        <option value="">Seleccionar producto...</option>
+                    </select>
+                </div>
+                <div class="form
