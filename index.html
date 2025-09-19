@@ -6,15 +6,11 @@
     <meta name="theme-color" content="#6366f1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Berserker">
+    <meta name="apple-mobile-web-app-title" content="Dashboard App">
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="description" content="Sistema ERP completo con sincronización en la nube">
+    <meta name="description" content="Dashboard de gestión local con almacenamiento en el navegador">
     
-    <title>Berserker.co - ERP Cloud</title>
-    
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <title>Dashboard App</title>
     
     <style>
         * {
@@ -50,93 +46,6 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Login Screen */
-        .login-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-
-        .login-box {
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(20px);
-            padding: 40px;
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            width: 100%;
-            max-width: 400px;
-            animation: slideUp 0.5s ease;
-        }
-
-        .login-logo {
-            text-align: center;
-            font-size: 48px;
-            margin-bottom: 10px;
-        }
-
-        .login-title {
-            text-align: center;
-            font-size: 28px;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 30px;
-        }
-
-        .sync-status {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: white;
-            padding: 10px 20px;
-            border-radius: 30px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            z-index: 1000;
-            font-size: 14px;
-            animation: slideDown 0.3s ease;
-        }
-
-        .sync-status.syncing {
-            background: linear-gradient(135deg, var(--warning), #f59e0b);
-            color: white;
-        }
-
-        .sync-status.synced {
-            background: linear-gradient(135deg, var(--success), #059669);
-            color: white;
-        }
-
-        .sync-status.offline {
-            background: linear-gradient(135deg, var(--gray), #475569);
-            color: white;
-        }
-
-        .sync-status.error {
-            background: linear-gradient(135deg, var(--danger), #dc2626);
-            color: white;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .sync-spinner {
-            width: 16px;
-            height: 16px;
-            border: 2px solid rgba(255,255,255,0.3);
-            border-top: 2px solid white;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
         .container {
             max-width: 1400px;
             margin: 0 auto;
@@ -145,7 +54,6 @@
             z-index: 1;
         }
 
-        /* Header */
         .header {
             background: rgba(255,255,255,0.95);
             backdrop-filter: blur(20px);
@@ -210,7 +118,6 @@
             color: white;
         }
 
-        /* Mobile Bottom Navigation */
         .mobile-nav {
             display: none;
             position: fixed;
@@ -251,7 +158,6 @@
             margin-bottom: 4px;
         }
 
-        /* Main Content */
         .main-content {
             animation: fadeIn 0.8s ease;
             margin-bottom: 80px;
@@ -266,7 +172,6 @@
             animation: slideUp 0.5s ease;
         }
 
-        /* Form Controls */
         .form-section {
             background: rgba(255,255,255,0.95);
             backdrop-filter: blur(20px);
@@ -338,7 +243,6 @@
             transform: scale(0.98);
         }
 
-        /* Stats Cards */
         .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -374,7 +278,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* Table */
         .table-container {
             background: rgba(255,255,255,0.95);
             backdrop-filter: blur(20px);
@@ -404,7 +307,6 @@
             font-size: 14px;
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .container {
                 padding: 10px;
@@ -458,7 +360,6 @@
             }
         }
 
-        /* PWA Install Button */
         .install-btn {
             display: none;
             position: fixed;
@@ -474,27 +375,14 @@
             animation: slideUp 0.5s ease;
         }
 
-        /* Animations */
         @keyframes slideDown {
-            from {
-                transform: translateY(-20px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
         @keyframes slideUp {
-            from {
-                transform: translateY(20px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
         @keyframes fadeIn {
@@ -502,7 +390,6 @@
             to { opacity: 1; }
         }
 
-        /* Badge */
         .badge {
             padding: 4px 8px;
             border-radius: 12px;
@@ -527,7 +414,6 @@
             color: var(--danger);
         }
 
-        /* Notification */
         .notification {
             position: fixed;
             bottom: 90px;
@@ -547,7 +433,6 @@
             transform: translateX(-50%) translateY(0);
         }
 
-        /* Loading */
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -572,14 +457,460 @@
     </style>
 </head>
 <body>
-    <div id="mainApp" style="display: block;">
-        <div id="syncStatus" class="sync-status offline">
-            <span id="syncIcon">⚡</span>
-            <span id="syncText">Sincronizando...</span>
+    <div id="mainApp">
+        <div class="container">
+            <header class="header">
+                <div class="header-top">
+                    <div class="logo">✨ Mi Dashboard</div>
+                    <div class="user-info">
+                        <span>Usuario: Invitado</span>
+                    </div>
+                </div>
+                <nav class="nav-tabs">
+                    <button class="nav-tab active" data-tab="dashboard">📊 Dashboard</button>
+                    <button class="nav-tab" data-tab="inventory">📦 Inventario</button>
+                    <button class="nav-tab" data-tab="deliveries">🚚 Entregas</button>
+                    <button class="nav-tab" data-tab="cashflow">💰 Flujo de Caja</button>
+                </nav>
+            </header>
+
+            <main class="main-content">
+                <div id="dashboard" class="tab-content active">
+                    <div class="dashboard-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">💰</div>
+                            <div class="stat-value" id="totalSales">$0</div>
+                            <div class="stat-label">Ventas Totales</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📈</div>
+                            <div class="stat-value" id="netProfit">$0</div>
+                            <div class="stat-label">Ganancia Neta</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">📦</div>
+                            <div class="stat-value" id="totalProducts">0</div>
+                            <div class="stat-label">Productos en Stock</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">🚚</div>
+                            <div class="stat-value" id="pendingDeliveries">0</div>
+                            <div class="stat-label">Entregas Pendientes</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="inventory" class="tab-content">
+                    <div class="form-section">
+                        <h3>➕ Agregar Producto</h3>
+                        <form id="productForm" class="form-grid">
+                            <div class="form-group">
+                                <label>Nombre</label>
+                                <input type="text" id="productName" required>
+                            </div>
+                            <div class="form-group">
+                                <label>SKU</label>
+                                <input type="text" id="productSku" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Cantidad</label>
+                                <input type="number" id="productQuantity" required min="0">
+                            </div>
+                            <div class="form-group">
+                                <label>Costo</label>
+                                <input type="number" id="productCost" step="0.01" required min="0">
+                            </div>
+                            <div class="form-group">
+                                <label>Precio</label>
+                                <input type="number" id="productPrice" step="0.01" required min="0">
+                            </div>
+                        </form>
+                        <button class="btn btn-primary" onclick="addProduct()">Agregar</button>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>SKU</th>
+                                    <th>Producto</th>
+                                    <th>Stock</th>
+                                    <th>Precio</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="inventoryTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="deliveries" class="tab-content">
+                    <div class="form-section">
+                        <h3>➕ Nueva Entrega</h3>
+                        <form id="deliveryForm" class="form-grid">
+                            <div class="form-group">
+                                <label>Cliente</label>
+                                <input type="text" id="customerName" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Producto</label>
+                                <select id="deliveryProduct" required></select>
+                            </div>
+                            <div class="form-group">
+                                <label>Cantidad</label>
+                                <input type="number" id="deliveryQuantity" required min="1">
+                            </div>
+                            <div class="form-group">
+                                <label>Fecha</label>
+                                <input type="date" id="deliveryDate" required>
+                            </div>
+                        </form>
+                        <button class="btn btn-primary" onclick="addDelivery()">Agregar</button>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Cliente</th>
+                                    <th>Producto</th>
+                                    <th>Cantidad</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="deliveryTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="cashflow" class="tab-content">
+                    <div class="form-section">
+                        <h3>💰 Nuevo Movimiento</h3>
+                        <form id="cashFlowForm" class="form-grid">
+                            <div class="form-group">
+                                <label>Tipo</label>
+                                <select id="transactionType">
+                                    <option value="income">Ingreso</option>
+                                    <option value="expense">Egreso</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Monto</label>
+                                <input type="number" id="amount" step="0.01" required min="0">
+                            </div>
+                            <div class="form-group">
+                                <label>Descripción</label>
+                                <input type="text" id="description" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Fecha</label>
+                                <input type="date" id="transactionDate" required>
+                            </div>
+                        </form>
+                        <button class="btn btn-success" onclick="addTransaction()">Registrar</button>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Tipo</th>
+                                    <th>Descripción</th>
+                                    <th>Monto</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cashFlowTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
         </div>
 
-        <button id="installBtn" class="install-btn" onclick="installPWA()">
-            📱 Instalar App
-        </button>
+        <nav class="mobile-nav">
+            <div class="mobile-nav-tabs">
+                <button class="mobile-nav-tab active" data-tab="dashboard">
+                    <span class="mobile-nav-tab-icon">📊</span>
+                    Dashboard
+                </button>
+                <button class="mobile-nav-tab" data-tab="inventory">
+                    <span class="mobile-nav-tab-icon">📦</span>
+                    Inventario
+                </button>
+                <button class="mobile-nav-tab" data-tab="deliveries">
+                    <span class="mobile-nav-tab-icon">🚚</span>
+                    Entregas
+                </button>
+                <button class="mobile-nav-tab" data-tab="cashflow">
+                    <span class="mobile-nav-tab-icon">💰</span>
+                    Caja
+                </button>
+            </div>
+        </nav>
+    </div>
 
-        <div class="container">
+    <div id="notification" class="notification">
+        <div id="notificationMessage"></div>
+    </div>
+
+    <script>
+        let data = JSON.parse(localStorage.getItem('dashboardData')) || {
+            products: [],
+            deliveries: [],
+            transactions: [],
+            settings: { currency: '$' }
+        };
+
+        function saveData() {
+            localStorage.setItem('dashboardData', JSON.stringify(data));
+        }
+
+        function initializeApp() {
+            initializeTabs();
+            renderAllData();
+        }
+
+        function initializeTabs() {
+            document.querySelectorAll('.nav-tab, .mobile-nav-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    switchTab(this.dataset.tab);
+                    document.querySelectorAll('.nav-tab, .mobile-nav-tab').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(tabName).classList.add('active');
+            renderAllData();
+        }
+
+        function renderAllData() {
+            updateDashboard();
+            renderInventory();
+            renderDeliveries();
+            renderCashFlow();
+        }
+
+        function updateDashboard() {
+            let totalSales = data.deliveries.filter(d => d.status === 'Entregado').reduce((sum, d) => sum + (d.total || 0), 0);
+            let totalExpenses = data.transactions.filter(t => t.type === 'expense').reduce((sum, t) => sum + (t.amount || 0), 0);
+            let totalIncome = data.transactions.filter(t => t.type === 'income').reduce((sum, t) => sum + (t.amount || 0), 0);
+
+            totalSales += totalIncome;
+            let netProfit = totalSales - totalExpenses;
+            let totalProducts = data.products.reduce((sum, p) => sum + (p.quantity || 0), 0);
+            let pendingDeliveries = data.deliveries.filter(d => d.status !== 'Entregado').length;
+
+            document.getElementById('totalSales').textContent = `${data.settings.currency}${totalSales.toFixed(2)}`;
+            document.getElementById('netProfit').textContent = `${data.settings.currency}${netProfit.toFixed(2)}`;
+            document.getElementById('totalProducts').textContent = totalProducts;
+            document.getElementById('pendingDeliveries').textContent = pendingDeliveries;
+        }
+
+        function addProduct() {
+            const form = document.getElementById('productForm');
+            if (!form.checkValidity()) {
+                showNotification('Completa todos los campos', 'danger');
+                return;
+            }
+
+            const product = {
+                id: 'P' + Date.now(),
+                name: document.getElementById('productName').value,
+                sku: document.getElementById('productSku').value,
+                quantity: parseInt(document.getElementById('productQuantity').value),
+                cost: parseFloat(document.getElementById('productCost').value),
+                price: parseFloat(document.getElementById('productPrice').value),
+            };
+
+            data.products.push(product);
+            saveData();
+            form.reset();
+            renderAllData();
+            showNotification('Producto agregado', 'success');
+        }
+
+        function renderInventory() {
+            const tbody = document.getElementById('inventoryTableBody');
+            tbody.innerHTML = '';
+            
+            data.products.forEach(product => {
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td>${product.sku}</td>
+                    <td>${product.name}</td>
+                    <td>${product.quantity}</td>
+                    <td>${data.settings.currency}${product.price.toFixed(2)}</td>
+                    <td>
+                        <button class="btn btn-danger" style="padding: 5px 10px;" onclick="deleteItem('products', '${product.id}')">Eliminar</button>
+                    </td>
+                `;
+            });
+            
+            const select = document.getElementById('deliveryProduct');
+            select.innerHTML = '<option value="">Seleccionar producto</option>';
+            data.products.forEach(product => {
+                if (product.quantity > 0) {
+                    select.innerHTML += `<option value="${product.id}">${product.name} (${product.quantity} disponibles)</option>`;
+                }
+            });
+        }
+
+        function addDelivery() {
+            const form = document.getElementById('deliveryForm');
+            if (!form.checkValidity()) {
+                showNotification('Completa todos los campos', 'danger');
+                return;
+            }
+            
+            const productId = document.getElementById('deliveryProduct').value;
+            const product = data.products.find(p => p.id === productId);
+
+            if (!product) {
+                showNotification('Selecciona un producto válido', 'danger');
+                return;
+            }
+
+            const quantity = parseInt(document.getElementById('deliveryQuantity').value);
+            if (product.quantity < quantity) {
+                showNotification('Stock insuficiente', 'danger');
+                return;
+            }
+            
+            const delivery = {
+                id: 'D' + Date.now(),
+                customer: document.getElementById('customerName').value,
+                productId: productId,
+                productName: product.name,
+                quantity: quantity,
+                total: product.price * quantity,
+                date: document.getElementById('deliveryDate').value,
+                status: 'Pendiente',
+            };
+            
+            data.deliveries.push(delivery);
+            product.quantity -= quantity;
+            
+            saveData();
+            form.reset();
+            renderAllData();
+            showNotification('Entrega agregada', 'success');
+        }
+
+        function renderDeliveries() {
+            const tbody = document.getElementById('deliveryTableBody');
+            tbody.innerHTML = '';
+            
+            data.deliveries.forEach(delivery => {
+                const row = tbody.insertRow();
+                const badgeClass = delivery.status === 'Entregado' ? 'badge-success' : 'badge-pending';
+                const buttonText = delivery.status === 'Entregado' ? 'Completado' : 'Completar';
+                const buttonDisabled = delivery.status === 'Entregado' ? 'disabled' : '';
+                row.innerHTML = `
+                    <td>${delivery.customer}</td>
+                    <td>${delivery.productName}</td>
+                    <td>${delivery.quantity}</td>
+                    <td><span class="badge ${badgeClass}">${delivery.status}</span></td>
+                    <td>
+                        <button class="btn btn-success" style="padding: 5px 10px;" onclick="completeDelivery('${delivery.id}')" ${buttonDisabled}>
+                            ${buttonText}
+                        </button>
+                    </td>
+                `;
+            });
+        }
+
+        function completeDelivery(id) {
+            const delivery = data.deliveries.find(d => d.id === id);
+            if (delivery && delivery.status !== 'Entregado') {
+                delivery.status = 'Entregado';
+                
+                const transaction = {
+                    id: 'T' + Date.now(),
+                    type: 'income',
+                    description: `Venta: ${delivery.productName} a ${delivery.customer}`,
+                    amount: delivery.total,
+                    date: new Date().toISOString().split('T')[0],
+                };
+                data.transactions.push(transaction);
+                
+                saveData();
+                renderAllData();
+                showNotification('Entrega completada', 'success');
+            }
+        }
+
+        function addTransaction() {
+            const form = document.getElementById('cashFlowForm');
+            if (!form.checkValidity()) {
+                showNotification('Completa todos los campos', 'danger');
+                return;
+            }
+            
+            const transaction = {
+                id: 'T' + Date.now(),
+                type: document.getElementById('transactionType').value,
+                amount: parseFloat(document.getElementById('amount').value),
+                description: document.getElementById('description').value,
+                date: document.getElementById('transactionDate').value,
+            };
+            
+            data.transactions.push(transaction);
+            saveData();
+            form.reset();
+            renderAllData();
+            showNotification('Transacción registrada', 'success');
+        }
+
+        function renderCashFlow() {
+            const tbody = document.getElementById('cashFlowTableBody');
+            tbody.innerHTML = '';
+            
+            data.transactions.sort((a, b) => new Date(b.date) - new Date(a.date)).forEach(transaction => {
+                const row = tbody.insertRow();
+                const isIncome = transaction.type === 'income';
+                row.innerHTML = `
+                    <td>${transaction.date}</td>
+                    <td><span class="badge badge-${isIncome ? 'success' : 'danger'}">${isIncome ? 'Ingreso' : 'Egreso'}</span></td>
+                    <td>${transaction.description}</td>
+                    <td style="color: ${isIncome ? 'green' : 'red'}">${isIncome ? '+' : '-'}${data.settings.currency}${transaction.amount.toFixed(2)}</td>
+                    <td>
+                        <button class="btn btn-danger" style="padding: 5px 10px;" onclick="deleteItem('transactions', '${transaction.id}')">Eliminar</button>
+                    </td>
+                `;
+            });
+        }
+
+        function deleteItem(collection, id) {
+            if (confirm('¿Estás seguro de que quieres eliminar este elemento?')) {
+                data[collection] = data[collection].filter(item => item.id !== id);
+                saveData();
+                renderAllData();
+                showNotification('Elemento eliminado', 'success');
+            }
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            const messageEl = document.getElementById('notificationMessage');
+            
+            messageEl.textContent = message;
+            notification.className = `notification show`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeApp();
+        });
+    </script>
+</body>
+</html>
