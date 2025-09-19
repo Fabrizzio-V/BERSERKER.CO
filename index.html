@@ -803,8 +803,8 @@
             padding: 10px;
         }
     </style>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js" type="module"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js" type="module"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
     </head>
 <body>
     <div class="container">
@@ -1255,11 +1255,7 @@
         </div>
     </div>
 
-    <script type="module">
-        // Importar funciones de Firebase de forma modular
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-        import { getFirestore, collection, doc, getDocs, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
-
+    <script>
         // FIREBASE CONFIGURATION
         const firebaseConfig = {
             apiKey: "AIzaSyCIb8mRgc0WJohaDoStwyRmdhY5V28CFXo",
@@ -1271,9 +1267,8 @@
             measurementId: "G-PN9X87V2PH"
         };
         
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
 
         // Data Storage
         let data = {
@@ -2335,62 +2330,62 @@
             showNotification('Guardando datos en la nube...', 'info');
             try {
                 // Use a single batch write for performance
-                const batch = writeBatch(db);
+                const batch = db.batch();
 
                 // Save products
                 for (const product of data.products) {
-                    const docRef = doc(db, 'products', product.id);
+                    const docRef = db.collection('products').doc(product.id);
                     batch.set(docRef, product);
                 }
-                const productsSnapshot = await getDocs(collection(db, 'products'));
+                const productsSnapshot = await db.collection('products').get();
                 const productIds = data.products.map(p => p.id);
                 for (const firestoreDoc of productsSnapshot.docs) {
                     if (!productIds.includes(firestoreDoc.id)) {
-                        batch.delete(doc(db, 'products', firestoreDoc.id));
+                        batch.delete(firestoreDoc.ref);
                     }
                 }
 
                 // Save deliveries
                 for (const delivery of data.deliveries) {
-                    const docRef = doc(db, 'deliveries', delivery.id);
+                    const docRef = db.collection('deliveries').doc(delivery.id);
                     batch.set(docRef, delivery);
                 }
-                const deliveriesSnapshot = await getDocs(collection(db, 'deliveries'));
+                const deliveriesSnapshot = await db.collection('deliveries').get();
                 const deliveryIds = data.deliveries.map(d => d.id);
                 for (const firestoreDoc of deliveriesSnapshot.docs) {
                     if (!deliveryIds.includes(firestoreDoc.id)) {
-                        batch.delete(doc(db, 'deliveries', firestoreDoc.id));
+                        batch.delete(firestoreDoc.ref);
                     }
                 }
                 
                 // Save transactions
                 for (const transaction of data.transactions) {
-                    const docRef = doc(db, 'transactions', transaction.id);
+                    const docRef = db.collection('transactions').doc(transaction.id);
                     batch.set(docRef, transaction);
                 }
-                const transactionsSnapshot = await getDocs(collection(db, 'transactions'));
+                const transactionsSnapshot = await db.collection('transactions').get();
                 const transactionIds = data.transactions.map(t => t.id);
                 for (const firestoreDoc of transactionsSnapshot.docs) {
                     if (!transactionIds.includes(firestoreDoc.id)) {
-                        batch.delete(doc(db, 'transactions', firestoreDoc.id));
+                        batch.delete(firestoreDoc.ref);
                     }
                 }
 
                 // Save stock movements
                 for (const movement of data.stockMovements) {
-                    const docRef = doc(db, 'stockMovements', movement.id);
+                    const docRef = db.collection('stockMovements').doc(movement.id);
                     batch.set(docRef, movement);
                 }
-                const movementsSnapshot = await getDocs(collection(db, 'stockMovements'));
+                const movementsSnapshot = await db.collection('stockMovements').get();
                 const movementIds = data.stockMovements.map(m => m.id);
                 for (const firestoreDoc of movementsSnapshot.docs) {
                     if (!movementIds.includes(firestoreDoc.id)) {
-                        batch.delete(doc(db, 'stockMovements', firestoreDoc.id));
+                        batch.delete(firestoreDoc.ref);
                     }
                 }
 
                 // Save settings
-                await setDoc(doc(db, 'system', 'settings'), data.settings);
+                await db.collection('system').doc('settings').set(data.settings);
 
                 await batch.commit();
 
@@ -2406,20 +2401,20 @@
         async function loadData() {
             showNotification('Cargando datos de la nube...', 'info');
             try {
-                const [productsSnapshot, deliveriesSnapshot, transactionsSnapshot, movementsSnapshot, settingsDoc] = await Promise.all([
-                    getDocs(collection(db, 'products')),
-                    getDocs(collection(db, 'deliveries')),
-                    getDocs(collection(db, 'transactions')),
-                    getDocs(collection(db, 'stockMovements')),
-                    getDoc(doc(db, 'system', 'settings'))
-                ]);
-
+                const productsSnapshot = await db.collection('products').get();
                 data.products = productsSnapshot.docs.map(doc => doc.data());
+
+                const deliveriesSnapshot = await db.collection('deliveries').get();
                 data.deliveries = deliveriesSnapshot.docs.map(doc => doc.data());
+                
+                const transactionsSnapshot = await db.collection('transactions').get();
                 data.transactions = transactionsSnapshot.docs.map(doc => doc.data());
+
+                const movementsSnapshot = await db.collection('stockMovements').get();
                 data.stockMovements = movementsSnapshot.docs.map(doc => doc.data());
                 
-                if (settingsDoc.exists()) {
+                const settingsDoc = await db.collection('system').doc('settings').get();
+                if (settingsDoc.exists) {
                     data.settings = settingsDoc.data();
                 }
 
