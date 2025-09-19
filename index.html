@@ -1291,6 +1291,7 @@
             showNotification('Cargando datos...', 'info');
             await loadData();
             initializeTabs();
+            // Call the first tab's update function after loading data
             updateDashboard();
             initializeCalendar();
             setTodayDate();
@@ -2403,6 +2404,7 @@
         async function loadData() {
             showNotification('Cargando datos de la nube...', 'info');
             try {
+                // Fetch all data from Firestore
                 const productsSnapshot = await db.collection('products').get();
                 data.products = productsSnapshot.docs.map(doc => doc.data());
 
@@ -2416,7 +2418,12 @@
                 data.stockMovements = movementsSnapshot.docs.map(doc => doc.data());
                 
                 const settingsDoc = await db.collection('system').doc('settings').get();
-                if (settingsDoc.exists) {
+
+                // If settings document doesn't exist, create it with default data
+                if (!settingsDoc.exists) {
+                    await db.collection('system').doc('settings').set(data.settings);
+                    console.log("Settings document created with default values.");
+                } else {
                     data.settings = settingsDoc.data();
                 }
 
