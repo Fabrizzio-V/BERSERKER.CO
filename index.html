@@ -1256,7 +1256,9 @@
     </div>
 
     <script>
-        // FIREBASE CONFIGURATION
+        // Firebase SDKs (Legacy/Compat version for local file support)
+        // La versión compat expone un objeto global 'firebase' que es más fácil de usar en entornos locales.
+        // Si subes esto a un servidor, podrías considerar la versión modular para mejor rendimiento.
         const firebaseConfig = {
             apiKey: "AIzaSyCIb8mRgc0WJohaDoStwyRmdhY5V28CFXo",
             authDomain: "sistema-fd8ed.firebaseapp.com",
