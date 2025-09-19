@@ -396,7 +396,6 @@
 
         .badge-danger {
             background: rgba(239,68,68,0.1);
-            border-left: 4px solid var(--danger);
             color: var(--danger);
         }
 
@@ -1256,9 +1255,7 @@
     </div>
 
     <script>
-        // Firebase SDKs (Legacy/Compat version for local file support)
-        // La versión compat expone un objeto global 'firebase' que es más fácil de usar en entornos locales.
-        // Si subes esto a un servidor, podrías considerar la versión modular para mejor rendimiento.
+        // FIREBASE CONFIGURATION
         const firebaseConfig = {
             apiKey: "AIzaSyCIb8mRgc0WJohaDoStwyRmdhY5V28CFXo",
             authDomain: "sistema-fd8ed.firebaseapp.com",
@@ -1288,10 +1285,8 @@
 
         // Initialize
         document.addEventListener('DOMContentLoaded', async function() {
-            showNotification('Cargando datos...', 'info');
             await loadData();
             initializeTabs();
-            // Call the first tab's update function after loading data
             updateDashboard();
             initializeCalendar();
             setTodayDate();
@@ -2332,65 +2327,56 @@
         async function saveData() {
             showNotification('Guardando datos en la nube...', 'info');
             try {
-                // Use a single batch write for performance
-                const batch = db.batch();
-
                 // Save products
                 for (const product of data.products) {
-                    const docRef = db.collection('products').doc(product.id);
-                    batch.set(docRef, product);
+                    await db.collection('products').doc(product.id).set(product);
                 }
-                const productsSnapshot = await db.collection('products').get();
+                const productDocs = await db.collection('products').get();
                 const productIds = data.products.map(p => p.id);
-                for (const firestoreDoc of productsSnapshot.docs) {
-                    if (!productIds.includes(firestoreDoc.id)) {
-                        batch.delete(firestoreDoc.ref);
+                for (const doc of productDocs.docs) {
+                    if (!productIds.includes(doc.id)) {
+                        await doc.ref.delete();
                     }
                 }
 
                 // Save deliveries
                 for (const delivery of data.deliveries) {
-                    const docRef = db.collection('deliveries').doc(delivery.id);
-                    batch.set(docRef, delivery);
+                    await db.collection('deliveries').doc(delivery.id).set(delivery);
                 }
-                const deliveriesSnapshot = await db.collection('deliveries').get();
+                const deliveryDocs = await db.collection('deliveries').get();
                 const deliveryIds = data.deliveries.map(d => d.id);
-                for (const firestoreDoc of deliveriesSnapshot.docs) {
-                    if (!deliveryIds.includes(firestoreDoc.id)) {
-                        batch.delete(firestoreDoc.ref);
+                for (const doc of deliveryDocs.docs) {
+                    if (!deliveryIds.includes(doc.id)) {
+                        await doc.ref.delete();
                     }
                 }
                 
                 // Save transactions
                 for (const transaction of data.transactions) {
-                    const docRef = db.collection('transactions').doc(transaction.id);
-                    batch.set(docRef, transaction);
+                    await db.collection('transactions').doc(transaction.id).set(transaction);
                 }
-                const transactionsSnapshot = await db.collection('transactions').get();
+                const transactionDocs = await db.collection('transactions').get();
                 const transactionIds = data.transactions.map(t => t.id);
-                for (const firestoreDoc of transactionsSnapshot.docs) {
-                    if (!transactionIds.includes(firestoreDoc.id)) {
-                        batch.delete(firestoreDoc.ref);
+                for (const doc of transactionDocs.docs) {
+                    if (!transactionIds.includes(doc.id)) {
+                        await doc.ref.delete();
                     }
                 }
 
                 // Save stock movements
                 for (const movement of data.stockMovements) {
-                    const docRef = db.collection('stockMovements').doc(movement.id);
-                    batch.set(docRef, movement);
+                    await db.collection('stockMovements').doc(movement.id).set(movement);
                 }
-                const movementsSnapshot = await db.collection('stockMovements').get();
+                const movementDocs = await db.collection('stockMovements').get();
                 const movementIds = data.stockMovements.map(m => m.id);
-                for (const firestoreDoc of movementsSnapshot.docs) {
-                    if (!movementIds.includes(firestoreDoc.id)) {
-                        batch.delete(firestoreDoc.ref);
+                for (const doc of movementDocs.docs) {
+                    if (!movementIds.includes(doc.id)) {
+                        await doc.ref.delete();
                     }
                 }
 
                 // Save settings
                 await db.collection('system').doc('settings').set(data.settings);
-
-                await batch.commit();
 
                 document.getElementById('lastUpdate').textContent = new Date().toLocaleString('es');
                 updateSystemStats();
@@ -2404,7 +2390,6 @@
         async function loadData() {
             showNotification('Cargando datos de la nube...', 'info');
             try {
-                // Fetch all data from Firestore
                 const productsSnapshot = await db.collection('products').get();
                 data.products = productsSnapshot.docs.map(doc => doc.data());
 
@@ -2418,12 +2403,7 @@
                 data.stockMovements = movementsSnapshot.docs.map(doc => doc.data());
                 
                 const settingsDoc = await db.collection('system').doc('settings').get();
-
-                // If settings document doesn't exist, create it with default data
-                if (!settingsDoc.exists) {
-                    await db.collection('system').doc('settings').set(data.settings);
-                    console.log("Settings document created with default values.");
-                } else {
+                if (settingsDoc.exists) {
                     data.settings = settingsDoc.data();
                 }
 
