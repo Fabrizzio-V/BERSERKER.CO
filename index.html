@@ -801,6 +801,18 @@
         .product-selector button {
             padding: 10px;
         }
+
+        /* Editable price indicator */
+        .price-editable {
+            background-color: #fffbeb !important;
+            border-color: #f59e0b !important;
+        }
+
+        .price-hint {
+            font-size: 12px;
+            color: var(--warning);
+            margin-top: 5px;
+        }
     </style>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -827,19 +839,19 @@
                 <div class="dashboard-grid">
                     <div class="stat-card success">
                         <div class="stat-icon">💰</div>
-                        <div class="stat-value" id="totalSales">$0</div>
+                        <div class="stat-value" id="totalSales">0 GS</div>
                         <div class="stat-label">Ventas Totales</div>
                         <div class="stat-change positive">↑ Este mes</div>
                     </div>
                     <div class="stat-card info">
                         <div class="stat-icon">📈</div>
-                        <div class="stat-value" id="netProfit">$0</div>
+                        <div class="stat-value" id="netProfit">0 GS</div>
                         <div class="stat-label">Ganancia Neta</div>
                         <div class="stat-change" id="profitMargin">0% margen</div>
                     </div>
                     <div class="stat-card warning">
                         <div class="stat-icon">💸</div>
-                        <div class="stat-value" id="totalExpenses">$0</div>
+                        <div class="stat-value" id="totalExpenses">0 GS</div>
                         <div class="stat-label">Gastos Totales</div>
                     </div>
                     <div class="stat-card">
@@ -858,7 +870,7 @@
                         </div>
                         <div class="summary-card">
                             <div class="summary-card-title">Valor Inventario</div>
-                            <div class="summary-card-value" id="inventoryValue">$0</div>
+                            <div class="summary-card-value" id="inventoryValue">0 GS</div>
                         </div>
                         <div class="summary-card">
                             <div class="summary-card-title">ROI</div>
@@ -904,12 +916,12 @@
                             <input type="number" id="productQuantity" min="0" required placeholder="0">
                         </div>
                         <div class="form-group">
-                            <label>Costo Unitario</label>
-                            <input type="number" id="productCost" step="0.01" required placeholder="0.00">
+                            <label>Costo Unitario (GS)</label>
+                            <input type="number" id="productCost" step="1" required placeholder="0">
                         </div>
                         <div class="form-group">
-                            <label>Precio de Venta</label>
-                            <input type="number" id="productPrice" step="0.01" required placeholder="0.00">
+                            <label>Precio de Venta (GS)</label>
+                            <input type="number" id="productPrice" step="1" required placeholder="0">
                         </div>
                         <div class="form-group">
                             <label>Stock Mínimo (Alerta)</label>
@@ -994,12 +1006,13 @@
                             <input type="number" id="deliveryQuantity" min="1" value="1" required onchange="updateDeliveryTotal()">
                         </div>
                         <div class="form-group">
-                            <label>Precio Unitario</label>
-                            <input type="number" id="deliveryUnitPrice" step="0.01" required readonly>
+                            <label>Precio Unitario (GS)</label>
+                            <input type="number" id="deliveryUnitPrice" class="price-editable" step="1" required onchange="updateDeliveryTotal()">
+                            <div class="price-hint">💡 Puedes editar el precio de venta</div>
                         </div>
                         <div class="form-group">
-                            <label>Total</label>
-                            <input type="number" id="deliveryTotal" step="0.01" required readonly>
+                            <label>Total (GS)</label>
+                            <input type="number" id="deliveryTotal" step="1" required readonly>
                         </div>
                         <div class="form-group">
                             <label>Fecha de Entrega</label>
@@ -1066,8 +1079,8 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Monto</label>
-                            <input type="number" id="amount" step="0.01" required placeholder="0.00">
+                            <label>Monto (GS)</label>
+                            <input type="number" id="amount" step="1" required placeholder="0">
                         </div>
                         <div class="form-group">
                             <label>Descripción</label>
@@ -1086,17 +1099,17 @@
                 <div class="dashboard-grid">
                     <div class="stat-card success">
                         <div class="stat-icon">📊</div>
-                        <div class="stat-value" id="totalIncome">$0</div>
+                        <div class="stat-value" id="totalIncome">0 GS</div>
                         <div class="stat-label">Ingresos Totales</div>
                     </div>
                     <div class="stat-card danger">
                         <div class="stat-icon">💸</div>
-                        <div class="stat-value" id="totalExpensesFlow">$0</div>
+                        <div class="stat-value" id="totalExpensesFlow">0 GS</div>
                         <div class="stat-label">Gastos Totales</div>
                     </div>
                     <div class="stat-card info">
                         <div class="stat-icon">💰</div>
-                        <div class="stat-value" id="netBalance">$0</div>
+                        <div class="stat-value" id="netBalance">0 GS</div>
                         <div class="stat-label">Balance Neto</div>
                     </div>
                 </div>
@@ -1125,12 +1138,12 @@
                     <div class="dashboard-grid">
                         <div class="stat-card">
                             <div class="stat-icon">📊</div>
-                            <div class="stat-value" id="reportTotalRevenue">$0</div>
+                            <div class="stat-value" id="reportTotalRevenue">0 GS</div>
                             <div class="stat-label">Ingresos Totales</div>
                         </div>
                         <div class="stat-card">
                             <div class="stat-icon">💰</div>
-                            <div class="stat-value" id="reportNetProfit">$0</div>
+                            <div class="stat-value" id="reportNetProfit">0 GS</div>
                             <div class="stat-label">Ganancia Neta</div>
                         </div>
                         <div class="stat-card">
@@ -1200,9 +1213,9 @@
                         <div class="form-group">
                             <label>Moneda</label>
                             <select id="currency">
+                                <option value="GS">Guaraníes (GS)</option>
                                 <option value="$">USD ($)</option>
                                 <option value="€">EUR (€)</option>
-                                <option value="₲">PYG (₲)</option>
                                 <option value="¥">JPY (¥)</option>
                             </select>
                         </div>
@@ -1277,11 +1290,30 @@
             stockMovements: [],
             settings: {
                 companyName: 'Berserker.co',
-                currency: '$',
+                currency: 'GS',
                 notificationEmail: '',
                 timezone: 'America/Asuncion'
             }
         };
+
+        // CURRENCY FORMATTING FUNCTION
+        function formatCurrency(amount) {
+            if (isNaN(amount)) return '0 GS';
+            
+            // Convert to integer if it's a decimal
+            const intAmount = Math.round(amount);
+            
+            // Format with thousand separators
+            const formatted = intAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            
+            return formatted + ' GS';
+        }
+
+        // Parse currency input (remove dots and GS)
+        function parseCurrency(currencyString) {
+            if (typeof currencyString === 'number') return currencyString;
+            return parseFloat(currencyString.toString().replace(/[.GS\s]/g, '')) || 0;
+        }
 
         // Initialize
         document.addEventListener('DOMContentLoaded', async function() {
@@ -1405,10 +1437,10 @@
                     <td>${product.name}</td>
                     <td>${product.category}</td>
                     <td><span class="stock-indicator stock-${stockClass}">${product.quantity}</span></td>
-                    <td>${data.settings.currency}${product.cost.toFixed(2)}</td>
-                    <td>${data.settings.currency}${product.price.toFixed(2)}</td>
+                    <td>${formatCurrency(product.cost)}</td>
+                    <td>${formatCurrency(product.price)}</td>
                     <td>${margin}%</td>
-                    <td>${data.settings.currency}${totalValue.toFixed(2)}</td>
+                    <td>${formatCurrency(totalValue)}</td>
                     <td><span class="badge badge-${stockClass === 'low' ? 'danger' : stockClass === 'medium' ? 'pending' : 'success'}">
                         ${stockClass === 'low' ? 'Bajo' : stockClass === 'medium' ? 'Medio' : 'Alto'}
                     </span></td>
@@ -1442,22 +1474,29 @@
             data.products.forEach(product => {
                 if (product.quantity > 0) {
                     deliverySelect.innerHTML += `<option value="${product.id}" data-price="${product.price}" data-cost="${product.cost}">
-                        ${product.name} (${product.quantity} disponibles) - ${data.settings.currency}${product.price.toFixed(2)}
+                        ${product.name} (${product.quantity} disponibles) - ${formatCurrency(product.price)}
                     </option>`;
                 }
             });
         }
 
+        // UPDATED DELIVERY PRICE FUNCTION - NOW ALLOWS EDITING
         function updateDeliveryPrice() {
             const select = document.getElementById('deliveryProduct');
             const selectedOption = select.options[select.selectedIndex];
+            const priceInput = document.getElementById('deliveryUnitPrice');
             
             if (selectedOption.value) {
-                const price = parseFloat(selectedOption.dataset.price);
-                document.getElementById('deliveryUnitPrice').value = price.toFixed(2);
+                const defaultPrice = parseFloat(selectedOption.dataset.price);
+                // Set the default price, but allow editing
+                priceInput.value = defaultPrice;
+                priceInput.removeAttribute('readonly');
+                priceInput.classList.add('price-editable');
                 updateDeliveryTotal();
             } else {
-                document.getElementById('deliveryUnitPrice').value = '';
+                priceInput.value = '';
+                priceInput.setAttribute('readonly', true);
+                priceInput.classList.remove('price-editable');
                 document.getElementById('deliveryTotal').value = '';
             }
         }
@@ -1466,7 +1505,7 @@
             const quantity = parseInt(document.getElementById('deliveryQuantity').value) || 0;
             const unitPrice = parseFloat(document.getElementById('deliveryUnitPrice').value) || 0;
             const total = quantity * unitPrice;
-            document.getElementById('deliveryTotal').value = total.toFixed(2);
+            document.getElementById('deliveryTotal').value = total;
         }
 
         async function adjustStock() {
@@ -1550,12 +1589,12 @@
 
             const modalBody = `
                 <div class="form-group">
-                    <label>Precio de Venta</label>
-                    <input type="number" id="editPrice" step="0.01" value="${product.price}">
+                    <label>Precio de Venta (GS)</label>
+                    <input type="number" id="editPrice" step="1" value="${product.price}">
                 </div>
                 <div class="form-group">
-                    <label>Costo</label>
-                    <input type="number" id="editCost" step="0.01" value="${product.cost}">
+                    <label>Costo (GS)</label>
+                    <input type="number" id="editCost" step="1" value="${product.cost}">
                 </div>
                 <div class="form-group">
                     <label>Stock Mínimo</label>
@@ -1598,7 +1637,7 @@
             }
         }
 
-        // Delivery Management with Stock Control
+        // UPDATED DELIVERY MANAGEMENT
         async function addDelivery() {
             const form = document.getElementById('deliveryForm');
             if (!form.checkValidity()) {
@@ -1623,6 +1662,10 @@
                 return;
             }
 
+            // Use the EDITED price, not the original product price
+            const unitPrice = parseFloat(document.getElementById('deliveryUnitPrice').value);
+            const total = parseFloat(document.getElementById('deliveryTotal').value);
+
             const delivery = {
                 id: 'D' + Date.now(),
                 customer: document.getElementById('customerName').value,
@@ -1630,10 +1673,10 @@
                 productId: productId,
                 productName: product.name,
                 quantity: quantity,
-                unitPrice: parseFloat(document.getElementById('deliveryUnitPrice').value),
-                total: parseFloat(document.getElementById('deliveryTotal').value),
+                unitPrice: unitPrice, // This is now the edited price
+                total: total,
                 cost: product.cost * quantity,
-                profit: (parseFloat(document.getElementById('deliveryTotal').value)) - (product.cost * quantity),
+                profit: total - (product.cost * quantity), // Profit based on new price
                 date: document.getElementById('deliveryDate').value,
                 partner: document.getElementById('partner').value,
                 status: 'Pendiente',
@@ -1680,9 +1723,9 @@
                     <td>${delivery.customer}</td>
                     <td>${delivery.productName} (x${delivery.quantity})</td>
                     <td>${delivery.quantity}</td>
-                    <td>${data.settings.currency}${delivery.total.toFixed(2)}</td>
+                    <td>${formatCurrency(delivery.total)}</td>
                     <td style="color: ${delivery.profit >= 0 ? 'green' : 'red'}">
-                        ${data.settings.currency}${delivery.profit.toFixed(2)}
+                        ${formatCurrency(delivery.profit)}
                     </td>
                     <td>${formatDate(delivery.date)}</td>
                     <td>${delivery.partner || '-'}</td>
@@ -1814,9 +1857,9 @@
                     <td>${transaction.category}</td>
                     <td>${transaction.description}</td>
                     <td style="color: ${isIncome ? 'green' : 'red'}">
-                        ${isIncome ? '+' : '-'}${data.settings.currency}${transaction.amount.toFixed(2)}
+                        ${isIncome ? '+' : '-'}${formatCurrency(transaction.amount)}
                     </td>
-                    <td>${data.settings.currency}${balance.toFixed(2)}</td>
+                    <td>${formatCurrency(balance)}</td>
                     <td>
                         <button class="btn btn-danger" onclick="deleteTransaction('${transaction.id}')">✕</button>
                     </td>
@@ -1847,9 +1890,9 @@
                 }
             });
 
-            document.getElementById('totalIncome').textContent = data.settings.currency + income.toFixed(2);
-            document.getElementById('totalExpensesFlow').textContent = data.settings.currency + expenses.toFixed(2);
-            document.getElementById('netBalance').textContent = data.settings.currency + (income - expenses).toFixed(2);
+            document.getElementById('totalIncome').textContent = formatCurrency(income);
+            document.getElementById('totalExpensesFlow').textContent = formatCurrency(expenses);
+            document.getElementById('netBalance').textContent = formatCurrency(income - expenses);
         }
 
         // Reports
@@ -1878,8 +1921,8 @@
             const profitMargin = totalRevenue > 0 ? (netProfit / totalRevenue * 100) : 0;
             const roi = totalCosts > 0 ? ((totalRevenue - totalCosts) / totalCosts * 100) : 0;
 
-            document.getElementById('reportTotalRevenue').textContent = data.settings.currency + totalRevenue.toFixed(2);
-            document.getElementById('reportNetProfit').textContent = data.settings.currency + netProfit.toFixed(2);
+            document.getElementById('reportTotalRevenue').textContent = formatCurrency(totalRevenue);
+            document.getElementById('reportNetProfit').textContent = formatCurrency(netProfit);
             document.getElementById('reportProfitMargin').textContent = profitMargin.toFixed(1) + '%';
             document.getElementById('reportROI').textContent = roi.toFixed(1) + '%';
 
@@ -1902,8 +1945,8 @@
                     topProductsHTML += `<tr>
                         <td>${product}</td>
                         <td>${sales.quantity}</td>
-                        <td>${data.settings.currency}${sales.revenue.toFixed(2)}</td>
-                        <td style="color: green">${data.settings.currency}${sales.profit.toFixed(2)}</td>
+                        <td>${formatCurrency(sales.revenue)}</td>
+                        <td style="color: green">${formatCurrency(sales.profit)}</td>
                     </tr>`;
                 });
             topProductsHTML += '</tbody></table>';
@@ -1923,7 +1966,7 @@
                 const percentage = totalExpenses > 0 ? (amount / totalExpenses * 100).toFixed(1) : 0;
                 expenseHTML += `<div class="summary-card">
                     <div class="summary-card-title">${category}</div>
-                    <div class="summary-card-value">${data.settings.currency}${amount.toFixed(2)}</div>
+                    <div class="summary-card-value">${formatCurrency(amount)}</div>
                     <div class="progress-container">
                         <div class="progress-bar">
                             <div class="progress-fill" style="width: ${percentage}%"></div>
@@ -1947,15 +1990,15 @@
                 <div class="summary-cards">
                     <div class="summary-card">
                         <div class="summary-card-title">Valor Total del Inventario</div>
-                        <div class="summary-card-value">${data.settings.currency}${totalInventoryValue.toFixed(2)}</div>
+                        <div class="summary-card-value">${formatCurrency(totalInventoryValue)}</div>
                     </div>
                     <div class="summary-card">
                         <div class="summary-card-title">Costo Total del Inventario</div>
-                        <div class="summary-card-value">${data.settings.currency}${totalInventoryCost.toFixed(2)}</div>
+                        <div class="summary-card-value">${formatCurrency(totalInventoryCost)}</div>
                     </div>
                     <div class="summary-card">
                         <div class="summary-card-title">Ganancia Potencial</div>
-                        <div class="summary-card-value">${data.settings.currency}${(totalInventoryValue - totalInventoryCost).toFixed(2)}</div>
+                        <div class="summary-card-value">${formatCurrency(totalInventoryValue - totalInventoryCost)}</div>
                     </div>
                 </div>
             `;
@@ -2004,7 +2047,7 @@
             csv += 'INVENTARIO\n';
             csv += 'SKU,Producto,Categoría,Stock,Costo,Precio,Valor Total\n';
             data.products.forEach(p => {
-                csv += `${p.sku},${p.name},${p.category},${p.quantity},${p.cost},${p.price},${(p.quantity * p.price).toFixed(2)}\n`;
+                csv += `${p.sku},${p.name},${p.category},${p.quantity},${p.cost},${p.price},${(p.quantity * p.price)}\n`;
             });
             csv += '\n';
             
@@ -2075,16 +2118,16 @@
             const totalInvestment = totalCosts + totalExpenses;
             const roi = totalInvestment > 0 ? ((totalSales - totalInvestment) / totalInvestment * 100) : 0;
 
-            // Update display
-            document.getElementById('totalSales').textContent = data.settings.currency + totalSales.toFixed(2);
-            document.getElementById('netProfit').textContent = data.settings.currency + netProfit.toFixed(2);
-            document.getElementById('totalExpenses').textContent = data.settings.currency + totalExpenses.toFixed(2);
+            // Update display with new currency format
+            document.getElementById('totalSales').textContent = formatCurrency(totalSales);
+            document.getElementById('netProfit').textContent = formatCurrency(netProfit);
+            document.getElementById('totalExpenses').textContent = formatCurrency(totalExpenses);
             document.getElementById('totalProducts').textContent = totalProducts;
             document.getElementById('profitMargin').textContent = profitMargin.toFixed(1) + '% margen';
             document.getElementById('profitMargin').className = `stat-change ${profitMargin > 0 ? 'positive' : 'negative'}`;
             
             document.getElementById('monthlyUnitsSold').textContent = monthlyUnitsSold;
-            document.getElementById('inventoryValue').textContent = data.settings.currency + totalInventoryValue.toFixed(2);
+            document.getElementById('inventoryValue').textContent = formatCurrency(totalInventoryValue);
             document.getElementById('roi').textContent = roi.toFixed(1) + '%';
             
             const pendingDeliveries = data.deliveries.filter(d => d.status !== 'Entregado').length;
@@ -2141,7 +2184,7 @@
                     bar.style.background = 'linear-gradient(to top, #10b981, #34d399)';
                 }
                 bar.innerHTML = `
-                    <div class="bar-value">${data.settings.currency}${day.profit.toFixed(0)}</div>
+                    <div class="bar-value">${formatCurrency(day.profit).replace(' GS', '')}</div>
                     <div class="bar-label">${day.label}</div>
                 `;
                 chart.appendChild(bar);
@@ -2233,7 +2276,7 @@
             if (deliveries.length > 0) {
                 eventsHtml += '<h5>📦 Entregas:</h5><ul>';
                 deliveries.forEach(d => {
-                    eventsHtml += `<li>${d.customer} - ${d.productName} (${data.settings.currency}${d.total.toFixed(2)})</li>`;
+                    eventsHtml += `<li>${d.customer} - ${d.productName} (${formatCurrency(d.total)})</li>`;
                 });
                 eventsHtml += '</ul>';
             }
@@ -2242,7 +2285,7 @@
                 eventsHtml += '<h5>💰 Transacciones:</h5><ul>';
                 transactions.forEach(t => {
                     const sign = t.type === 'income' ? '+' : '-';
-                    eventsHtml += `<li>${t.description} (${sign}${data.settings.currency}${t.amount.toFixed(2)})</li>`;
+                    eventsHtml += `<li>${t.description} (${sign}${formatCurrency(t.amount)})</li>`;
                 });
                 eventsHtml += '</ul>';
             }
@@ -2410,7 +2453,7 @@
                 // Load settings into form
                 if (data.settings) {
                     document.getElementById('companyName').value = data.settings.companyName || '';
-                    document.getElementById('currency').value = data.settings.currency || '$';
+                    document.getElementById('currency').value = data.settings.currency || 'GS';
                     document.getElementById('notificationEmail').value = data.settings.notificationEmail || '';
                     document.getElementById('timezone').value = data.settings.timezone || 'America/Asuncion';
                 }
